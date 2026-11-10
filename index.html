@@ -181,10 +181,13 @@
   </div>
 </div>
 
+<!-- ResponsiveVoice: Vietnamese TTS -->
+<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+
 <script>
 /* ============================================================
    1. NỘI DUNG 100 MÀN × 10 CÂU = 1000 CÂU TIẾNG VIỆT
-   Định dạng: ["Tên chủ đề", "câu 1|câu 2|...|câu 10"]
+   (giữ nguyên danh sách LEVELS như phiên bản trước)
    ============================================================ */
 const LEVELS = [
 /* ---------- 1–30 : 5–7 tuổi ---------- */
@@ -304,9 +307,7 @@ const $ = id => document.getElementById(id);
 
 function levelPhrases(i){ return LEVELS[i][1].split('|'); }
 
-/* Chuẩn hoá chuỗi để so khớp: bỏ dấu câu, gộp khoảng trắng,
-   và chuẩn hoá VỊ TRÍ dấu thanh (hòa / hoà đều bằng nhau)
-   nhưng VẪN yêu cầu đúng thanh điệu. */
+/* Chuẩn hoá chuỗi để so khớp (giữ nguyên như bản trước) */
 const TONE_RE = /[\u0300\u0301\u0303\u0309\u0323]/g;
 function canon(s){
   return (s||'').normalize('NFD').toLowerCase()
@@ -318,7 +319,7 @@ function canon(s){
     }).join(' ');
 }
 
-/* ---------- localStorage (chỉ lưu trên máy, không cần backend) ---------- */
+/* ---------- localStorage ---------- */
 const SKEY='nonla_stars_v1';
 function allStars(){ try{ return JSON.parse(localStorage.getItem(SKEY)||'{}'); }catch(e){ return {}; } }
 function getStars(n){ return allStars()[n]||0; }
@@ -328,44 +329,49 @@ function setStars(n,v){
 }
 
 /* ============================================================
-   3. ÂM THANH: ĐỌC MẪU (TTS) + NHẬN DIỆN GIỌNG NÓI (ASR)
+   3. ÂM THANH: RESPONSIVEVOICE (TTS) + NHẬN DIỆN GIỌNG NÓI (ASR)
    ============================================================ */
-let viVoice = null;
-function pickVoice(){
-  const vs = (window.speechSynthesis && speechSynthesis.getVoices()) || [];
-  viVoice = vs.find(v => v.lang && v.lang.toLowerCase().indexOf('vi')===0) || null;
-}
-if(window.speechSynthesis){
-  pickVoice();
-  speechSynthesis.onvoiceschanged = pickVoice;
-  setTimeout(pickVoice, 700);
-}
-
 let ttsToken = 0;
-function stopTTS(){ ttsToken++; try{ speechSynthesis.cancel(); }catch(e){} }
+function stopTTS(){ ttsToken++; try{ responsiveVoice.cancel(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} }
 
 function speakSeq(text, times, onDone){
-  if(!window.speechSynthesis){ onDone && onDone(); return; }
   const token = ++ttsToken;
-  try{ speechSynthesis.cancel(); }catch(e){}
+  stopTTS();
   let i = 0;
   const step = () => {
     if(token !== ttsToken) return;
     if(i >= times){ onDone && onDone(); return; }
     i++;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'vi-VN'; u.rate = 0.82; u.pitch = 1.05; u.volume = 1;
-    if(viVoice) u.voice = viVoice;
-    let advanced = false;
-    const go = () => { if(advanced) return; advanced = true; if(token===ttsToken) setTimeout(step, 280); };
-    u.onend = go; u.onerror = go;
-    try{ speechSynthesis.speak(u); }catch(e){ go(); }
-    // watchdog phòng khi onend không bắn
-    setTimeout(go, 1800 + text.split(/\s+/).length * 750);
+    // Ưu tiên ResponsiveVoice
+    if(window.responsiveVoice){
+      try{
+        responsiveVoice.speak(text, 'Vietnamese Female', {
+          rate: 0.82, pitch: 1.05, volume: 1,
+          onend: () => { if(token === ttsToken) setTimeout(step, 280); },
+          onerror: () => { if(token === ttsToken) setTimeout(step, 280); }
+        });
+        // watchdog
+        setTimeout(() => { if(token === ttsToken) step(); }, 1800 + text.split(/\s+/).length * 750);
+        return;
+      }catch(e){ /* fallback */ }
+    }
+    // Fallback: speechSynthesis
+    if(window.speechSynthesis){
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'vi-VN'; u.rate = 0.82; u.pitch = 1.05; u.volume = 1;
+      let advanced = false;
+      const go = () => { if(advanced) return; advanced = true; if(token===ttsToken) setTimeout(step, 280); };
+      u.onend = go; u.onerror = go;
+      try{ speechSynthesis.speak(u); }catch(e){ go(); }
+      setTimeout(go, 1800 + text.split(/\s+/).length * 750);
+    } else {
+      onDone && onDone();
+    }
   };
   step();
 }
 
+/* ---------- Speech Recognition (giữ nguyên) ---------- */
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recog = null, wantListen = false, listening = false;
 
@@ -387,7 +393,6 @@ function makeRecog(){
     const e = ev.error;
     if(e === 'not-allowed' || e === 'service-not-allowed'){ wantListen = false; setMic('denied'); }
     else if(e === 'network'){ setMic('neterr'); }
-    // no-speech / aborted: bỏ qua
   };
   r.onresult = (ev) => {
     if(!G.running || G.state === 'jump') return;
@@ -461,15 +466,15 @@ function currentPhrase(){
 }
 
 /* ============================================================
-   5. LUỒNG CHƠI
+   5. LUỒNG CHƠI (giữ nguyên)
    ============================================================ */
 function startLevel(n){
   n = Math.max(1, Math.min(100, parseInt(n,10) || 1));
   G.level = n;
   G.idx = 0; G.stars = 0; G.attempts = 0;
   G.state = 'approach'; G.running = true;
-  G.speed = 120 + (n - 1) * 1.55;        // tốc độ tăng nhẹ theo màn
-  G.theme = (n - 1) % 5;                 // luân phiên 5 bối cảnh
+  G.speed = 120 + (n - 1) * 1.55;
+  G.theme = (n - 1) % 5;
   G.scroll = 0; G.petals = []; G.jumpT = 0;
   G.obstacle = { x: W + 140, type: (n - 1) % 5 };
   show('play');
@@ -491,7 +496,6 @@ function presentPhrase(){
 
   stopListen();
   setMic('speaking');
-  // đọc mẫu 3 lần, chậm rãi
   speakSeq(p, 3, () => {
     if(!G.running) return;
     startListen();
@@ -500,7 +504,7 @@ function presentPhrase(){
 
 function onCorrect(){
   if(G.state === 'jump') return;
-  if(G.attempts === 0) G.stars++;   // đúng ngay lần đầu
+  if(G.attempts === 0) G.stars++;
   advance();
 }
 
@@ -570,7 +574,7 @@ function loop(now){
 function update(dt){
   G.t += dt * 1000;
 
-  let ws = 45;                                   // menu: chạy chậm
+  let ws = 45;
   if(G.running){
     if(G.state === 'approach') ws = G.speed;
     else if(G.state === 'blocked') ws = 0;
@@ -594,105 +598,120 @@ function update(dt){
 }
 
 /* ============================================================
-   7. VẼ
+   7. VẼ — PHIÊN BẢN CARTOON FLAT MỚI
    ============================================================ */
 function rep(tile, off, fn){
   const start = -(((off % tile) + tile) % tile);
   for(let x = start; x < W + tile; x += tile) fn(x);
 }
 
-/* ---------- hình phụ trợ ---------- */
+/* ---------- hình phụ trợ phong cách flat ---------- */
 function house(c,x,y){
-  c.fillStyle='#f5e9cd'; c.fillRect(x, y-62, 74, 62);
-  c.fillStyle='#c1583f';
-  c.beginPath(); c.moveTo(x-12,y-62); c.lineTo(x+37,y-98); c.lineTo(x+86,y-62); c.closePath(); c.fill();
-  c.fillStyle='#8a5a3b'; c.fillRect(x+27,y-36,20,36);
-  c.fillStyle='#a9dcf2'; c.fillRect(x+9,y-52,15,15); c.fillRect(x+50,y-52,15,15);
+  // tường
+  c.fillStyle='#FFF2D6'; c.fillRect(x, y-64, 78, 64);
+  // mái
+  c.fillStyle='#D95F43';
+  c.beginPath(); c.moveTo(x-14,y-64); c.lineTo(x+39,y-102); c.lineTo(x+92,y-64); c.closePath(); c.fill();
+  // cửa
+  c.fillStyle='#8B5E3C'; c.fillRect(x+28,y-38,22,38);
+  // cửa sổ
+  c.fillStyle='#A8D8F0'; c.fillRect(x+10,y-52,16,16); c.fillRect(x+52,y-52,16,16);
+  // nét vẽ tối giản
+  c.strokeStyle='#C7A87A'; c.lineWidth=1.5;
+  c.strokeRect(x,y-64,78,64);
 }
+
 function bamboo(c,x,y){
-  c.strokeStyle='#5f8f3e'; c.lineWidth=4; c.lineCap='round';
+  c.strokeStyle='#5B8C3E'; c.lineWidth=5; c.lineCap='round';
   for(let i=0;i<3;i++){
-    const bx=x+i*11;
-    c.beginPath(); c.moveTo(bx,y); c.lineTo(bx-3,y-86-i*16); c.stroke();
+    const bx=x+i*12;
+    c.beginPath(); c.moveTo(bx,y); c.lineTo(bx-4,y-90-i*16); c.stroke();
   }
-  c.fillStyle='#77a94e';
+  c.fillStyle='#7CB34A';
   for(let i=0;i<5;i++){
-    c.beginPath(); c.ellipse(x-6+i*9, y-72-i*13, 13, 4, -0.5+i*0.25, 0, 7); c.fill();
+    c.beginPath(); c.ellipse(x-8+i*10, y-76-i*13, 14, 5, -0.5+i*0.25, 0, 7); c.fill();
   }
 }
+
 function bambooTall(c,x,y){
   for(let i=0;i<2;i++){
     const bx=x+i*18;
-    c.strokeStyle='#6da03f'; c.lineWidth=7; c.lineCap='round';
+    c.strokeStyle='#6DA03F'; c.lineWidth=8; c.lineCap='round';
     c.beginPath(); c.moveTo(bx,y); c.lineTo(bx-8+i*4, y-230-i*40); c.stroke();
-    c.strokeStyle='#8fc45a'; c.lineWidth=2;
+    c.strokeStyle='#8FC45A'; c.lineWidth=2.5;
     for(let k=1;k<8;k++){
       const ty=y-k*30;
       c.beginPath(); c.moveTo(bx-2,ty); c.lineTo(bx+9,ty); c.stroke();
     }
   }
-  c.fillStyle='#5f8f3e';
+  c.fillStyle='#5F8F3E';
   for(let i=0;i<6;i++){
-    c.beginPath(); c.ellipse(x-10+i*11, y-190-i*14, 16, 5, -0.4+i*0.2, 0, 7); c.fill();
+    c.beginPath(); c.ellipse(x-10+i*11, y-190-i*14, 18, 6, -0.4+i*0.2, 0, 7); c.fill();
   }
 }
+
 function lotus(c,x,y){
-  c.strokeStyle='#4f9e5a'; c.lineWidth=4;
-  c.beginPath(); c.moveTo(x,y-18); c.lineTo(x,y-58); c.stroke();
-  c.fillStyle='#4f9e5a';
-  c.beginPath(); c.ellipse(x, y-24, 34, 12, 0, 0, 7); c.fill();
-  c.beginPath(); c.ellipse(x+46, y-14, 26, 9, 0, 0, 7); c.fill();
-  c.fillStyle='#ff8fb1';
-  for(let i=0;i<5;i++){
-    const a = -Math.PI/2 + (i-2)*0.34;
+  c.strokeStyle='#4F9E5A'; c.lineWidth=4;
+  c.beginPath(); c.moveTo(x,y-20); c.lineTo(x,y-60); c.stroke();
+  c.fillStyle='#4F9E5A';
+  c.beginPath(); c.ellipse(x, y-26, 36, 13, 0, 0, 7); c.fill();
+  c.beginPath(); c.ellipse(x+48, y-16, 28, 10, 0, 0, 7); c.fill();
+  // cánh hoa
+  c.fillStyle='#FF9FC0';
+  for(let i=0;i<6;i++){
+    const a = -Math.PI/2 + (i-2.5)*0.32;
     c.beginPath();
-    c.ellipse(x + Math.cos(a)*11, y-62 + Math.sin(a)*9, 7, 16, a + Math.PI/2, 0, 7);
+    c.ellipse(x + Math.cos(a)*12, y-64 + Math.sin(a)*10, 8, 18, a + Math.PI/2, 0, 7);
     c.fill();
   }
-  c.fillStyle='#ffd166';
-  c.beginPath(); c.arc(x, y-62, 5, 0, 7); c.fill();
+  c.fillStyle='#FFD166';
+  c.beginPath(); c.arc(x, y-64, 6, 0, 7); c.fill();
 }
+
 function palm(c,x,y){
-  c.strokeStyle='#a9773f'; c.lineWidth=9; c.lineCap='round';
-  c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(x+12,y-60, x+3,y-122); c.stroke();
-  c.fillStyle='#3f9e63';
-  for(let i=0;i<5;i++){
-    const a = -Math.PI + i*(Math.PI/4);
+  c.strokeStyle='#A9773F'; c.lineWidth=10; c.lineCap='round';
+  c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(x+12,y-60, x+3,y-125); c.stroke();
+  c.fillStyle='#3F9E63';
+  for(let i=0;i<6;i++){
+    const a = -Math.PI + i*(Math.PI/5);
     c.beginPath();
-    c.moveTo(x+3, y-122);
-    c.quadraticCurveTo(x+3+Math.cos(a)*52, y-122+Math.sin(a)*40, x+3+Math.cos(a)*82, y-112+Math.sin(a)*56);
-    c.quadraticCurveTo(x+3+Math.cos(a)*46, y-110+Math.sin(a)*26, x+3, y-122);
+    c.moveTo(x+3, y-125);
+    c.quadraticCurveTo(x+3+Math.cos(a)*56, y-125+Math.sin(a)*44, x+3+Math.cos(a)*88, y-114+Math.sin(a)*60);
+    c.quadraticCurveTo(x+3+Math.cos(a)*50, y-112+Math.sin(a)*28, x+3, y-125);
     c.fill();
   }
 }
+
 function boat(c,x,y){
-  c.fillStyle='#8a5a3b';
-  c.beginPath(); c.moveTo(x-30,y); c.lineTo(x+30,y); c.lineTo(x+20,y+13); c.lineTo(x-20,y+13); c.closePath(); c.fill();
-  c.fillStyle='#f7f7f7';
-  c.beginPath(); c.moveTo(x,y-46); c.lineTo(x+26,y-3); c.lineTo(x-26,y-3); c.closePath(); c.fill();
+  c.fillStyle='#8B5E3C';
+  c.beginPath(); c.moveTo(x-32,y); c.lineTo(x+32,y); c.lineTo(x+22,y+14); c.lineTo(x-22,y+14); c.closePath(); c.fill();
+  c.fillStyle='#FAFAFA';
+  c.beginPath(); c.moveTo(x,y-48); c.lineTo(x+28,y-3); c.lineTo(x-28,y-3); c.closePath(); c.fill();
 }
+
 function pine(c,x,y){
-  c.fillStyle='#6b4a2f'; c.fillRect(x-4,y-40,8,40);
-  c.fillStyle='#2f6b4f';
+  c.fillStyle='#6B4A2F'; c.fillRect(x-5,y-42,10,42);
+  c.fillStyle='#2F6B4F';
   for(let i=0;i<3;i++){
-    const w = 44 - i*10, yy = y - 40 - i*30;
-    c.beginPath(); c.moveTo(x-w,yy); c.lineTo(x,yy-46); c.lineTo(x+w,yy); c.closePath(); c.fill();
+    const w = 46 - i*11, yy = y - 42 - i*32;
+    c.beginPath(); c.moveTo(x-w,yy); c.lineTo(x,yy-48); c.lineTo(x+w,yy); c.closePath(); c.fill();
   }
 }
+
 function terrace(c,x,y){
-  c.strokeStyle='#c9d98f'; c.lineWidth=3;
+  c.strokeStyle='#C9D98F'; c.lineWidth=4;
   for(let i=0;i<4;i++){
-    c.beginPath(); c.moveTo(x-72, y-i*18); c.quadraticCurveTo(x, y-28-i*18, x+72, y-i*18); c.stroke();
+    c.beginPath(); c.moveTo(x-76, y-i*20); c.quadraticCurveTo(x, y-30-i*20, x+76, y-i*20); c.stroke();
   }
 }
 
 /* ---------- 5 bối cảnh Việt Nam ---------- */
 const THEMES = [
-  { name:'Làng quê', sky:['#a9dcff','#eaf7ff'], ground:'#7fc25a', groundLine:'#66a846',
+  { name:'Làng quê', sky:['#A9DCFF','#EAF7FF'], ground:'#7FC25A', groundLine:'#66A846',
     far(c,off){
-      c.fillStyle='#b6e0a0';
+      c.fillStyle='#B6E0A0';
       rep(380, off, x=>{ c.beginPath(); c.moveTo(x-200,382); c.quadraticCurveTo(x,190,x+200,382); c.closePath(); c.fill(); });
-      c.fillStyle='#9bd07f';
+      c.fillStyle='#9BD07F';
       rep(280, off*1.3, x=>{ c.beginPath(); c.moveTo(x-150,410); c.quadraticCurveTo(x,270,x+150,410); c.closePath(); c.fill(); });
     },
     mid(c,off){
@@ -700,28 +719,28 @@ const THEMES = [
       rep(320, off+160, x=>bamboo(c,x,GROUND));
     }
   },
-  { name:'Rừng tre', sky:['#cfe9d4','#f3fbf4'], ground:'#6f9b45', groundLine:'#5c8438',
+  { name:'Rừng tre', sky:['#CFE9D4','#F3FBF4'], ground:'#6F9B45', groundLine:'#5C8438',
     far(c,off){
-      c.fillStyle='#b8d3bd';
+      c.fillStyle='#B8D3BD';
       rep(300, off, x=>{ c.beginPath(); c.moveTo(x-160,392); c.lineTo(x,198); c.lineTo(x+160,392); c.closePath(); c.fill(); });
-      c.fillStyle='#9dbda4';
+      c.fillStyle='#9DBDA4';
       rep(220, off*1.4, x=>{ c.beginPath(); c.moveTo(x-120,412); c.lineTo(x,270); c.lineTo(x+120,412); c.closePath(); c.fill(); });
     },
     mid(c,off){ rep(150, off, x=>bambooTall(c,x,GROUND)); }
   },
-  { name:'Đồng sen', sky:['#ffd9e8','#fff6f9'], ground:'#c8b06a', groundLine:'#a8904f',
+  { name:'Đồng sen', sky:['#FFD9E8','#FFF6F9'], ground:'#C8B06A', groundLine:'#A8904F',
     far(c,off){
-      c.fillStyle='#f9c6d8';
+      c.fillStyle='#F9C6D8';
       rep(300, off*0.6, x=>{ c.beginPath(); c.arc(x,206,88,0,7); c.fill(); });
-      c.fillStyle='#9ed3a3';
+      c.fillStyle='#9ED3A3';
       rep(240, off, x=>{ c.beginPath(); c.arc(x,404,112,Math.PI,0); c.fill(); });
     },
     mid(c,off){ rep(190, off, x=>lotus(c,x,GROUND)); }
   },
-  { name:'Biển xanh', sky:['#8fd8f2','#e3f7ff'], ground:'#f2e0ae', groundLine:'#dcc78c',
+  { name:'Biển xanh', sky:['#8FD8F2','#E3F7FF'], ground:'#F2E0AE', groundLine:'#DCC78C',
     far(c,off){
-      c.fillStyle='#4fa8d8'; c.fillRect(0,318,W,GROUND-318);
-      c.strokeStyle='rgba(255,255,255,.65)'; c.lineWidth=3;
+      c.fillStyle='#4FA8D8'; c.fillRect(0,318,W,GROUND-318);
+      c.strokeStyle='rgba(255,255,255,.7)'; c.lineWidth=3;
       rep(120, off, x=>{ c.beginPath(); c.moveTo(x,352); c.quadraticCurveTo(x+20,344,x+40,352); c.stroke(); });
       rep(120, off*1.3+60, x=>{ c.beginPath(); c.moveTo(x,388); c.quadraticCurveTo(x+20,380,x+40,388); c.stroke(); });
     },
@@ -730,11 +749,11 @@ const THEMES = [
       rep(420, off+210, x=>boat(c,x,306));
     }
   },
-  { name:'Núi Tây Bắc', sky:['#b7c8e8','#eef2fb'], ground:'#8a9a5b', groundLine:'#74844a',
+  { name:'Núi Tây Bắc', sky:['#B7C8E8','#EEF2FB'], ground:'#8A9A5B', groundLine:'#74844A',
     far(c,off){
-      c.fillStyle='#9fb3d9';
+      c.fillStyle='#9FB3D9';
       rep(430, off*0.8, x=>{ c.beginPath(); c.moveTo(x-220,404); c.lineTo(x-60,186); c.lineTo(x+130,404); c.closePath(); c.fill(); });
-      c.fillStyle='#7e93bd';
+      c.fillStyle='#7E93BD';
       rep(300, off*1.2, x=>{ c.beginPath(); c.moveTo(x-160,412); c.lineTo(x,250); c.lineTo(x+160,412); c.closePath(); c.fill(); });
     },
     mid(c,off){
@@ -745,13 +764,13 @@ const THEMES = [
 ];
 
 function drawClouds(off){
-  ctx.fillStyle='rgba(255,255,255,.88)';
+  ctx.fillStyle='rgba(255,255,255,.9)';
   rep(370, off, x=>{
     const y = 88 + (Math.abs(Math.round(x/370)) % 2) * 42;
     ctx.beginPath();
-    ctx.arc(x,y,26,0,7);
-    ctx.arc(x+30,y+7,20,0,7);
-    ctx.arc(x-30,y+9,18,0,7);
+    ctx.arc(x,y,28,0,7);
+    ctx.arc(x+32,y+8,22,0,7);
+    ctx.arc(x-32,y+10,20,0,7);
     ctx.fill();
   });
 }
@@ -759,14 +778,14 @@ function drawClouds(off){
 function drawGround(th, off){
   ctx.fillStyle = th.ground;
   ctx.fillRect(0, GROUND, W, H - GROUND);
-  ctx.fillStyle = 'rgba(0,0,0,.07)';
+  ctx.fillStyle = 'rgba(0,0,0,.06)';
   ctx.fillRect(0, GROUND, W, 8);
   ctx.strokeStyle = th.groundLine; ctx.lineWidth = 4; ctx.lineCap = 'round';
-  rep(96, off, x=>{ ctx.beginPath(); ctx.moveTo(x, GROUND+34); ctx.lineTo(x+46, GROUND+34); ctx.stroke(); });
-  rep(96, off*1.25+50, x=>{ ctx.beginPath(); ctx.moveTo(x, GROUND+74); ctx.lineTo(x+54, GROUND+74); ctx.stroke(); });
+  rep(96, off, x=>{ ctx.beginPath(); ctx.moveTo(x, GROUND+36); ctx.lineTo(x+48, GROUND+36); ctx.stroke(); });
+  rep(96, off*1.25+50, x=>{ ctx.beginPath(); ctx.moveTo(x, GROUND+78); ctx.lineTo(x+56, GROUND+78); ctx.stroke(); });
 }
 
-/* ---------- bé gái áo dài + nón lá ---------- */
+/* ---------- BÉ GÁI ÁO DÀI + NÓN LÁ — FLAT CARTOON ---------- */
 function drawGirl(x, y, t, jumpY, dress){
   const c = ctx;
   const moving = (G.state === 'approach' || G.state === 'jump');
@@ -775,132 +794,136 @@ function drawGirl(x, y, t, jumpY, dress){
   const bob = moving ? Math.abs(Math.sin(ph)) * 5 : Math.sin(t * 0.004) * 2;
   const by = y + jumpY - bob;
 
-  const hipY  = by - 56;
-  const shY   = by - 110;
-  const headY = by - 132;
+  const hipY  = by - 58;
+  const shY   = by - 114;
+  const headY = by - 136;
 
   c.lineCap = 'round';
 
   // bóng
-  c.fillStyle = 'rgba(0,0,0,.13)';
-  c.beginPath(); c.ellipse(x, y + 4, Math.max(14, 40 - Math.abs(jumpY) * 0.13), 9, 0, 0, 7); c.fill();
+  c.fillStyle = 'rgba(0,0,0,.12)';
+  c.beginPath(); c.ellipse(x, y + 4, Math.max(14, 42 - Math.abs(jumpY) * 0.13), 10, 0, 0, 7); c.fill();
 
   // tay sau
-  c.strokeStyle = '#e8b98f'; c.lineWidth = 9;
-  c.beginPath(); c.moveTo(x-13, shY+8); c.lineTo(x-13 + run*16, shY+50); c.stroke();
+  c.strokeStyle = '#E8B98F'; c.lineWidth = 10;
+  c.beginPath(); c.moveTo(x-14, shY+10); c.lineTo(x-14 + run*18, shY+52); c.stroke();
 
   // chân (quần lụa trắng)
-  c.strokeStyle = '#fbfbfb'; c.lineWidth = 11;
-  c.beginPath(); c.moveTo(x-6, hipY); c.lineTo(x-6 + run*18, by - Math.max(0,-run)*12); c.stroke();
-  c.strokeStyle = '#ececec';
-  c.beginPath(); c.moveTo(x+6, hipY); c.lineTo(x+6 - run*18, by - Math.max(0, run)*12); c.stroke();
+  c.strokeStyle = '#FBFBFB'; c.lineWidth = 12;
+  c.beginPath(); c.moveTo(x-7, hipY); c.lineTo(x-7 + run*20, by - Math.max(0,-run)*12); c.stroke();
+  c.strokeStyle = '#ECECEC';
+  c.beginPath(); c.moveTo(x+7, hipY); c.lineTo(x+7 - run*20, by - Math.max(0, run)*12); c.stroke();
 
   // áo dài
   c.fillStyle = dress;
   c.beginPath();
-  c.moveTo(x-17, shY);
-  c.lineTo(x+17, shY);
-  c.lineTo(x+25, by-26);
-  c.lineTo(x+9,  by-22);
-  c.lineTo(x,    by-64);
-  c.lineTo(x-9,  by-22);
-  c.lineTo(x-25, by-26);
+  c.moveTo(x-18, shY);
+  c.lineTo(x+18, shY);
+  c.lineTo(x+26, by-28);
+  c.lineTo(x+10, by-24);
+  c.lineTo(x,    by-68);
+  c.lineTo(x-10, by-24);
+  c.lineTo(x-26, by-28);
   c.closePath(); c.fill();
 
-  // cổ áo + đai lưng
-  c.fillStyle = 'rgba(255,255,255,.9)';
-  c.beginPath(); c.moveTo(x-8, shY); c.lineTo(x, shY+14); c.lineTo(x+8, shY); c.closePath(); c.fill();
-  c.fillStyle = 'rgba(255,255,255,.55)';
-  c.fillRect(x-20, by-78, 40, 7);
+  // cổ áo
+  c.fillStyle = 'rgba(255,255,255,.92)';
+  c.beginPath(); c.moveTo(x-9, shY); c.lineTo(x, shY+16); c.lineTo(x+9, shY); c.closePath(); c.fill();
+
+  // đai lưng
+  c.fillStyle = 'rgba(255,255,255,.6)';
+  c.fillRect(x-22, by-82, 44, 8);
 
   // tóc sau
-  c.fillStyle = '#2a1c14';
-  c.beginPath(); c.ellipse(x, headY+10, 19, 25, 0, 0, 7); c.fill();
+  c.fillStyle = '#2A1C14';
+  c.beginPath(); c.ellipse(x, headY+10, 20, 26, 0, 0, 7); c.fill();
 
   // đầu
-  c.fillStyle = '#f2c49b';
-  c.beginPath(); c.arc(x, headY, 17, 0, 7); c.fill();
+  c.fillStyle = '#F2C49B';
+  c.beginPath(); c.arc(x, headY, 18, 0, 7); c.fill();
 
   // tóc mái
-  c.fillStyle = '#2a1c14';
-  c.beginPath(); c.arc(x, headY-4, 17.5, Math.PI*1.04, Math.PI*1.96); c.fill();
+  c.fillStyle = '#2A1C14';
+  c.beginPath(); c.arc(x, headY-4, 18.5, Math.PI*1.04, Math.PI*1.96); c.fill();
 
   // mắt + miệng
-  c.fillStyle = '#20303f';
-  c.beginPath(); c.arc(x-6, headY+1, 2.2, 0, 7); c.fill();
-  c.beginPath(); c.arc(x+6, headY+1, 2.2, 0, 7); c.fill();
-  c.strokeStyle = '#c96a5a'; c.lineWidth = 1.8;
-  c.beginPath(); c.arc(x, headY+5, 5, 0.25*Math.PI, 0.75*Math.PI); c.stroke();
+  c.fillStyle = '#20303F';
+  c.beginPath(); c.arc(x-6, headY+1, 2.4, 0, 7); c.fill();
+  c.beginPath(); c.arc(x+6, headY+1, 2.4, 0, 7); c.fill();
+  c.strokeStyle = '#C96A5A'; c.lineWidth = 2;
+  c.beginPath(); c.arc(x, headY+6, 6, 0.25*Math.PI, 0.75*Math.PI); c.stroke();
 
   // tay trước
-  c.strokeStyle = '#f2c49b'; c.lineWidth = 9;
-  c.beginPath(); c.moveTo(x+13, shY+8); c.lineTo(x+13 - run*16, shY+50); c.stroke();
+  c.strokeStyle = '#F2C49B'; c.lineWidth = 10;
+  c.beginPath(); c.moveTo(x+14, shY+10); c.lineTo(x+14 - run*18, shY+52); c.stroke();
 
   // nón lá
-  c.fillStyle = '#edd79a';
+  c.fillStyle = '#EDD79A';
   c.beginPath();
-  c.moveTo(x-36, headY-12);
-  c.quadraticCurveTo(x-24, headY-60, x, headY-76);
-  c.quadraticCurveTo(x+24, headY-60, x+36, headY-12);
-  c.quadraticCurveTo(x, headY+6, x-36, headY-12);
+  c.moveTo(x-38, headY-14);
+  c.quadraticCurveTo(x-26, headY-64, x, headY-80);
+  c.quadraticCurveTo(x+26, headY-64, x+38, headY-14);
+  c.quadraticCurveTo(x, headY+6, x-38, headY-14);
   c.closePath(); c.fill();
 
-  c.strokeStyle = 'rgba(180,150,80,.55)'; c.lineWidth = 1.5;
+  // gân nón
+  c.strokeStyle = 'rgba(180,150,80,.5)'; c.lineWidth = 1.5;
   for(let i=-2;i<=2;i++){
-    c.beginPath(); c.moveTo(x, headY-72); c.lineTo(x + i*16, headY-8); c.stroke();
+    c.beginPath(); c.moveTo(x, headY-76); c.lineTo(x + i*17, headY-10); c.stroke();
   }
-  c.beginPath(); c.moveTo(x-36, headY-12); c.quadraticCurveTo(x, headY+6, x+36, headY-12); c.stroke();
+  c.strokeStyle = 'rgba(180,150,80,.7)'; c.lineWidth = 2;
+  c.beginPath(); c.moveTo(x-38, headY-14); c.quadraticCurveTo(x, headY+6, x+38, headY-14); c.stroke();
 }
 
-/* ---------- chướng ngại vật ---------- */
+/* ---------- chướng ngại vật (giữ nguyên) ---------- */
 function drawObstacle(o){
   const c = ctx, x = o.x, y = GROUND;
-  c.fillStyle = 'rgba(0,0,0,.13)';
-  c.beginPath(); c.ellipse(x, y+4, 44, 9, 0, 0, 7); c.fill();
+  c.fillStyle = 'rgba(0,0,0,.12)';
+  c.beginPath(); c.ellipse(x, y+4, 46, 10, 0, 0, 7); c.fill();
   c.lineCap = 'round';
   switch(o.type){
-    case 0: // tảng đá
-      c.fillStyle='#8d99a6';
-      c.beginPath(); c.moveTo(x-42,y); c.lineTo(x-30,y-52); c.lineTo(x+4,y-70); c.lineTo(x+36,y-44); c.lineTo(x+44,y); c.closePath(); c.fill();
-      c.fillStyle='#aab6c2';
-      c.beginPath(); c.moveTo(x-30,y-52); c.lineTo(x+4,y-70); c.lineTo(x+10,y-40); c.closePath(); c.fill();
+    case 0:
+      c.fillStyle='#8D99A6';
+      c.beginPath(); c.moveTo(x-44,y); c.lineTo(x-32,y-54); c.lineTo(x+4,y-72); c.lineTo(x+38,y-46); c.lineTo(x+46,y); c.closePath(); c.fill();
+      c.fillStyle='#AAB6C2';
+      c.beginPath(); c.moveTo(x-32,y-54); c.lineTo(x+4,y-72); c.lineTo(x+10,y-42); c.closePath(); c.fill();
       break;
-    case 1: // hàng rào tre
-      c.strokeStyle='#b98b4f'; c.lineWidth=9;
-      for(let i=0;i<3;i++){ c.beginPath(); c.moveTo(x-34+i*34, y); c.lineTo(x-34+i*34, y-78); c.stroke(); }
-      c.strokeStyle='#a2763f'; c.lineWidth=7;
-      c.beginPath(); c.moveTo(x-44,y-30); c.lineTo(x+44,y-30); c.stroke();
-      c.beginPath(); c.moveTo(x-44,y-62); c.lineTo(x+44,y-62); c.stroke();
+    case 1:
+      c.strokeStyle='#B98B4F'; c.lineWidth=10;
+      for(let i=0;i<3;i++){ c.beginPath(); c.moveTo(x-36+i*36, y); c.lineTo(x-36+i*36, y-80); c.stroke(); }
+      c.strokeStyle='#A2763F'; c.lineWidth=8;
+      c.beginPath(); c.moveTo(x-46,y-32); c.lineTo(x+46,y-32); c.stroke();
+      c.beginPath(); c.moveTo(x-46,y-64); c.lineTo(x+46,y-64); c.stroke();
       break;
-    case 2: // chum nước
-      c.fillStyle='#c1703f';
-      c.beginPath(); c.moveTo(x-32,y); c.quadraticCurveTo(x-46,y-56,x-26,y-74);
-      c.lineTo(x+26,y-74); c.quadraticCurveTo(x+46,y-56,x+32,y); c.closePath(); c.fill();
-      c.fillStyle='#a75c31';
-      c.beginPath(); c.ellipse(x, y-76, 28, 8, 0, 0, 7); c.fill();
+    case 2:
+      c.fillStyle='#C1703F';
+      c.beginPath(); c.moveTo(x-34,y); c.quadraticCurveTo(x-48,y-58,x-28,y-78);
+      c.lineTo(x+28,y-78); c.quadraticCurveTo(x+48,y-58,x+34,y); c.closePath(); c.fill();
+      c.fillStyle='#A75C31';
+      c.beginPath(); c.ellipse(x, y-80, 30, 9, 0, 0, 7); c.fill();
       c.fillStyle='rgba(255,255,255,.2)';
-      c.beginPath(); c.ellipse(x-12, y-40, 8, 18, 0.3, 0, 7); c.fill();
+      c.beginPath(); c.ellipse(x-14, y-42, 9, 20, 0.3, 0, 7); c.fill();
       break;
-    case 3: // đống rơm
-      c.fillStyle='#d9b45a';
-      c.beginPath(); c.moveTo(x-40,y); c.quadraticCurveTo(x, y-104, x+40, y); c.closePath(); c.fill();
-      c.strokeStyle='#c09b43'; c.lineWidth=3;
+    case 3:
+      c.fillStyle='#D9B45A';
+      c.beginPath(); c.moveTo(x-44,y); c.quadraticCurveTo(x, y-108, x+44, y); c.closePath(); c.fill();
+      c.strokeStyle='#C09B43'; c.lineWidth=3;
       for(let i=-2;i<=2;i++){
-        c.beginPath(); c.moveTo(x+i*13, y); c.quadraticCurveTo(x+i*17, y-46, x+i*4, y-80); c.stroke();
+        c.beginPath(); c.moveTo(x+i*14, y); c.quadraticCurveTo(x+i*18, y-50, x+i*5, y-84); c.stroke();
       }
       break;
-    default: // bụi tre
-      c.strokeStyle='#6da03f'; c.lineWidth=10;
-      for(let i=0;i<3;i++){ c.beginPath(); c.moveTo(x-26+i*26, y); c.lineTo(x-30+i*26, y-84-(i%2)*18); c.stroke(); }
-      c.fillStyle='#8fc45a';
-      for(let i=0;i<4;i++){ c.beginPath(); c.ellipse(x-24+i*16, y-60-i*10, 15, 5, -0.4+i*0.3, 0, 7); c.fill(); }
+    default:
+      c.strokeStyle='#6DA03F'; c.lineWidth=11;
+      for(let i=0;i<3;i++){ c.beginPath(); c.moveTo(x-28+i*28, y); c.lineTo(x-32+i*28, y-86-(i%2)*18); c.stroke(); }
+      c.fillStyle='#8FC45A';
+      for(let i=0;i<4;i++){ c.beginPath(); c.ellipse(x-26+i*17, y-64-i*10, 16, 5, -0.4+i*0.3, 0, 7); c.fill(); }
   }
 }
 
 /* ---------- hiệu ứng cánh hoa ---------- */
 function burst(o){
   if(!o) return;
-  const cols = ['#ff8fb1','#ffd166','#8fd3f4','#b39ddb','#ffffff'];
+  const cols = ['#FF8FB1','#FFD166','#8FD3F4','#B39DDB','#FFFFFF'];
   for(let i=0;i<18;i++){
     G.petals.push({
       x:o.x, y:GROUND-40,
@@ -935,8 +958,8 @@ function draw(){
   g.addColorStop(1, th.sky[1]);
   ctx.fillStyle = g; ctx.fillRect(0,0,W,GROUND);
 
-  ctx.fillStyle = 'rgba(255,240,180,.85)';
-  ctx.beginPath(); ctx.arc(792, 96, 46, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,245,190,.9)';
+  ctx.beginPath(); ctx.arc(792, 96, 48, 0, 7); ctx.fill();
 
   drawClouds(G.scroll * 0.06);
   th.far(ctx, G.scroll * 0.18);
@@ -947,13 +970,13 @@ function draw(){
   drawPetals();
 
   const jumpY = (G.state === 'jump')
-    ? -Math.sin(Math.min(1, G.jumpT/0.85) * Math.PI) * 96
+    ? -Math.sin(Math.min(1, G.jumpT/0.85) * Math.PI) * 98
     : 0;
   drawGirl(GIRL_X, GROUND, G.t, jumpY, DRESS[(G.level-1) % DRESS.length]);
 }
 
 /* ============================================================
-   8. GIAO DIỆN
+   8. GIAO DIỆN (giữ nguyên)
    ============================================================ */
 function show(name){
   $('scr-start').classList.toggle('hide', name !== 'start');
