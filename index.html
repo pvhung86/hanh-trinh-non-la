@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta
+    name="description"
+    content="A child-friendly Vietnamese speaking game with 100 levels."
+  >
+
+  <meta name="theme-color" content="#fff7dd">
+  <title>Nón Lá – Learn Vietnamese</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Nón Lá home">
+      <span aria-hidden="true">🌾</span>
+      NÓN LÁ
+    </a>
+
+    <div class="level-picker">
+      <label for="levelInput">Level</label>
+
+      <input
+        id="levelInput"
+        type="number"
+        min="1"
+        max="100"
+        inputmode="numeric"
+        value="1"
+        aria-label="Enter a level from 1 to 100"
+      >
+
+      <button id="goButton" class="small-button" type="button">
+        Go
+      </button>
+    </div>
+
+    <div id="scoreDisplay" class="score" aria-label="Star score">
+      ⭐ 0
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-panel" aria-labelledby="lessonTitle">
+      <div class="lesson-meta">
+        <span id="ageBand" class="pill">Ages 5–7</span>
+        <span id="topicLabel" class="topic">First words</span>
+        <span id="levelCounter">Level 1 of 100</span>
+      </div>
+
+      <h1 id="lessonTitle">Say the Vietnamese phrase</h1>
+
+      <p class="instruction">
+        Listen first, then press the microphone and repeat the phrase.
+      </p>
+
+      <div
+        id="scene"
+        class="scene"
+        data-world="rice"
+        aria-label="Vietnamese landscape game scene"
+      >
+        <div class="sun" aria-hidden="true"></div>
+        <div class="cloud cloud-one" aria-hidden="true"></div>
+        <div class="cloud cloud-two" aria-hidden="true"></div>
+        <div class="mountains" aria-hidden="true"></div>
+
+        <div class="decoration decoration-one" aria-hidden="true">🌾</div>
+        <div class="decoration decoration-two" aria-hidden="true">🌴</div>
+
+        <div class="track" aria-hidden="true"></div>
+
+        <div class="obstacle obstacle-one" aria-hidden="true"></div>
+        <div class="obstacle obstacle-two" aria-hidden="true"></div>
+        <div class="obstacle obstacle-three" aria-hidden="true"></div>
+
+        <div id="hat" class="hat" aria-hidden="true">
+          <div class="hat-cone"></div>
+          <div class="hat-rim"></div>
+          <div class="hat-string"></div>
+        </div>
+
+        <div class="finish" aria-hidden="true">
+          <span class="finish-star">★</span>
+        </div>
+      </div>
+
+      <article class="phrase-card">
+        <p class="phrase-label">Vietnamese</p>
+        <h2 id="vietnamesePhrase" lang="vi">Xin chào!</h2>
+
+        <button
+          id="listenButton"
+          class="listen-button"
+          type="button"
+          aria-label="Listen to the Vietnamese phrase"
+        >
+          🔊 Listen
+        </button>
+
+        <p id="englishTranslation" class="translation">
+          Hello!
+        </p>
+
+        <p id="pronunciationTip" class="tip">
+          Speak slowly and clearly.
+        </p>
+      </article>
+
+      <section class="speech-area" aria-label="Speaking controls">
+        <button
+          id="microphoneButton"
+          class="microphone-button"
+          type="button"
+          aria-describedby="statusMessage"
+        >
+          <span class="microphone-icon" aria-hidden="true">🎤</span>
+          <span id="microphoneText">Speak now</span>
+        </button>
+
+        <p id="statusMessage" class="status" role="status" aria-live="polite">
+          Ready when you are.
+        </p>
+
+        <div id="resultPanel" class="result-panel" hidden>
+          <p class="result-heading">I heard:</p>
+          <p id="heardText" class="heard-text" lang="vi"></p>
+          <p id="matchScore" class="match-score"></p>
+        </div>
+
+        <details id="fallbackPanel" class="fallback-panel">
+          <summary>Microphone not working? Type the answer</summary>
+
+          <div class="typed-row">
+            <label class="sr-only" for="typedAnswer">
+              Type the Vietnamese phrase
+            </label>
+
+            <input
+              id="typedAnswer"
+              type="text"
+              lang="vi"
+              autocomplete="off"
+              autocapitalize="sentences"
+              placeholder="Type the Vietnamese phrase"
+            >
+
+            <button id="checkTypedButton" type="button">
+              Check
+            </button>
+          </div>
+        </details>
+      </section>
+
+      <nav class="navigation" aria-label="Level navigation">
+        <button id="previousButton" type="button">
+          ← Previous
+        </button>
+
+        <button id="retryButton" type="button">
+          Try again
+        </button>
+
+        <button id="nextButton" class="primary" type="button">
+          Next →
+        </button>
+      </nav>
+    </section>
+  </main>
+
+  <div
+    id="celebration"
+    class="celebration"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="celebrationTitle"
+    hidden
+  >
+    <div class="celebration-card">
+      <div class="celebration-stars" aria-hidden="true">
+        ⭐ 🎉 ⭐
+      </div>
+
+      <h2 id="celebrationTitle">Giỏi lắm!</h2>
+      <p id="celebrationText">Great work!</p>
+
+      <button id="celebrationNextButton" class="primary" type="button">
+        Next level
+      </button>
+
+      <button id="celebrationCloseButton" type="button">
+        Stay here
+      </button>
+    </div>
+  </div>
+
+  <noscript>
+    <p class="noscript">
+      This game requires JavaScript to run.
+    </p>
+  </noscript>
+
+  <script src="app.js"></script>
+</body>
+</html>
