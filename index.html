@@ -1,214 +1,1602 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nón Lá Phiêu Lưu - Học Phát Âm Tiếng Việt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
 
-  <meta
-    name="description"
-    content="A child-friendly Vietnamese speaking game with 100 levels."
-  >
+        .game-wrapper {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
 
-  <meta name="theme-color" content="#fff7dd">
-  <title>Nón Lá – Learn Vietnamese</title>
+        .header {
+            background: linear-gradient(135deg, #FF6B6B, #FFA07A);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
 
-  <link rel="stylesheet" href="./styles.css?v=2">
+        .header h1 {
+            font-size: 1.6em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .chrome-notice {
+            background: #FFF3E0;
+            border-left: 4px solid #FF9800;
+            padding: 12px 20px;
+            font-size: 0.9em;
+            color: #E65100;
+        }
+
+        .chrome-notice strong {
+            color: #BF360C;
+        }
+
+        .level-panel {
+            padding: 25px 30px;
+            background: #F5F5F5;
+            border-bottom: 2px solid #E0E0E0;
+        }
+
+        .level-panel h2 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .level-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .level-controls input {
+            padding: 12px 18px;
+            font-size: 1.1em;
+            border: 3px solid #4CAF50;
+            border-radius: 12px;
+            width: 100px;
+            text-align: center;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .level-controls input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 10px rgba(33,150,243,0.3);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+        }
+
+        .btn-retry {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            color: white;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #2196F3, #64B5F6);
+            color: white;
+        }
+
+        .difficulty-legend {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            font-size: 0.85em;
+        }
+
+        .diff-tag {
+            padding: 4px 12px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .diff-1 { background: #4CAF50; }
+        .diff-2 { background: #8BC34A; }
+        .diff-3 { background: #FFC107; color: #333; }
+        .diff-4 { background: #FF9800; }
+        .diff-5 { background: #F44336; }
+
+        .game-screen {
+            padding: 20px 30px 30px;
+        }
+
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 10px 24px;
+            border: 2px solid #4CAF50;
+            background: white;
+            color: #4CAF50;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .mode-btn:last-child {
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+
+        .mode-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .phrase-area {
+            text-align: center;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+
+        .target-phrase {
+            font-size: 2.8em;
+            color: #1B5E20;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .target-phrase.correct {
+            color: #2E7D32;
+            transform: scale(1.05);
+        }
+
+        .target-phrase.incorrect {
+            color: #C62828;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .phrase-hint {
+            color: #757575;
+            font-size: 1em;
+            font-style: italic;
+        }
+
+        .retry-message {
+            font-size: 1.8em;
+            color: #FF6F00;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .retry-message.show {
+            display: block;
+            animation: bounceIn 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 50%, #98FB98 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 4px solid #4CAF50;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .listening-indicator {
+            text-align: center;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+            color: #1565C0;
+        }
+
+        .listening-dot {
+            width: 12px;
+            height: 12px;
+            background: #F44336;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        .listening-dot.inactive {
+            background: #BDBDBD;
+            animation: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .feedback-area {
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .feedback-msg {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        .feedback-msg.correct {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+
+        .feedback-msg.incorrect {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+
+        .feedback-msg.listening {
+            background: #FFF9C4;
+            color: #F57F17;
+        }
+
+        .what-heard {
+            color: #757575;
+            font-size: 0.95em;
+        }
+
+        .what-heard span {
+            font-weight: bold;
+            color: #1565C0;
+            background: #E3F2FD;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-speak {
+            background: linear-gradient(135deg, #E91E63, #F06292);
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.3em;
+        }
+
+        .btn-speak.listening {
+            background: linear-gradient(135deg, #F44336, #EF5350);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(244,67,54,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(244,67,54,0.6); }
+        }
+
+        .stars-display {
+            text-align: center;
+            font-size: 2em;
+            margin: 10px 0;
+            min-height: 40px;
+        }
+
+        .level-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, #FF6F00, #FFA000);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .progress-bar-container {
+            background: #E0E0E0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.2em; }
+            .target-phrase { font-size: 2em; }
+            .canvas-container { height: 250px; }
+            .btn { padding: 10px 18px; font-size: 1em; }
+            .btn-speak { padding: 12px 25px; font-size: 1.1em; }
+        }
+    </style>
 </head>
-
 <body>
-  <header class="topbar">
-    <a class="brand" href="./" aria-label="Nón Lá home">
-      <span aria-hidden="true">🌾</span>
-      NÓN LÁ
-    </a>
-
-    <div class="level-picker">
-      <label for="levelInput">Level</label>
-
-      <input
-        id="levelInput"
-        type="number"
-        min="1"
-        max="100"
-        inputmode="numeric"
-        value="1"
-        aria-label="Enter a level from 1 to 100"
-      >
-
-      <button id="goButton" class="small-button" type="button">
-        Go
-      </button>
-    </div>
-
-    <div id="scoreDisplay" class="score" aria-label="Star score">
-      ⭐ 0
-    </div>
-  </header>
-
-  <main>
-    <section class="lesson-panel" aria-labelledby="lessonTitle">
-      <div class="lesson-meta">
-        <span id="ageBand" class="pill">Ages 5–7</span>
-        <span id="topicLabel" class="topic">First words</span>
-        <span id="levelCounter">Level 1 of 100</span>
-      </div>
-
-      <h1 id="lessonTitle">Say the Vietnamese phrase</h1>
-
-      <p class="instruction">
-        Listen first, then press the microphone and repeat the phrase.
-      </p>
-
-      <div
-        id="scene"
-        class="scene"
-        data-world="rice"
-        aria-label="Vietnamese landscape game scene"
-      >
-        <div class="sun" aria-hidden="true"></div>
-        <div class="cloud cloud-one" aria-hidden="true"></div>
-        <div class="cloud cloud-two" aria-hidden="true"></div>
-        <div class="mountains" aria-hidden="true"></div>
-
-        <div class="decoration decoration-one" aria-hidden="true">🌾</div>
-        <div class="decoration decoration-two" aria-hidden="true">🌴</div>
-
-        <div class="track" aria-hidden="true"></div>
-
-        <div class="obstacle obstacle-one" aria-hidden="true"></div>
-        <div class="obstacle obstacle-two" aria-hidden="true"></div>
-        <div class="obstacle obstacle-three" aria-hidden="true"></div>
-
-        <div id="hat" class="hat" aria-hidden="true">
-          <div class="hat-cone"></div>
-          <div class="hat-rim"></div>
-          <div class="hat-string"></div>
+    <div class="game-wrapper">
+        <div class="header">
+            <h1>🎓 Nón Lá Phiêu Lưu</h1>
+            <div class="header-stats">
+                <div class="stat-box">⭐ <span id="score">0</span></div>
+                <div class="stat-box">🏆 <span id="streak">0</span></div>
+            </div>
         </div>
 
-        <div class="finish" aria-hidden="true">
-          <span class="finish-star">★</span>
-        </div>
-      </div>
-
-      <article class="phrase-card">
-        <p class="phrase-label">Vietnamese</p>
-        <h2 id="vietnamesePhrase" lang="vi">Xin chào!</h2>
-
-        <button
-          id="listenButton"
-          class="listen-button"
-          type="button"
-          aria-label="Listen to the Vietnamese phrase"
-        >
-          🔊 Listen
-        </button>
-
-        <p id="englishTranslation" class="translation">
-          Hello!
-        </p>
-
-        <p id="pronunciationTip" class="tip">
-          Speak slowly and clearly.
-        </p>
-      </article>
-
-      <section class="speech-area" aria-label="Speaking controls">
-        <button
-          id="microphoneButton"
-          class="microphone-button"
-          type="button"
-          aria-describedby="statusMessage"
-        >
-          <span class="microphone-icon" aria-hidden="true">🎤</span>
-          <span id="microphoneText">Speak now</span>
-        </button>
-
-        <p id="statusMessage" class="status" role="status" aria-live="polite">
-          Ready when you are.
-        </p>
-
-        <div id="resultPanel" class="result-panel" hidden>
-          <p class="result-heading">I heard:</p>
-          <p id="heardText" class="heard-text" lang="vi"></p>
-          <p id="matchScore" class="match-score"></p>
+        <div class="chrome-notice">
+            💡 <strong>Lưu ý:</strong> Trò chơi sử dụng nhận diện giọng nói. Hoạt động tốt nhất trên trình duyệt <strong>Google Chrome</strong> (desktop hoặc Android). Hãy cho phép truy cập microphone khi được hỏi.
         </div>
 
-        <details id="fallbackPanel" class="fallback-panel">
-          <summary>Microphone not working? Type the answer</summary>
+        <div class="level-panel">
+            <h2>🎮 Chọn Cấp Độ (1-100)</h2>
+            <div class="level-controls">
+                <input type="number" id="levelInput" min="1" max="100" value="1">
+                <button class="btn btn-start" onclick="startLevel()">🚀 Bắt Đầu</button>
+            </div>
+            <div class="difficulty-legend">
+                <span class="diff-tag diff-1">Cấp 1-20: Cơ bản</span>
+                <span class="diff-tag diff-2">Cấp 21-40: Đơn giản</span>
+                <span class="diff-tag diff-3">Cấp 41-60: Trung bình</span>
+                <span class="diff-tag diff-4">Cấp 61-80: Khó</span>
+                <span class="diff-tag diff-5">Cấp 81-100: Nâng cao</span>
+            </div>
+        </div>
 
-          <div class="typed-row">
-            <label class="sr-only" for="typedAnswer">
-              Type the Vietnamese phrase
-            </label>
+        <div class="game-screen" id="gameScreen" style="display:none;">
+            <div class="level-info-bar">
+                <span class="level-badge">Cấp <span id="currentLevel">1</span>/100</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+                <span class="diff-tag" id="diffBadge">Cơ bản</span>
+            </div>
 
-            <input
-              id="typedAnswer"
-              type="text"
-              lang="vi"
-              autocomplete="off"
-              autocapitalize="sentences"
-              placeholder="Type the Vietnamese phrase"
-            >
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePhrase" onclick="setMode('phrase')">Cụm từ</button>
+                <button class="mode-btn" id="modeWord" onclick="setMode('word')">Từng từ</button>
+            </div>
 
-            <button id="checkTypedButton" type="button">
-              Check
-            </button>
-          </div>
-        </details>
-      </section>
+            <div class="phrase-area">
+                <div class="retry-message" id="retryMsg">🔄 Thử lại?</div>
+                <div class="target-phrase" id="targetPhrase">Xin chào</div>
+                <div class="phrase-hint" id="phraseHint">Nhấn "Nói" và đọc cụm từ trên</div>
+            </div>
 
-      <nav class="navigation" aria-label="Level navigation">
-        <button id="previousButton" type="button">
-          ← Previous
-        </button>
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+            </div>
 
-        <button id="retryButton" type="button">
-          Try again
-        </button>
+            <div class="listening-indicator">
+                <div class="listening-dot inactive" id="listeningDot"></div>
+                <span id="listeningText">MÁY ĐANG CHỜ</span>
+            </div>
 
-        <button id="nextButton" class="primary" type="button">
-          Next →
-        </button>
-      </nav>
-    </section>
-  </main>
+            <div class="stars-display" id="starsDisplay"></div>
 
-  <div
-    id="celebration"
-    class="celebration"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="celebrationTitle"
-    hidden
-  >
-    <div class="celebration-card">
-      <div class="celebration-stars" aria-hidden="true">
-        ⭐ 🎉 ⭐
-      </div>
+            <div class="feedback-area">
+                <div class="feedback-msg" id="feedbackMsg">Sẵn sàng! Nhấn "Nói" để bắt đầu.</div>
+                <div class="what-heard" id="whatHeard"></div>
+            </div>
 
-      <h2 id="celebrationTitle">Giỏi lắm!</h2>
-      <p id="celebrationText">Great work!</p>
-
-      <button id="celebrationNextButton" class="primary" type="button">
-        Next level
-      </button>
-
-      <button id="celebrationCloseButton" type="button">
-        Stay here
-      </button>
+            <div class="controls">
+                <button class="btn btn-speak" id="btnSpeak" onclick="toggleSpeech()">🎤 Nói</button>
+                <button class="btn btn-retry hidden" id="btnRetry" onclick="retryLevel()">🔄 Chơi lại</button>
+                <button class="btn btn-next hidden" id="btnNext" onclick="nextLevel()">➡️ Tiếp theo</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <noscript>
-    <p class="noscript">
-      This game requires JavaScript to run.
-    </p>
-  </noscript>
+    <script>
+        // ===== LEVEL DATA - 100 Levels =====
+        const levels = [
+            // Levels 1-10: Basic vowels (Ages 5-6)
+            { level: 1, phrase: "a", hint: "Nguyên âm A", difficulty: 1, category: "Nguyên âm" },
+            { level: 2, phrase: "ă", hint: "Nguyên âm Ă", difficulty: 1, category: "Nguyên âm" },
+            { level: 3, phrase: "â", hint: "Nguyên âm Â", difficulty: 1, category: "Nguyên âm" },
+            { level: 4, phrase: "e", hint: "Nguyên âm E", difficulty: 1, category: "Nguyên âm" },
+            { level: 5, phrase: "ê", hint: "Nguyên âm Ê", difficulty: 1, category: "Nguyên âm" },
+            { level: 6, phrase: "i", hint: "Nguyên âm I", difficulty: 1, category: "Nguyên âm" },
+            { level: 7, phrase: "o", hint: "Nguyên âm O", difficulty: 1, category: "Nguyên âm" },
+            { level: 8, phrase: "ô", hint: "Nguyên âm Ô", difficulty: 1, category: "Nguyên âm" },
+            { level: 9, phrase: "ơ", hint: "Nguyên âm Ơ", difficulty: 1, category: "Nguyên âm" },
+            { level: 10, phrase: "u", hint: "Nguyên âm U", difficulty: 1, category: "Nguyên âm" },
 
-  <script src="./app.js?v=2"></script>
+            // Levels 11-20: Simple words (Ages 5-7)
+            { level: 11, phrase: "ba", hint: "Bố/Ba", difficulty: 1, category: "Gia đình" },
+            { level: 12, phrase: "má", hint: "Mẹ/Má", difficulty: 1, category: "Gia đình" },
+            { level: 13, phrase: "cá", hint: "Con cá", difficulty: 1, category: "Động vật" },
+            { level: 14, phrase: "gà", hint: "Con gà", difficulty: 1, category: "Động vật" },
+            { level: 15, phrase: "nhà", hint: "Ngôi nhà", difficulty: 1, category: "Đồ vật" },
+            { level: 16, phrase: "cây", hint: "Cái cây", difficulty: 1, category: "Thiên nhiên" },
+            { level: 17, phrase: "hoa", hint: "Bông hoa", difficulty: 1, category: "Thiên nhiên" },
+            { level: 18, phrase: "quà", hint: "Món quà", difficulty: 1, category: "Đồ vật" },
+            { level: 19, phrase: "sữa", hint: "Ly sữa", difficulty: 1, category: "Đồ uống" },
+            { level: 20, phrase: "bánh", hint: "Cái bánh", difficulty: 1, category: "Đồ ăn" },
+
+            // Levels 21-30: Animals (Ages 6-8)
+            { level: 21, phrase: "con mèo", hint: "Con mèo", difficulty: 2, category: "Động vật" },
+            { level: 22, phrase: "con chó", hint: "Con chó", difficulty: 2, category: "Động vật" },
+            { level: 23, phrase: "con chim", hint: "Con chim", difficulty: 2, category: "Động vật" },
+            { level: 24, phrase: "con cá", hint: "Con cá", difficulty: 2, category: "Động vật" },
+            { level: 25, phrase: "con gà", hint: "Con gà", difficulty: 2, category: "Động vật" },
+            { level: 26, phrase: "con vịt", hint: "Con vịt", difficulty: 2, category: "Động vật" },
+            { level: 27, phrase: "con bò", hint: "Con bò", difficulty: 2, category: "Động vật" },
+            { level: 28, phrase: "con heo", hint: "Con heo", difficulty: 2, category: "Động vật" },
+            { level: 29, phrase: "con trâu", hint: "Con trâu", difficulty: 2, category: "Động vật" },
+            { level: 30, phrase: "con ngựa", hint: "Con ngựa", difficulty: 2, category: "Động vật" },
+
+            // Levels 31-40: Family & Body (Ages 7-9)
+            { level: 31, phrase: "ông bà", hint: "Ông và bà", difficulty: 2, category: "Gia đình" },
+            { level: 32, phrase: "cha mẹ", hint: "Cha và mẹ", difficulty: 2, category: "Gia đình" },
+            { level: 33, phrase: "anh chị", hint: "Anh và chị", difficulty: 2, category: "Gia đình" },
+            { level: 34, phrase: "em bé", hint: "Em bé", difficulty: 2, category: "Gia đình" },
+            { level: 35, phrase: "cái tay", hint: "Bàn tay", difficulty: 2, category: "Cơ thể" },
+            { level: 36, phrase: "cái chân", hint: "Bàn chân", difficulty: 2, category: "Cơ thể" },
+            { level: 37, phrase: "cái đầu", hint: "Cái đầu", difficulty: 2, category: "Cơ thể" },
+            { level: 38, phrase: "con mắt", hint: "Con mắt", difficulty: 2, category: "Cơ thể" },
+            { level: 39, phrase: "cái mũi", hint: "Cái mũi", difficulty: 2, category: "Cơ thể" },
+            { level: 40, phrase: "cái miệng", hint: "Cái miệng", difficulty: 2, category: "Cơ thể" },
+
+            // Levels 41-50: Actions (Ages 8-10)
+            { level: 41, phrase: "đi học", hint: "Đi đến trường", difficulty: 3, category: "Hành động" },
+            { level: 42, phrase: "ăn cơm", hint: "Ăn bữa cơm", difficulty: 3, category: "Hành động" },
+            { level: 43, phrase: "uống nước", hint: "Uống nước", difficulty: 3, category: "Hành động" },
+            { level: 44, phrase: "ngủ ngon", hint: "Ngủ giấc ngon", difficulty: 3, category: "Hành động" },
+            { level: 45, phrase: "chơi vui", hint: "Chơi đùa vui vẻ", difficulty: 3, category: "Hành động" },
+            { level: 46, phrase: "đọc sách", hint: "Đọc sách", difficulty: 3, category: "Hành động" },
+            { level: 47, phrase: "viết bài", hint: "Viết bài tập", difficulty: 3, category: "Hành động" },
+            { level: 48, phrase: "hát hay", hint: "Hát bài hát hay", difficulty: 3, category: "Hành động" },
+            { level: 49, phrase: "múa đẹp", hint: "Múa điệu đẹp", difficulty: 3, category: "Hành động" },
+            { level: 50, phrase: "vẽ tranh", hint: "Vẽ bức tranh", difficulty: 3, category: "Hành động" },
+
+            // Levels 51-60: Descriptive (Ages 9-11)
+            { level: 51, phrase: "trời xanh", hint: "Bầu trời xanh", difficulty: 3, category: "Miêu tả" },
+            { level: 52, phrase: "mây trắng", hint: "Đám mây trắng", difficulty: 3, category: "Miêu tả" },
+            { level: 53, phrase: "nắng ấm", hint: "Nắng ấm áp", difficulty: 3, category: "Miêu tả" },
+            { level: 54, phrase: "mưa rơi", hint: "Mưa đang rơi", difficulty: 3, category: "Miêu tả" },
+            { level: 55, phrase: "gió thổi", hint: "Gió đang thổi", difficulty: 3, category: "Miêu tả" },
+            { level: 56, phrase: "hoa thơm", hint: "Hoa tỏa hương thơm", difficulty: 3, category: "Miêu tả" },
+            { level: 57, phrase: "quả ngọt", hint: "Quả chín ngọt", difficulty: 3, category: "Miêu tả" },
+            { level: 58, phrase: "cây cao", hint: "Cây mọc cao", difficulty: 3, category: "Miêu tả" },
+            { level: 59, phrase: "đường xa", hint: "Con đường xa", difficulty: 3, category: "Miêu tả" },
+            { level: 60, phrase: "sông dài", hint: "Dòng sông dài", difficulty: 3, category: "Miêu tả" },
+
+            // Levels 61-70: Sentences (Ages 10-12)
+            { level: 61, phrase: "Em đi học mỗi ngày", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 62, phrase: "Mẹ nấu cơm ngon lắm", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 63, phrase: "Bố đi làm về sớm", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 64, phrase: "Chim hót trên cành cây", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 65, phrase: "Cá bơi dưới nước trong", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 66, phrase: "Hoa nở đẹp trong vườn", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 67, phrase: "Trăng sáng trên bầu trời", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 68, phrase: "Sao lấp lánh đêm nay", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 69, phrase: "Mưa rơi nhẹ ngoài sân", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+            { level: 70, phrase: "Gió thổi mát rượi cả người", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
+
+            // Levels 71-80: Poetry & Folk (Ages 11-13)
+            { level: 71, phrase: "Trên trời có đám mây xanh", hint: "Thơ thiếu nhi", difficulty: 4, category: "Thơ" },
+            { level: 72, phrase: "Ở giữa mây trắng xung quanh mây vàng", hint: "Thơ thiếu nhi", difficulty: 4, category: "Thơ" },
+            { level: 73, phrase: "Con cò bay lả bay la", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 74, phrase: "Bay từ cửa phủ bay ra cánh đồng", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 75, phrase: "Công cha như núi Thái Sơn", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 76, phrase: "Nghĩa mẹ như nước trong nguồn chảy ra", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 77, phrase: "Trong đầm gì đẹp bằng sen", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 78, phrase: "Lá xanh bông trắng lại chen nhụy vàng", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
+            { level: 79, phrase: "Nhiễu điều phủ lấy giá gương", hint: "Tục ngữ", difficulty: 4, category: "Tục ngữ" },
+            { level: 80, phrase: "Người trong một nước phải thương nhau cùng", hint: "Tục ngữ", difficulty: 4, category: "Tục ngữ" },
+
+            // Levels 81-90: Advanced (Ages 12-14)
+            { level: 81, phrase: "Tinh thần đoàn kết dân tộc", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 82, phrase: "Bảo vệ môi trường xanh sạch đẹp", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 83, phrase: "Học tập và làm theo tấm gương", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 84, phrase: "Phát huy truyền thống tốt đẹp", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 85, phrase: "Xây dựng đất nước giàu mạnh", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 86, phrase: "Giữ gìn bản sắc văn hóa dân tộc", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 87, phrase: "Đoàn kết là sức mạnh vô địch", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 88, phrase: "Tri thức là sức mạnh của thời đại", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 89, phrase: "Sáng tạo đổi mới vì ngày mai", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+            { level: 90, phrase: "Việt Nam quê hương tôi yêu dấu", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
+
+            // Levels 91-100: Proverbs (Ages 13-15)
+            { level: 91, phrase: "Ăn quả nhớ kẻ trồng cây", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 92, phrase: "Uống nước nhớ nguồn tổ tiên", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 93, phrase: "Một cây làm chẳng nên non", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 94, phrase: "Ba cây chụm lại nên hòn núi cao", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 95, phrase: "Thất bại là mẹ thành công", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 96, phrase: "Có công mài sắt có ngày nên kim", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
+            { level: 97, phrase: "Học học nữa học mãi không ngừng", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
+            { level: 98, phrase: "Đường đi khó không khó vì ngăn sông cách núi", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
+            { level: 99, phrase: "Khó khăn chỉ làm người yếu đuối chùn bước", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
+            { level: 100, phrase: "Người mạnh mẽ sẽ vượt qua mọi thử thách", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" }
+        ];
+
+        // ===== GAME STATE =====
+        let currentLevel = 1;
+        let score = 0;
+        let streak = 0;
+        let isListening = false;
+        let recognition = null;
+        let gameMode = 'phrase';
+        let canvas, ctx;
+        let animFrame;
+        let gameState = 'idle'; // idle, running, success, fail
+        let attemptCount = 0;
+
+        // Character
+        let player = {
+            x: 120,
+            y: 0,
+            width: 60,
+            height: 70,
+            vy: 0,
+            jumping: false,
+            groundY: 0,
+            runFrame: 0,
+            runTimer: 0
+        };
+
+        // Obstacles
+        let obstacles = [];
+        let obstacleTimer = 0;
+        let obstacleInterval = 120;
+        let scrollSpeed = 3;
+        let scrollOffset = 0;
+
+        // Background elements
+        let clouds = [];
+        let bamboos = [];
+        let lotuses = [];
+        let mountains = [];
+        let buffalo = { x: 0, y: 0, visible: false };
+
+        // Particles
+        let particles = [];
+
+        // ===== SPEECH RECOGNITION =====
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'vi-VN';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 3;
+
+                recognition.onresult = function(event) {
+                    let bestMatch = null;
+                    for (let i = 0; i < event.results[0].length; i++) {
+                        const transcript = event.results[0][i].transcript;
+                        if (checkMatch(transcript)) {
+                            bestMatch = transcript;
+                            break;
+                        }
+                    }
+                    if (bestMatch) {
+                        handleSuccess(bestMatch);
+                    } else {
+                        const transcript = event.results[0][0].transcript;
+                        handleFailure(transcript);
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech error:', event.error);
+                    if (event.error !== 'no-speech') {
+                        updateFeedback('⚠️ Lỗi: ' + event.error, 'incorrect');
+                    }
+                    stopListening();
+                };
+
+                recognition.onend = function() {
+                    stopListening();
+                };
+            } else {
+                alert('Trình duyệt không hỗ trợ nhận diện giọng nói. Vui lòng dùng Google Chrome!');
+            }
+        }
+
+        function toggleSpeech() {
+            if (gameState === 'success') return;
+            if (isListening) {
+                recognition.stop();
+            } else {
+                startListening();
+            }
+        }
+
+        function startListening() {
+            if (!recognition) initSpeechRecognition();
+            try {
+                isListening = true;
+                document.getElementById('btnSpeak').classList.add('listening');
+                document.getElementById('btnSpeak').textContent = '⏹️ Dừng';
+                document.getElementById('listeningDot').classList.remove('inactive');
+                document.getElementById('listeningText').textContent = 'MÁY ĐANG NGHE...';
+                updateFeedback('🎤 Đang nghe... Hãy nói đi!', 'listening');
+                recognition.start();
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        function stopListening() {
+            isListening = false;
+            document.getElementById('btnSpeak').classList.remove('listening');
+            document.getElementById('btnSpeak').textContent = '🎤 Nói';
+            document.getElementById('listeningDot').classList.add('inactive');
+            document.getElementById('listeningText').textContent = 'MÁY ĐANG CHỜ';
+        }
+
+        function normalizeVietnamese(text) {
+            const toneMap = {
+                'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
+                'ă':'a','ắ':'a','ằ':'a','ẳ':'a','ẵ':'a','ặ':'a',
+                'â':'a','ấ':'a','ầ':'a','ẩ':'a','ẫ':'a','ậ':'a',
+                'é':'e','è':'e','ẻ':'e','ẽ':'e','ẹ':'e',
+                'ê':'e','ế':'e','ề':'e','ể':'e','ễ':'e','ệ':'e',
+                'í':'i','ì':'i','ỉ':'i','ĩ':'i','ị':'i',
+                'ó':'o','ò':'o','ỏ':'o','õ':'o','ọ':'o',
+                'ô':'o','ố':'o','ồ':'o','ổ':'o','ỗ':'o','ộ':'o',
+                'ơ':'o','ớ':'o','ờ':'o','ở':'o','ỡ':'o','ợ':'o',
+                'ú':'u','ù':'u','ủ':'u','ũ':'u','ụ':'u',
+                'ư':'u','ứ':'u','ừ':'u','ử':'u','ữ':'u','ự':'u',
+                'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y',
+                'đ':'d'
+            };
+            let result = text.toLowerCase();
+            for (let [accented, base] of Object.entries(toneMap)) {
+                result = result.replace(new RegExp(accented, 'g'), base);
+            }
+            return result.replace(/\s+/g, ' ').trim();
+        }
+
+        function checkMatch(spoken) {
+            const levelData = levels[currentLevel - 1];
+            let target = levelData.phrase;
+            
+            if (gameMode === 'word') {
+                const words = target.split(' ');
+                target = words[0];
+            }
+
+            const normTarget = normalizeVietnamese(target);
+            const normSpoken = normalizeVietnamese(spoken);
+            
+            return normSpoken === normTarget || spoken.toLowerCase().trim() === target.toLowerCase().trim();
+        }
+
+        function handleSuccess(spoken) {
+            stopListening();
+            gameState = 'success';
+            attemptCount = 0;
+            
+            const points = attemptCount === 0 ? 10 : 5;
+            score += points;
+            streak++;
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+
+            document.getElementById('targetPhrase').classList.add('correct');
+            document.getElementById('retryMsg').classList.remove('show');
+            updateFeedback('🎉 Chính xác! Giỏi lắm! +' + points + ' điểm', 'correct');
+            document.getElementById('whatHeard').innerHTML = 'Máy nghe được: <span>' + spoken + '</span>';
+            updateStars(3);
+
+            // Trigger jump
+            triggerJump();
+            spawnSuccessParticles();
+
+            // Show next button after delay
+            setTimeout(() => {
+                document.getElementById('btnNext').classList.remove('hidden');
+            }, 1500);
+        }
+
+        function handleFailure(spoken) {
+            stopListening();
+            attemptCount++;
+            streak = 0;
+            document.getElementById('streak').textContent = streak;
+
+            document.getElementById('targetPhrase').classList.add('incorrect');
+            setTimeout(() => {
+                document.getElementById('targetPhrase').classList.remove('incorrect');
+            }, 500);
+
+            document.getElementById('retryMsg').classList.add('show');
+            updateFeedback('❌ Chạm rồi. Thử lại!', 'incorrect');
+            document.getElementById('whatHeard').innerHTML = 'Máy nghe được: <span>' + spoken + '</span>';
+            updateStars(0);
+
+            // Show retry button
+            document.getElementById('btnRetry').classList.remove('hidden');
+            document.getElementById('btnNext').classList.add('hidden');
+            
+            // Character hits obstacle animation
+            playerHitObstacle();
+        }
+
+        // ===== UI FUNCTIONS =====
+        function updateFeedback(msg, type) {
+            const el = document.getElementById('feedbackMsg');
+            el.textContent = msg;
+            el.className = 'feedback-msg ' + type;
+        }
+
+        function updateStars(count) {
+            document.getElementById('starsDisplay').textContent = '⭐'.repeat(count) + '☆'.repeat(3 - count);
+        }
+
+        function setMode(mode) {
+            gameMode = mode;
+            document.getElementById('modePhrase').classList.toggle('active', mode === 'phrase');
+            document.getElementById('modeWord').classList.toggle('active', mode === 'word');
+            updatePhraseDisplay();
+        }
+
+        function updatePhraseDisplay() {
+            const levelData = levels[currentLevel - 1];
+            let display = levelData.phrase;
+            if (gameMode === 'word') {
+                display = levelData.phrase.split(' ')[0];
+            }
+            document.getElementById('targetPhrase').textContent = display;
+        }
+
+        function startLevel() {
+            const levelNum = parseInt(document.getElementById('levelInput').value);
+            if (levelNum < 1 || levelNum > 100) {
+                alert('Vui lòng nhập số từ 1 đến 100!');
+                return;
+            }
+
+            currentLevel = levelNum;
+            attemptCount = 0;
+            gameState = 'running';
+
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('btnNext').classList.add('hidden');
+            document.getElementById('btnRetry').classList.add('hidden');
+            document.getElementById('retryMsg').classList.remove('show');
+            document.getElementById('whatHeard').textContent = '';
+            updateStars(0);
+
+            const levelData = levels[currentLevel - 1];
+            document.getElementById('phraseHint').textContent = levelData.hint + ' (' + levelData.category + ')';
+            updatePhraseDisplay();
+
+            const diffBadge = document.getElementById('diffBadge');
+            const diffNames = ['', 'Cơ bản', 'Đơn giản', 'Trung bình', 'Khó', 'Nâng cao'];
+            diffBadge.textContent = diffNames[levelData.difficulty];
+            diffBadge.className = 'diff-tag diff-' + levelData.difficulty;
+
+            const progress = ((currentLevel - 1) / 100) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            updateFeedback('Sẵn sàng! Nhấn "Nói" và đọc cụm từ.', '');
+
+            initCanvas();
+        }
+
+        function retryLevel() {
+            attemptCount = 0;
+            gameState = 'running';
+            document.getElementById('btnRetry').classList.add('hidden');
+            document.getElementById('retryMsg').classList.remove('show');
+            document.getElementById('targetPhrase').classList.remove('correct', 'incorrect');
+            updateFeedback('Sẵn sàng! Thử lại nhé.', '');
+            updateStars(0);
+            resetObstacles();
+        }
+
+        function nextLevel() {
+            if (currentLevel < 100) {
+                document.getElementById('levelInput').value = currentLevel + 1;
+                startLevel();
+            } else {
+                alert('🎉🏆 Chúc mừng! Bạn đã hoàn thành tất cả 100 cấp độ! Tổng điểm: ' + score);
+            }
+        }
+
+        // ===== CANVAS GAME =====
+        function initCanvas() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            player.groundY = canvas.height - 90;
+            player.y = player.groundY;
+            player.vy = 0;
+            player.jumping = false;
+
+            obstacles = [];
+            particles = [];
+            obstacleTimer = 0;
+            scrollOffset = 0;
+
+            // Init background elements
+            initBackground();
+
+            if (animFrame) cancelAnimationFrame(animFrame);
+            gameLoop();
+        }
+
+        function initBackground() {
+            clouds = [];
+            for (let i = 0; i < 5; i++) {
+                clouds.push({
+                    x: Math.random() * canvas.width,
+                    y: 30 + Math.random() * 60,
+                    size: 30 + Math.random() * 30,
+                    speed: 0.3 + Math.random() * 0.3
+                });
+            }
+
+            bamboos = [];
+            for (let i = 0; i < 8; i++) {
+                bamboos.push({
+                    x: i * 120 + Math.random() * 60,
+                    height: 80 + Math.random() * 60
+                });
+            }
+
+            lotuses = [];
+            for (let i = 0; i < 4; i++) {
+                lotuses.push({
+                    x: 100 + i * 200 + Math.random() * 100,
+                    y: canvas.height - 50,
+                    size: 15 + Math.random() * 10,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+
+            mountains = [];
+            for (let i = 0; i < 4; i++) {
+                mountains.push({
+                    x: i * 250,
+                    height: 60 + Math.random() * 40,
+                    width: 180 + Math.random() * 80
+                });
+            }
+
+            buffalo.visible = Math.random() > 0.5;
+            buffalo.x = canvas.width + 100;
+            buffalo.y = canvas.height - 110;
+        }
+
+        function resetObstacles() {
+            obstacles = [];
+            obstacleTimer = 0;
+        }
+
+        function triggerJump() {
+            if (!player.jumping && gameState === 'success') {
+                player.jumping = true;
+                player.vy = -14;
+            }
+        }
+
+        function playerHitObstacle() {
+            // Small bounce back animation
+            player.vy = -5;
+            player.jumping = true;
+        }
+
+        function spawnSuccessParticles() {
+            for (let i = 0; i < 20; i++) {
+                particles.push({
+                    x: player.x + player.width / 2,
+                    y: player.y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: -Math.random() * 10 - 2,
+                    life: 60,
+                    color: ['#FFD700', '#FF6B6B', '#4CAF50', '#2196F3', '#FF9800'][Math.floor(Math.random() * 5)],
+                    size: 4 + Math.random() * 4
+                });
+            }
+        }
+
+        function gameLoop() {
+            update();
+            render();
+            animFrame = requestAnimationFrame(gameLoop);
+        }
+
+        function update() {
+            // Update player
+            if (player.jumping) {
+                player.vy += 0.7;
+                player.y += player.vy;
+                if (player.y >= player.groundY) {
+                    player.y = player.groundY;
+                    player.jumping = false;
+                    player.vy = 0;
+                }
+            } else {
+                // Running animation
+                player.runTimer++;
+                if (player.runTimer > 8) {
+                    player.runFrame = (player.runFrame + 1) % 4;
+                    player.runTimer = 0;
+                }
+            }
+
+            // Scroll background
+            scrollOffset += scrollSpeed;
+            if (scrollOffset > 100) scrollOffset = 0;
+
+            // Update clouds
+            clouds.forEach(c => {
+                c.x -= c.speed;
+                if (c.x + c.size < 0) {
+                    c.x = canvas.width + c.size;
+                    c.y = 30 + Math.random() * 60;
+                }
+            });
+
+            // Update bamboos (parallax)
+            bamboos.forEach(b => {
+                b.x -= scrollSpeed * 0.5;
+                if (b.x + 20 < 0) {
+                    b.x = canvas.width + Math.random() * 100;
+                    b.height = 80 + Math.random() * 60;
+                }
+            });
+
+            // Update lotuses
+            lotuses.forEach(l => {
+                l.phase += 0.05;
+            });
+
+            // Update buffalo
+            if (buffalo.visible) {
+                buffalo.x -= scrollSpeed * 0.3;
+                if (buffalo.x < -100) {
+                    buffalo.visible = false;
+                    setTimeout(() => {
+                        buffalo.visible = true;
+                        buffalo.x = canvas.width + 100;
+                    }, 5000 + Math.random() * 5000);
+                }
+            }
+
+            // Spawn obstacles
+            if (gameState === 'running') {
+                obstacleTimer++;
+                if (obstacleTimer > obstacleInterval) {
+                    obstacles.push({
+                        x: canvas.width + 50,
+                        y: player.groundY + 10,
+                        width: 35,
+                        height: 55,
+                        passed: false
+                    });
+                    obstacleTimer = 0;
+                    obstacleInterval = 100 + Math.random() * 80;
+                }
+            }
+
+            // Update obstacles
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                obstacles[i].x -= scrollSpeed;
+                if (obstacles[i].x + obstacles[i].width < -50) {
+                    obstacles.splice(i, 1);
+                }
+            }
+
+            // Update particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.3;
+                p.life--;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Sky gradient
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGrad.addColorStop(0, '#87CEEB');
+            skyGrad.addColorStop(0.5, '#B0E0E6');
+            skyGrad.addColorStop(1, '#98FB98');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Sun
+            drawSun();
+
+            // Mountains (far background)
+            drawMountains();
+
+            // Clouds
+            drawClouds();
+
+            // Rice paddy background
+            drawRicePaddy();
+
+            // Bamboo groves
+            drawBamboos();
+
+            // Water buffalo
+            if (buffalo.visible) drawBuffalo();
+
+            // Lotus pond
+            drawLotusPond();
+
+            // Ground
+            drawGround();
+
+            // Obstacles (bamboo stalks as obstacles)
+            obstacles.forEach(obs => drawObstacle(obs));
+
+            // Player character
+            drawPlayer();
+
+            // Particles
+            particles.forEach(p => drawParticle(p));
+        }
+
+        function drawSun() {
+            const sunX = canvas.width - 80;
+            const sunY = 60;
+            
+            // Sun rays
+            ctx.strokeStyle = 'rgba(255, 200, 0, 0.3)';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2 + Date.now() * 0.001;
+                ctx.beginPath();
+                ctx.moveTo(sunX + Math.cos(angle) * 35, sunY + Math.sin(angle) * 35);
+                ctx.lineTo(sunX + Math.cos(angle) * 50, sunY + Math.sin(angle) * 50);
+                ctx.stroke();
+            }
+
+            // Sun body
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#FFA500';
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawMountains() {
+            ctx.fillStyle = '#7CB342';
+            mountains.forEach(m => {
+                const x = ((m.x - scrollOffset * 0.2) % (canvas.width + 300)) - 150;
+                ctx.beginPath();
+                ctx.moveTo(x - m.width/2, player.groundY + 20);
+                ctx.lineTo(x, player.groundY + 20 - m.height);
+                ctx.lineTo(x + m.width/2, player.groundY + 20);
+                ctx.closePath();
+                ctx.fill();
+            });
+        }
+
+        function drawClouds() {
+            clouds.forEach(c => {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.beginPath();
+                ctx.arc(c.x, c.y, c.size * 0.6, 0, Math.PI * 2);
+                ctx.arc(c.x + c.size * 0.5, c.y - c.size * 0.2, c.size * 0.7, 0, Math.PI * 2);
+                ctx.arc(c.x + c.size, c.y, c.size * 0.6, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawRicePaddy() {
+            // Rice paddy rows
+            ctx.fillStyle = '#AED581';
+            for (let i = 0; i < 6; i++) {
+                const y = player.groundY - 30 + i * 12;
+                ctx.fillRect(0, y, canvas.width, 8);
+            }
+
+            // Rice plants
+            ctx.strokeStyle = '#7CB342';
+            ctx.lineWidth = 2;
+            for (let x = 0; x < canvas.width; x += 25) {
+                const offset = (x + scrollOffset) % 50;
+                ctx.beginPath();
+                ctx.moveTo(x, player.groundY - 20);
+                ctx.quadraticCurveTo(x - 5 + Math.sin(Date.now() * 0.003 + x) * 3, player.groundY - 40, x, player.groundY - 50);
+                ctx.stroke();
+            }
+        }
+
+        function drawBamboos() {
+            bamboos.forEach(b => {
+                // Bamboo stalk
+                ctx.fillStyle = '#558B2F';
+                ctx.fillRect(b.x, player.groundY - b.height, 12, b.height);
+                
+                // Bamboo segments
+                ctx.strokeStyle = '#33691E';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < b.height; i += 20) {
+                    ctx.beginPath();
+                    ctx.moveTo(b.x - 2, player.groundY - b.height + i);
+                    ctx.lineTo(b.x + 14, player.groundY - b.height + i);
+                    ctx.stroke();
+                }
+
+                // Bamboo leaves
+                ctx.fillStyle = '#689F38';
+                for (let i = 0; i < 3; i++) {
+                    const ly = player.groundY - b.height + i * 25 + 10;
+                    ctx.beginPath();
+                    ctx.ellipse(b.x - 15, ly, 18, 5, -0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.ellipse(b.x + 27, ly + 10, 18, 5, 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+        }
+
+        function drawBuffalo() {
+            const x = buffalo.x;
+            const y = buffalo.y;
+            
+            // Body
+            ctx.fillStyle = '#4E342E';
+            ctx.beginPath();
+            ctx.ellipse(x, y, 35, 22, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Head
+            ctx.beginPath();
+            ctx.ellipse(x + 30, y - 10, 18, 15, 0.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Horns
+            ctx.strokeStyle = '#3E2723';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x + 35, y - 20);
+            ctx.quadraticCurveTo(x + 45, y - 30, x + 50, y - 22);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x + 28, y - 22);
+            ctx.quadraticCurveTo(x + 22, y - 32, x + 18, y - 24);
+            ctx.stroke();
+
+            // Legs
+            ctx.fillStyle = '#3E2723';
+            ctx.fillRect(x - 20, y + 15, 8, 20);
+            ctx.fillRect(x - 5, y + 15, 8, 20);
+            ctx.fillRect(x + 10, y + 15, 8, 20);
+            ctx.fillRect(x + 22, y + 15, 8, 20);
+
+            // Eye
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(x + 38, y - 12, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(x + 39, y - 12, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawLotusPond() {
+            const pondY = canvas.height - 30;
+            
+            // Water
+            ctx.fillStyle = 'rgba(100, 180, 220, 0.5)';
+            ctx.fillRect(0, pondY, canvas.width, 30);
+
+            // Water ripples
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 5; i++) {
+                const rx = (i * 200 + Date.now() * 0.05) % canvas.width;
+                ctx.beginPath();
+                ctx.ellipse(rx, pondY + 15, 20, 3, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Lotus flowers
+            lotuses.forEach(l => {
+                const lx = ((l.x - scrollOffset * 0.7) % (canvas.width + 200)) - 100;
+                
+                // Lotus leaf
+                ctx.fillStyle = '#4CAF50';
+                ctx.beginPath();
+                ctx.ellipse(lx, l.y, l.size, l.size * 0.5, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Lotus flower
+                const bobY = Math.sin(l.phase) * 3;
+                ctx.fillStyle = '#E91E63';
+                for (let i = 0; i < 5; i++) {
+                    const angle = (i / 5) * Math.PI * 2 - Math.PI / 2;
+                    const px = lx + Math.cos(angle) * 6;
+                    const py = l.y - l.size * 0.5 + bobY + Math.sin(angle) * 4;
+                    ctx.beginPath();
+                    ctx.ellipse(px, py, 5, 8, angle, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.fillStyle = '#FFEB3B';
+                ctx.beginPath();
+                ctx.arc(lx, l.y - l.size * 0.5 + bobY, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawGround() {
+            // Main ground
+            const groundGrad = ctx.createLinearGradient(0, player.groundY + 20, 0, canvas.height);
+            groundGrad.addColorStop(0, '#8BC34A');
+            groundGrad.addColorStop(1, '#689F38');
+            ctx.fillStyle = groundGrad;
+            ctx.fillRect(0, player.groundY + 20, canvas.width, canvas.height - player.groundY);
+
+            // Grass tufts
+            ctx.strokeStyle = '#558B2F';
+            ctx.lineWidth = 2;
+            for (let x = 0; x < canvas.width; x += 15) {
+                const gx = (x + scrollOffset) % canvas.width;
+                ctx.beginPath();
+                ctx.moveTo(gx, player.groundY + 22);
+                ctx.lineTo(gx - 3, player.groundY + 12);
+                ctx.moveTo(gx, player.groundY + 22);
+                ctx.lineTo(gx + 3, player.groundY + 10);
+                ctx.moveTo(gx, player.groundY + 22);
+                ctx.lineTo(gx, player.groundY + 8);
+                ctx.stroke();
+            }
+
+            // Path/road
+            ctx.fillStyle = '#D7CCC8';
+            ctx.fillRect(0, player.groundY + 15, canvas.width, 8);
+            ctx.fillStyle = '#BCAAA4';
+            ctx.setLineDash([10, 10]);
+            ctx.fillRect(0, player.groundY + 18, canvas.width, 2);
+            ctx.setLineDash([]);
+        }
+
+        function drawObstacle(obs) {
+            // Bamboo obstacle
+            const x = obs.x;
+            const y = obs.y;
+            const w = obs.width;
+            const h = obs.height;
+
+            // Main stalk
+            ctx.fillStyle = '#558B2F';
+            ctx.fillRect(x + 10, y - h + 20, 15, h);
+
+            // Segments
+            ctx.strokeStyle = '#33691E';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < h; i += 15) {
+                ctx.beginPath();
+                ctx.moveTo(x + 8, y - h + 20 + i);
+                ctx.lineTo(x + 27, y - h + 20 + i);
+                ctx.stroke();
+            }
+
+            // Thorns/spikes
+            ctx.fillStyle = '#795548';
+            ctx.beginPath();
+            ctx.moveTo(x + 10, y - h + 30);
+            ctx.lineTo(x, y - h + 25);
+            ctx.lineTo(x + 10, y - h + 20);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(x + 25, y - h + 50);
+            ctx.lineTo(x + 35, y - h + 45);
+            ctx.lineTo(x + 25, y - h + 40);
+            ctx.fill();
+
+            // Leaves at top
+            ctx.fillStyle = '#689F38';
+            ctx.beginPath();
+            ctx.ellipse(x - 5, y - h + 25, 15, 5, -0.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(x + 40, y - h + 35, 15, 5, 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(x + 25, y - h + 15, 12, 4, 0.2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawPlayer() {
+            const x = player.x;
+            const y = player.y;
+            const isJumping = player.jumping;
+
+            ctx.save();
+            
+            // Shadow
+            if (!isJumping) {
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(x + 30, player.groundY + 25, 25, 6, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Body bob when running
+            const bobY = isJumping ? 0 : Math.sin(player.runFrame * Math.PI / 2) * 3;
+            const bodyY = y + bobY;
+
+            // Legs
+            ctx.fillStyle = '#1565C0';
+            if (isJumping) {
+                // Tucked legs when jumping
+                ctx.fillRect(x + 15, bodyY + 40, 10, 15);
+                ctx.fillRect(x + 35, bodyY + 40, 10, 15);
+            } else {
+                // Running legs
+                const legOffset = Math.sin(player.runFrame * Math.PI / 2) * 8;
+                ctx.fillRect(x + 15 + legOffset, bodyY + 40, 10, 20);
+                ctx.fillRect(x + 35 - legOffset, bodyY + 40, 10, 20);
+            }
+
+            // Shoes
+            ctx.fillStyle = '#5D4037';
+            if (isJumping) {
+                ctx.fillRect(x + 13, bodyY + 52, 14, 6);
+                ctx.fillRect(x + 33, bodyY + 52, 14, 6);
+            } else {
+                const legOffset = Math.sin(player.runFrame * Math.PI / 2) * 8;
+                ctx.fillRect(x + 13 + legOffset, bodyY + 57, 14, 6);
+                ctx.fillRect(x + 33 - legOffset, bodyY + 57, 14, 6);
+            }
+
+            // Body (áo bà ba - traditional shirt)
+            ctx.fillStyle = '#FF7043';
+            ctx.fillRect(x + 12, bodyY + 20, 36, 25);
+            
+            // Shirt details
+            ctx.fillStyle = '#F4511E';
+            ctx.fillRect(x + 28, bodyY + 20, 4, 25);
+
+            // Arms
+            ctx.fillStyle = '#FFCC80';
+            if (isJumping) {
+                // Arms up when jumping
+                ctx.fillRect(x + 5, bodyY + 10, 8, 20);
+                ctx.fillRect(x + 47, bodyY + 10, 8, 20);
+            } else {
+                // Swinging arms when running
+                const armSwing = Math.sin(player.runFrame * Math.PI / 2) * 10;
+                ctx.fillRect(x + 5, bodyY + 22 + armSwing, 8, 18);
+                ctx.fillRect(x + 47, bodyY + 22 - armSwing, 8, 18);
+            }
+
+            // Head
+            ctx.fillStyle = '#FFCC80';
+            ctx.beginPath();
+            ctx.arc(x + 30, bodyY + 12, 14, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Face
+            // Eyes
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(x + 25, bodyY + 10, 4, 0, Math.PI * 2);
+            ctx.arc(x + 35, bodyY + 10, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#3E2723';
+            ctx.beginPath();
+            ctx.arc(x + 26, bodyY + 10, 2, 0, Math.PI * 2);
+            ctx.arc(x + 36, bodyY + 10, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Smile
+            ctx.strokeStyle = '#5D4037';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            if (gameState === 'success') {
+                // Big smile
+                ctx.arc(x + 30, bodyY + 14, 5, 0, Math.PI);
+            } else if (gameState === 'fail') {
+                // Sad face
+                ctx.arc(x + 30, bodyY + 18, 4, Math.PI, 0);
+            } else {
+                // Normal smile
+                ctx.arc(x + 30, bodyY + 14, 4, 0.2, Math.PI - 0.2);
+            }
+            ctx.stroke();
+
+            // Cheeks
+            ctx.fillStyle = 'rgba(255, 150, 150, 0.4)';
+            ctx.beginPath();
+            ctx.arc(x + 20, bodyY + 14, 3, 0, Math.PI * 2);
+            ctx.arc(x + 40, bodyY + 14, 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Nón lá (conical hat)
+            // Hat brim
+            ctx.fillStyle = '#D4A574';
+            ctx.beginPath();
+            ctx.ellipse(x + 30, bodyY + 2, 28, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Hat cone
+            ctx.fillStyle = '#C9A96E';
+            ctx.beginPath();
+            ctx.moveTo(x + 5, bodyY + 2);
+            ctx.lineTo(x + 30, bodyY - 22);
+            ctx.lineTo(x + 55, bodyY + 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // Hat texture lines
+            ctx.strokeStyle = '#A0825A';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x + 15, bodyY - 5);
+            ctx.lineTo(x + 30, bodyY - 20);
+            ctx.lineTo(x + 45, bodyY - 5);
+            ctx.stroke();
+
+            // Hat band
+            ctx.strokeStyle = '#8D6E63';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x + 8, bodyY);
+            ctx.lineTo(x + 52, bodyY);
+            ctx.stroke();
+
+            // Hat tip decoration
+            ctx.fillStyle = '#8D6E63';
+            ctx.beginPath();
+            ctx.arc(x + 30, bodyY - 22, 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawParticle(p) {
+            ctx.globalAlpha = p.life / 60;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+
+        // ===== INIT =====
+        window.onload = function() {
+            initSpeechRecognition();
+        };
+
+        window.onresize = function() {
+            if (canvas) {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                player.groundY = canvas.height - 90;
+                if (!player.jumping) player.y = player.groundY;
+            }
+        };
+    </script>
 </body>
 </html>
