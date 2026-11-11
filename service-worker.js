@@ -1,4 +1,4 @@
-const CACHE_NAME = 'non-la-quest-v3';
+const CACHE_NAME = 'non-la-quest-v4-mobile-flow';
 const APP_FILES = [
   './',
   './index.html',

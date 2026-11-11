@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#135640">
 <meta name="description" content="Hành Trình Nón Lá — a 100-level Northern Vietnamese heritage speaking adventure for children.">
 <meta name="color-scheme" content="light">
@@ -15,7 +15,8 @@
 html{scroll-behavior:smooth}
 body{margin:0;min-height:100vh;color:var(--ink);font-family:Nunito,"Trebuchet MS",system-ui,-apple-system,sans-serif;background:radial-gradient(circle at 8% 2%,#f9e7ba 0,transparent 23%),linear-gradient(135deg,#f1f8ee 0%,#fff9ea 100%)}
 button,input{font:inherit}
-button{cursor:pointer}
+button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+input{font-size:16px}
 button:focus-visible,input:focus-visible{outline:3px solid #f7b83e;outline-offset:3px}
 .topbar{background:var(--forest);color:#fff;padding:13px clamp(16px,4vw,54px);display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 5px 18px rgba(13,64,44,.15)}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
@@ -124,7 +125,9 @@ main{max-width:1260px;margin:0 auto;padding:26px clamp(14px,3vw,32px) 34px}
 .tone-grid b{font-size:10px;color:#315f45}
 .tone-grid span,.tone-guide p{font-size:10px;line-height:1.45;color:#71877a;margin:0}
 .tone-guide p{margin-top:10px}
-@media(max-width:540px){.tone-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-description{font-size:10px}}
+@media(max-width:850px){.mobile-next-dock.show{display:flex}body.mobile-next-visible .bottom-row .next-btn{display:none}}
+@media(min-width:851px){.mobile-next-dock{display:none!important}}
+@media(max-width:540px){.tone-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-description{font-size:10px}.mobile-next-dock{gap:8px;padding-left:10px;padding-right:10px}.mobile-next-dock button{padding:12px 13px;font-size:12px}.mobile-next-copy{font-size:11px}}
 
 .feedback{font-size:12px;font-weight:900;margin-top:10px;min-height:18px;color:#65816f}
 .feedback.good{color:#21824b}.feedback.bad{color:#bb6147}
@@ -134,6 +137,13 @@ main{max-width:1260px;margin:0 auto;padding:26px clamp(14px,3vw,32px) 34px}
 .next-btn.show{display:block}
 .next-btn:hover{transform:translateY(-1px)}
 .keyboard-note{font-size:10px;color:#8a9c8f;margin-top:14px;text-align:center}
+.mobile-next-dock{display:none}
+.mobile-next-dock.show{display:flex}
+.mobile-next-dock{position:fixed;left:0;right:0;bottom:0;z-index:1000;align-items:center;gap:12px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(255,253,246,.97);border-top:1px solid #dce8dc;box-shadow:0 -8px 24px rgba(27,73,51,.14);backdrop-filter:blur(10px)}
+.mobile-next-copy{flex:1;min-width:0;color:#315f45;font-size:12px;font-weight:950;line-height:1.3}
+.mobile-next-copy small{display:block;color:#7b9083;font-size:10px;font-weight:750;margin-top:3px}
+.mobile-next-dock button{flex:none;border:0;border-radius:13px;background:var(--forest);color:#fff;padding:13px 17px;font-weight:1000;font-size:13px;box-shadow:0 4px 0 #0a422e;min-height:46px}
+body.mobile-next-visible{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
 .footer{padding:18px 4px 0;color:#86988e;font-size:10px;line-height:1.6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .footer a{color:#56816a}
 .sparkle{position:absolute;z-index:4;pointer-events:none;font-size:21px;animation:spark 1s ease-out forwards}
@@ -200,16 +210,16 @@ main{max-width:1260px;margin:0 auto;padding:26px clamp(14px,3vw,32px) 34px}
       <div class="lesson-content">
         <div class="phrase-row">
           <div><div class="phrase-label">Say it naturally · Target variety: Northern Vietnamese (Hà Nội)</div><h2 class="phrase" id="phrase">Xin chào!</h2><div class="translation" id="translation">Hello!</div><div class="hint" id="hint">Use the family words that fit your relationship.</div><div class="pronunciation-note" id="pronunciationNote">🎧 Hà Nội sound focus: listen, then repeat in a relaxed voice.</div></div>
-          <button class="listen-btn" id="listenBtn" title="Hear the device’s Vietnamese voice model; its accent may vary" aria-label="Hear the Vietnamese phrase">🔊</button>
+          <button class="listen-btn" id="listenBtn" type="button" title="Hear the device’s Vietnamese voice model; its accent may vary" aria-label="Hear the Vietnamese phrase">🔊</button>
         </div>
         <div class="speech-area">
           <div class="speech-top"><div class="speech-instruction">🎙️ Say the phrase to help the nón lá jump!</div><div class="mic-status" id="micStatus">Speech setting · Vietnamese (vi-VN)</div></div>
-          <div class="speech-controls"><button class="mic-btn" id="micBtn"><span>🎤</span><span id="micText">TAP TO SPEAK</span></button><button class="type-toggle" id="typeToggle">⌨ Type instead</button></div>
-          <div class="type-row" id="typeRow"><input id="typedAnswer" type="text" placeholder="Type the Vietnamese phrase…" autocomplete="off" aria-label="Type Vietnamese phrase"><button id="checkTyped">Check</button></div>
+          <div class="speech-controls"><button class="mic-btn" id="micBtn" type="button" aria-pressed="false"><span>🎤</span><span id="micText">TAP TO SPEAK</span></button><button class="type-toggle" id="typeToggle" type="button">⌨ Type instead</button></div>
+          <div class="type-row" id="typeRow"><input id="typedAnswer" type="text" placeholder="Type the Vietnamese phrase…" autocomplete="off" aria-label="Type Vietnamese phrase"><button id="checkTyped" type="button">Check</button></div>
           <div class="transcript" id="transcript" aria-live="polite"></div>
           <div class="feedback" id="feedback" aria-live="polite">Say the phrase, and watch the nón lá fly!</div>
         </div>
-        <div class="bottom-row"><div class="learning-tip" id="learningTip">💡 Listen once, say it in chunks, then add a detail or a family expression of your own. Your family’s voice is a valuable model.</div><button class="next-btn" id="nextBtn">Next level →</button></div>
+        <div class="bottom-row"><div class="learning-tip" id="learningTip">💡 Listen once, say it in chunks, then add a detail or a family expression of your own. Your family’s voice is a valuable model.</div><button class="next-btn" id="nextBtn" type="button">Next level →</button></div>
         <details class="tone-guide"><summary>🎼 Hà Nội pronunciation guide · tones and sounds</summary><div class="tone-grid"><div><b>Ngang · no mark</b><span>Keep the voice level and steady.</span></div><div><b>Huyền · grave</b><span>Let the voice fall gently.</span></div><div><b>Sắc · acute</b><span>Let the voice rise.</span></div><div><b>Hỏi · hook</b><span>Dip, then turn upward.</span></div><div><b>Ngã · tilde</b><span>Rise with a slight voice break in careful Hà Nội speech.</span></div><div><b>Nặng · dot</b><span>Keep it short, low and firm.</span></div></div><p>In careful Hà Nội pronunciation, hỏi and ngã are distinct. In Hà Nội speech, d, gi and often r share a voiced z-like sound, while đ is a different consonant. The speaker button uses a Vietnamese voice available on the device and may not be a Hà Nội speaker. These cues are a memory aid; listen to a trusted family or teacher model for the full sound.</p></details>
         <div class="keyboard-note">Voice recognition uses your browser’s vi-VN service, which may not reproduce or assess a Hà Nội accent precisely. It checks the words it hears — not whether you sound native. Typed practice is always available.</div>
       </div>
@@ -217,6 +227,10 @@ main{max-width:1260px;margin:0 auto;padding:26px clamp(14px,3vw,32px) 34px}
   </div>
   <footer class="footer"><span>For heritage learners aged 5–15 · family language, Northern Vietnamese and cultural connection</span><span>Curriculum reference: <a href="https://congbao.chinhphu.vn/van-ban/thong-tu-so-28-2018-tt-bgddt-27771.htm" target="_blank" rel="noopener noreferrer">MOET Circular 28/2018</a> · Not an accredited assessment</span></footer>
 </main>
+<div class="mobile-next-dock" id="mobileNextDock" role="status" aria-live="polite">
+  <div class="mobile-next-copy" id="mobileNextCopy">🌟 Level complete!<small>Ready for your next Vietnamese adventure?</small></div>
+  <button type="button" id="mobileNextBtn">Next level →</button>
+</div>
 <script>
 const STAGES = [{"name":"Family Greetings","icon":"🏡","age":"5–7","range":"1–15","start":1,"end":15,"topic":"Talk with the people closest to you","scene":"🏡 Nếp nhà · Home and family","description":"Start with familiar family words, greetings, needs and respectful everyday replies."},{"name":"Home & Everyday Life","icon":"🍚","age":"6–9","range":"16–30","start":16,"end":30,"topic":"Speak Vietnamese throughout the day","scene":"🍚 Bữa cơm gia đình · Family meals","description":"Talk about meals, routines, chores, favourite foods and things you do together at home."},{"name":"Friends & Community","icon":"🤝","age":"8–10","range":"31–45","start":31,"end":45,"topic":"Join in conversations at school and with friends","scene":"🏫 Trường học và cộng đồng · School and community","description":"Ask questions, share feelings, explain family traditions and keep a conversation going."},{"name":"Stories & Visits","icon":"📖","age":"9–11","range":"46–60","start":46,"end":60,"topic":"Tell stories about people and memories","scene":"🧳 Thăm quê và sum họp · Visits and reunions","description":"Recount visits and events in order, describe memories and talk about plans."},{"name":"Language & Culture","icon":"🪷","age":"11–13","range":"61–80","start":61,"end":80,"topic":"Explore the language behind family traditions","scene":"🪷 Văn hóa Việt · Vietnamese culture","description":"Explore Tết, family customs, kinship language, regional variation, spelling and Hà Nội tones."},{"name":"Heritage Storyteller","icon":"🎤","age":"13–15","range":"81–100","start":81,"end":100,"topic":"Express your own ideas with confidence","scene":"🌏 Hai quê hương · Two homes, many stories","description":"Build longer explanations, discuss identity and viewpoints, interpret proverbs and tell your family story."}];
 // A 100-level heritage Vietnamese pathway: home language → community → stories → culture → confident expression.
@@ -250,19 +264,42 @@ function loadLevel(n){
  $('feedback').className='feedback';$('feedback').textContent=alreadyCompleted?'⭐ You have completed this level before. Practise again, or move on when you are ready.':'Say the phrase in your own natural voice. Every attempt is practice!';$('transcript').className='transcript';$('transcript').textContent='';$('typedAnswer').value='';$('typeRow').classList.remove('show');$('typeToggle').textContent='⌨ Type instead';$('nextBtn').classList.toggle('show',alreadyCompleted);$('nextBtn').textContent=num===100?'Play again ↻':'Next level →';
  $('scene').dataset.stage=d.stage;$('obstacles').innerHTML=( [ ['🏡','👵','🌸'],['🍚','🥢','🪷'],['🏫','🪁','🤝'],['🧳','📷','🏡'],['🏮','🪷','📚'],['🎤','🌏','📖'] ][d.stage] || ['🪨','🎋','🌊'] ).map(x=>`<span class="obstacle">${x}</span>`).join('');
  $('runner').classList.remove('jump');$('runner').style.left=alreadyCompleted?'77%':'8%';$('scenePop').classList.remove('show');
- $('micStatus').textContent='Speech setting · Vietnamese (vi-VN)';$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';renderStages();
+ $('micStatus').textContent='Speech setting · Vietnamese (vi-VN)';$('micBtn').classList.remove('listening');$('micBtn').disabled=false;$('micBtn').setAttribute('aria-pressed','false');$('micText').textContent='TAP TO SPEAK';$('typeToggle').hidden=false;$('typeRow').classList.remove('show');$('typeToggle').textContent='⌨ Type instead';hideMobileNext();if(alreadyCompleted)showMobileNext();renderStages();
 }
 function normalise(s){return String(s||'').normalize('NFC').toLocaleLowerCase('vi-VN').replace(/[.,!?;:“”"'()]/g,' ').replace(/\s+/g,' ').trim();}
 function editDistance(a,b){const dp=Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));for(let i=0;i<=a.length;i++)dp[i][0]=i;for(let j=0;j<=b.length;j++)dp[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return dp[a.length][b.length];}
 function matchesVoice(spoken,target){const a=normalise(spoken),b=normalise(target);if(a===b)return true;if(!a||!b)return false;const dist=editDistance(a,b);const allowed=b.length<16?0:b.length<35?1:b.length<65?2:3;return dist<=allowed;}
 function matchesTyped(spoken,target){return normalise(spoken)===normalise(target);}
+function hideMobileNext(){
+ $('mobileNextDock').classList.remove('show');document.body.classList.remove('mobile-next-visible');
+}
+function showMobileNext(){
+ if(!window.matchMedia || !window.matchMedia('(max-width: 850px)').matches)return;
+ const isLast=currentLevel===100;
+ $('mobileNextBtn').textContent=isLast?'Play again ↻':'Next level →';
+ $('mobileNextCopy').innerHTML=isLast?'🏆 You finished all 100 levels!<small>Ready to start another adventure?</small>':'🌟 Level complete!<small>Tap below when you are ready for the next phrase.</small>';
+ $('mobileNextDock').classList.add('show');document.body.classList.add('mobile-next-visible');
+}
+function stopRecognitionAfterWin(){
+ const active=recognition;recognition=null;isListening=false;
+ $('micBtn').classList.remove('listening');
+ if(active){try{active.stop();}catch(e){/* It may already have ended on mobile. */}}
+}
+function advanceLevel(){loadLevel(currentLevel===100?1:currentLevel+1);}
 function completeLevel(source){
- if(levelWon)return;levelWon=true;completed.add(currentLevel);try{localStorage.setItem('nonLaCompleted',JSON.stringify([...completed].sort((a,b)=>a-b)));}catch(e){$('micStatus').textContent='Level complete · Progress may not save on this device';}
- $('runner').classList.remove('jump');void $('runner').offsetWidth;$('runner').classList.add('jump');$('runner').style.left='77%';$('scenePop').classList.remove('show');void $('scenePop').offsetWidth;$('scenePop').classList.add('show');
+ if(levelWon)return;
+ levelWon=true;stopRecognitionAfterWin();completed.add(currentLevel);
+ try{localStorage.setItem('nonLaCompleted',JSON.stringify([...completed].sort((a,b)=>a-b)));}catch(e){$('micStatus').textContent='Level complete · Progress may not save on this device';}
+ $('runner').classList.remove('jump');void $('runner').offsetWidth;$('runner').style.left='77%';requestAnimationFrame(()=>$('runner').classList.add('jump'));
+ $('scenePop').classList.remove('show');void $('scenePop').offsetWidth;requestAnimationFrame(()=>$('scenePop').classList.add('show'));
  $('feedback').className='feedback good';$('feedback').textContent=source==='voice'?'🌟 Tuyệt vời! The speech service caught the phrase — the hat made it!':'🌟 Giỏi lắm! You matched the phrase in writing — the hat made it!';
  $('transcript').className='transcript show good';if(source==='voice')$('transcript').textContent=`I heard: “${lastTranscript}”`;
  $('nextBtn').classList.add('show');$('nextBtn').textContent=currentLevel===100?'Play again ↻':'Next level →';
- $('micStatus').textContent='Level complete · Well done!';$('micBtn').classList.remove('listening');$('micText').textContent='LEVEL COMPLETE';renderStages();
+ $('micStatus').textContent='Level complete · Well done!';$('micBtn').classList.remove('listening');$('micBtn').disabled=true;$('micBtn').setAttribute('aria-pressed','false');$('micText').textContent='LEVEL COMPLETE';$('typeToggle').hidden=true;$('typeRow').classList.remove('show');
+ showMobileNext();renderStages();
+ if($('mobileNextDock').classList.contains('show')){
+  window.setTimeout(()=>{const target=$('play-card');if(target && document.visibilityState==='visible')target.scrollIntoView({behavior:'smooth',block:'start'});},80);
+ }
  for(let i=0;i<8;i++){const sp=document.createElement('span');sp.className='sparkle';sp.textContent=['✨','⭐','🌸','💛'][i%4];sp.style.left=(15+Math.random()*70)+'%';sp.style.top=(20+Math.random()*52)+'%';$('scene').appendChild(sp);setTimeout(()=>sp.remove(),1100);}
 }
 let lastTranscript='';
@@ -279,9 +316,9 @@ function startListening(){
  try{
   recognition=new SpeechRecognition();const session=recognition;recognition.lang='vi-VN';recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=3;isListening=true;
   $('micBtn').classList.add('listening');$('micText').textContent='LISTENING…';$('micStatus').textContent='Listening — speak clearly in Vietnamese';$('feedback').className='feedback';$('feedback').textContent='I’m listening…';
-  recognition.onresult=event=>{let interim='';let final='';for(let i=event.resultIndex;i<event.results.length;i++){const r=event.results[i];if(r.isFinal){const target=levelData(currentLevel).vi;let chosen=r[0].transcript;for(let k=0;k<r.length;k++){if(matchesVoice(r[k].transcript,target)){chosen=r[k].transcript;break;}}final+=chosen;}else interim+=r[0].transcript;}if(interim){$('transcript').className='transcript show';$('transcript').textContent=`Hearing: “${interim}…”`;}if(final.trim())handleTranscript(final.trim());};
-  recognition.onerror=event=>{if(recognition!==session)return;isListening=false;$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';let msg='Microphone error. Check your browser permission and try again.';if(event.error==='not-allowed'||event.error==='service-not-allowed')msg='Microphone permission was blocked. Allow microphone access in your browser, or type the answer instead.';if(event.error==='no-speech')msg='I did not hear anything. Try speaking a little louder.';if(event.error==='network')msg='The speech service could not connect. Try again or use typed practice.';$('feedback').className='feedback bad';$('feedback').textContent=msg;$('micStatus').textContent='Ready to try again';};
-  recognition.onend=()=>{if(recognition!==session)return;recognition=null;isListening=false;$('micBtn').classList.remove('listening');if(!levelWon)$('micText').textContent='TAP TO SPEAK';};
+  recognition.onresult=event=>{if(recognition!==session||levelWon)return;let interim='';let final='';for(let i=event.resultIndex;i<event.results.length;i++){const r=event.results[i];if(r.isFinal){const target=levelData(currentLevel).vi;let chosen=r[0].transcript;for(let k=0;k<r.length;k++){if(matchesVoice(r[k].transcript,target)){chosen=r[k].transcript;break;}}final+=chosen;}else interim+=r[0].transcript;}if(interim){$('transcript').className='transcript show';$('transcript').textContent=`Hearing: “${interim}…”`;}if(final.trim())handleTranscript(final.trim());};
+  recognition.onerror=event=>{if(recognition!==session||levelWon)return;isListening=false;$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';let msg='Microphone error. Check your browser permission and try again.';if(event.error==='not-allowed'||event.error==='service-not-allowed')msg='Microphone permission was blocked. Allow microphone access in your browser, or type the answer instead.';if(event.error==='no-speech')msg='I did not hear anything. Try speaking a little louder.';if(event.error==='network')msg='The speech service could not connect. Try again or use typed practice.';$('feedback').className='feedback bad';$('feedback').textContent=msg;$('micStatus').textContent='Ready to try again';};
+  recognition.onend=()=>{if(recognition!==session)return;recognition=null;isListening=false;$('micBtn').classList.remove('listening');if(!levelWon){$('micText').textContent='TAP TO SPEAK';if(!$('feedback').classList.contains('bad'))$('micStatus').textContent='Ready for another try';}};
   recognition.start();
  }catch(e){recognition=null;isListening=false;$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';$('feedback').className='feedback bad';$('feedback').textContent='Could not start the microphone. Try again or type the phrase.';$('typeRow').classList.add('show');}
 }
@@ -291,10 +328,10 @@ $('micBtn').addEventListener('click',startListening);$('listenBtn').addEventList
 $('typeToggle').addEventListener('click',()=>{$('typeRow').classList.toggle('show');$('typeToggle').textContent=$('typeRow').classList.contains('show')?'⌨ Hide typing':'⌨ Type instead';if($('typeRow').classList.contains('show'))$('typedAnswer').focus();});
 $('checkTyped').addEventListener('click',()=>{const val=$('typedAnswer').value;if(matchesTyped(val,levelData(currentLevel).vi)){lastTranscript=val;completeLevel('typed');}else{$('transcript').className='transcript show bad';$('transcript').textContent=`Your answer: “${val}”`;$('feedback').className='feedback bad';$('feedback').textContent='You are close. Check the tone marks and spaces, listen to the model, and try again. You can also ask a family member to say it with you.';}});
 $('typedAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('checkTyped').click()});
-$('nextBtn').addEventListener('click',()=>loadLevel(currentLevel===100?1:currentLevel+1));
+$('nextBtn').addEventListener('click',advanceLevel);$('mobileNextBtn').addEventListener('click',advanceLevel);
 window.addEventListener('beforeunload',()=>{if(window.speechSynthesis)window.speechSynthesis.cancel();});
 renderStages();loadLevel(1);
-if ('serviceWorker' in navigator && location.protocol !== 'file:') { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {})); }
+if ('serviceWorker' in navigator && location.protocol !== 'file:') { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'}).then(reg=>reg.update()).catch(() => {})); }
 </script>
 </body>
 </html>

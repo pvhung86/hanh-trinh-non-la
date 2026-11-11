@@ -82,3 +82,13 @@ Official publication: <https://congbao.chinhphu.vn/van-ban/thong-tu-so-28-2018-t
 Further reading on Northern/Hà Nội tone patterns and dialect variation:
 - Michaud et al., *Inconspicuous coarticulation: A complex path to sound change in the tone system of Hanoi Vietnamese*: <https://www.sciencedirect.com/science/article/pii/S009544701630033X>
 - Pham & McLeod, *Consonants, vowels and tones across Vietnamese dialects*: <https://doi.org/10.3109/17549507.2015.1101162>
+
+## Mobile progression fix (Version 4)
+
+On phone-sized screens, a successful answer now opens a fixed **Next level** bar at the bottom of the screen (above the iOS/Android safe area) and scrolls the completed lesson into view. This makes the continue action visible even when the lesson content is taller than the phone viewport. The desktop Next level button remains in place.
+
+After a correct spoken phrase, the app now stops the active recognition session and ignores late/duplicate speech events. The microphone button is reset when the next level loads. Touch targets are protected from accidental double taps, and text inputs use a 16px font to avoid automatic zoom when focused in iOS Safari.
+
+The offline cache was bumped to `non-la-quest-v4-mobile-flow`. When updating an existing GitHub Pages installation, upload the new files (including `service-worker.js`) and then refresh the site on the phone. If an old app shell remains visible, close the tab and reopen the site; if necessary, clear that site's stored website data once so its old service worker/cache is removed.
+
+**Compatibility note:** Speech recognition is still a browser-provided feature with limited availability, not a feature guaranteed by all mobile browsers. Chrome on Android and Safari on iOS may differ by OS version, language pack, microphone permission and speech-service availability. Typed practice remains available as the dependable fallback. See MDN's current compatibility notes: <https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition>.

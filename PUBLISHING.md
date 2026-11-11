@@ -28,4 +28,18 @@ Official instructions: https://docs.github.com/en/pages/getting-started-with-git
 
 ## Update the game later
 
-For Cloudflare Direct Upload, upload a new ZIP/folder as a new deployment. For GitHub Pages, replace the changed files in the repository and commit the update. The current release uses service-worker cache `non-la-quest-v3`; increment this value when a later release changes cached assets.
+For Cloudflare Direct Upload, upload a new ZIP/folder as a new deployment. For GitHub Pages, replace the changed files in the repository and commit the update. The current release uses service-worker cache `non-la-quest-v4-mobile-flow`. The cache version is changed on each release that updates the offline app shell. When updating an existing deployment, upload the new `index.html` and `service-worker.js` together. Then fully close and reopen the mobile browser tab. If the older interface remains cached, clear the website data for that site once and reload.
+
+
+## Verify the mobile fix
+
+1. Open the deployed HTTPS URL in Chrome on Android or Safari on iPhone/iPad.
+2. Allow microphone access and complete a phrase.
+3. After the success message, look for the fixed **Next level** bar at the bottom of the screen.
+4. Tap **Next level**; the next phrase should load and the microphone should be ready again.
+5. Rotate the device or test a smaller screen to confirm the continue bar remains visible above the system/browser safe area.
+6. If the old page still appears after deployment, close the tab, reopen the URL, and if needed clear the website's stored data once to remove an older service-worker cache.
+
+Speech-recognition availability remains dependent on the mobile browser and OS speech service. The game should always remain playable with the **Type instead** fallback when speech recognition is unavailable.
+
+For the phone-specific continue-bar fix and instructions for updating an existing deployment, see `MOBILE-TROUBLESHOOTING.md`.
