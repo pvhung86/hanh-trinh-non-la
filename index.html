@@ -1,1602 +1,300 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nón Lá Phiêu Lưu - Học Phát Âm Tiếng Việt</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#135640">
+<meta name="description" content="Hành Trình Nón Lá — a 100-level Northern Vietnamese heritage speaking adventure for children.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Hành Trình Nón Lá — Vietnamese Heritage Adventure</title>
+<style>
+:root{--forest:#12583f;--forest2:#1e7653;--mint:#e9f5e9;--cream:#fff9e9;--ink:#183c31;--muted:#668276;--coral:#fa745b;--sun:#ffca54;--line:#dfebdf;--white:#fff;--shadow:0 18px 45px rgba(27,73,51,.13)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Nunito,"Trebuchet MS",system-ui,-apple-system,sans-serif;background:radial-gradient(circle at 8% 2%,#f9e7ba 0,transparent 23%),linear-gradient(135deg,#f1f8ee 0%,#fff9ea 100%)}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid #f7b83e;outline-offset:3px}
+.topbar{background:var(--forest);color:#fff;padding:13px clamp(16px,4vw,54px);display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 5px 18px rgba(13,64,44,.15)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{width:42px;height:42px;border-radius:14px;background:#f9c85c;color:#174d37;display:grid;place-items:center;font-size:24px;box-shadow:inset 0 -3px 0 rgba(123,78,0,.12)}
+.brand-title{font-size:18px;font-weight:1000;letter-spacing:.2px;line-height:1.1}
+.brand-sub{font-size:11px;color:#cce6d4;margin-top:3px;letter-spacing:.6px;text-transform:uppercase}
+.top-actions{display:flex;align-items:center;gap:9px}
+.pill{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;color:#eff9f1;background:rgba(255,255,255,.08);white-space:nowrap}
+main{max-width:1260px;margin:0 auto;padding:26px clamp(14px,3vw,32px) 34px}
+.intro{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:21px}
+.intro h1{font-size:clamp(25px,3vw,36px);line-height:1.08;letter-spacing:-1px;margin:0 0 7px;font-weight:1000}
+.intro p{margin:0;color:var(--muted);font-size:14px;max-width:590px;line-height:1.5}
+.intro-badge{flex:none;display:flex;align-items:center;gap:8px;border-radius:16px;padding:10px 14px;background:#fff;border:1px solid #e9e0c9;box-shadow:0 5px 15px rgba(80,71,33,.06);font-size:12px;font-weight:900;color:#8b6720}
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+.side-card,.play-card{background:rgba(255,255,255,.92);border:1px solid rgba(215,231,216,.9);border-radius:24px;box-shadow:var(--shadow)}
+.side-card{padding:20px;position:sticky;top:16px}
+.side-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.side-heading h2{font-size:16px;margin:0;font-weight:1000}
+.small-cap{color:#82988c;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:900}
+.overall-progress{height:9px;border-radius:10px;background:#edf3e9;margin:12px 0 7px;overflow:hidden}
+.overall-fill{height:100%;width:0;background:linear-gradient(90deg,#39a96b,#9ecb60);border-radius:inherit;transition:width .3s}
+.progress-caption{display:flex;justify-content:space-between;color:#72897d;font-size:11px;font-weight:800;margin-bottom:19px}
+.stage-list{display:grid;gap:8px}
+.stage-btn{width:100%;border:1px solid #e8eee7;background:#fbfdf9;border-radius:14px;text-align:left;padding:10px 11px;display:grid;grid-template-columns:33px 1fr auto;align-items:center;gap:9px;color:var(--ink);transition:.18s}
+.stage-btn:hover{transform:translateY(-1px);border-color:#acd4b6;background:#f4fbf2}
+.stage-btn.active{border-color:#75b98e;background:#eff9ee;box-shadow:inset 0 0 0 1px #c9e5cb}
+.stage-icon{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:#eff3dd}
+.stage-name{font-weight:950;font-size:12px;line-height:1.15}
+.stage-age{display:block;color:#84968b;font-size:10px;font-weight:700;margin-top:3px}
+.stage-range{font-size:10px;color:#8b9c90;font-weight:900}
+.stage-mini{height:3px;background:#e8eee7;border-radius:5px;margin-top:6px;overflow:hidden}
+.stage-mini span{display:block;height:100%;background:#72b781;width:0}
+.jump-box{margin-top:18px;padding-top:16px;border-top:1px solid #edf1e9}
+.jump-title{font-size:12px;font-weight:1000;margin-bottom:8px}
+.jump-row{display:flex;gap:8px}
+.jump-row input{min-width:0;width:100%;border:1px solid #dce8dc;background:#fbfdf9;border-radius:11px;padding:10px 11px;color:var(--ink);font-weight:900}
+.jump-row button{border:0;border-radius:11px;background:var(--forest);color:#fff;padding:0 14px;font-weight:950;white-space:nowrap}
+.jump-note{color:#87998e;font-size:10px;line-height:1.4;margin-top:7px}
+.local-note{display:flex;align-items:center;gap:6px;font-size:10px;color:#789082;margin-top:14px}
+.play-card{overflow:hidden}
+.lesson-head{padding:17px 22px 13px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.lesson-head-left{min-width:0}
+.lesson-kicker{font-size:10px;color:#82968a;text-transform:uppercase;letter-spacing:1.25px;font-weight:1000;margin-bottom:4px}
+.lesson-title{font-size:17px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson-meta{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.meta-chip{border-radius:999px;background:#f1f6ec;padding:7px 10px;color:#557765;font-size:10px;font-weight:950;white-space:nowrap}
+.meta-chip.level{background:#fff1d6;color:#936515}
+.scene{height:clamp(225px,31vw,340px);position:relative;overflow:hidden;background:#b7e2c0 url('assets/vietnam-countryside.webp') center 57%/cover no-repeat;isolation:isolate;transition:filter .3s ease,background-position .3s ease}
+.scene[data-stage="1"]{background-position:46% 58%;filter:saturate(1.08)}
+.scene[data-stage="2"]{background-position:58% 54%;filter:saturate(1.12) hue-rotate(-5deg)}
+.scene[data-stage="3"]{background-position:67% 58%;filter:saturate(1.02)}
+.scene[data-stage="4"]{background-position:42% 62%;filter:saturate(1.12) hue-rotate(5deg)}
+.scene[data-stage="5"]{background-position:53% 43%;filter:saturate(1.06) contrast(1.02)}
+.scene:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(20,73,49,.05) 55%,rgba(15,68,42,.2));z-index:-1}
+.scene-label{position:absolute;top:14px;left:17px;color:#fff;background:rgba(15,73,49,.76);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 12px;font-size:10px;font-weight:950;letter-spacing:.5px}
+.scene-stars{position:absolute;top:14px;right:17px;display:flex;gap:5px}
+.scene-stars span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);display:grid;place-items:center;font-size:14px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.runner-track{position:absolute;left:8%;right:8%;bottom:15%;height:4px;border-radius:10px;background:rgba(255,255,255,.75);box-shadow:0 2px 5px rgba(42,65,33,.12)}
+.track-dot{position:absolute;top:50%;width:12px;height:12px;border:3px solid white;background:#f7bd4b;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 1px 4px #52694a}
+.track-dot:nth-child(1){left:0}.track-dot:nth-child(2){left:33.3%}.track-dot:nth-child(3){left:66.6%}.track-dot:nth-child(4){left:100%}
+.obstacles{position:absolute;left:10%;right:10%;bottom:calc(15% - 28px);height:47px;display:flex;justify-content:space-around;align-items:end;pointer-events:none}
+.obstacle{font-size:29px;filter:drop-shadow(0 4px 2px rgba(45,54,31,.2));animation:bob 2.2s ease-in-out infinite}
+.obstacle:nth-child(2){animation-delay:.4s}.obstacle:nth-child(3){animation-delay:.8s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.runner{position:absolute;left:8%;bottom:calc(15% - 36px);width:78px;height:78px;display:grid;place-items:center;z-index:3;filter:drop-shadow(0 7px 4px rgba(43,67,35,.25));transition:left 1.05s cubic-bezier(.2,.8,.25,1)}
+.runner svg{width:100%;height:100%;overflow:visible}
+.runner.jump{animation:jump .95s ease-in-out}
+@keyframes jump{0%{transform:translateY(0) rotate(-3deg)}25%{transform:translateY(-62px) rotate(6deg)}52%{transform:translateY(-28px) rotate(-5deg)}78%{transform:translateY(-48px) rotate(4deg)}100%{transform:translateY(0) rotate(0)}}
+.goal-flag{position:absolute;right:5%;bottom:calc(15% - 20px);font-size:31px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.15))}
+.scene-pop{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%) scale(.7);opacity:0;background:#fffdf4;color:#27623e;font-size:18px;font-weight:1000;padding:11px 18px;border-radius:18px;box-shadow:0 8px 30px rgba(30,75,42,.2);white-space:nowrap;z-index:5;pointer-events:none}
+.scene-pop.show{animation:pop .95s ease forwards}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-30%) scale(.7)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}75%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-85%) scale(.95)}}
+.lesson-content{padding:21px clamp(16px,3vw,28px) 24px}
+.phrase-row{display:flex;align-items:flex-start;justify-content:space-between;gap:15px}
+.phrase-label{color:#82958a;font-size:10px;font-weight:1000;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:7px}
+.phrase{font-size:clamp(25px,3vw,36px);font-weight:1000;line-height:1.15;letter-spacing:-.7px;color:#1c5439;margin:0;max-width:650px}
+.translation{font-size:14px;color:#71887b;margin-top:8px;font-weight:700}
+.hint{font-size:12px;color:#9a8145;margin-top:7px;line-height:1.4}
+.listen-btn{flex:none;border:1px solid #dcebdc;background:#f5fbf2;color:#26704c;width:45px;height:45px;border-radius:15px;font-size:20px;box-shadow:0 4px 10px rgba(35,85,54,.07)}
+.listen-btn:hover{background:#e7f5e6;transform:translateY(-1px)}
+.speech-area{margin-top:19px;border:1px solid #e5eee1;background:#fbfdf8;border-radius:18px;padding:14px}
+.speech-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+.speech-instruction{font-size:12px;font-weight:950;display:flex;gap:8px;align-items:center}
+.mic-status{font-size:10px;color:#84968a;font-weight:800}
+.speech-controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.mic-btn{border:0;background:var(--coral);color:white;border-radius:13px;padding:12px 18px;font-size:13px;font-weight:1000;box-shadow:0 4px 0 #d95743;display:flex;align-items:center;gap:8px;transition:.15s}
+.mic-btn:hover{transform:translateY(-1px);box-shadow:0 5px 0 #d95743}
+.mic-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #d95743}
+.mic-btn.listening{background:#bd4b47;box-shadow:0 4px 0 #913431;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 4px 0 #913431,0 0 0 7px rgba(189,75,71,.15)}}
+.type-toggle{border:1px solid #e2e9df;background:#fff;border-radius:12px;padding:10px 13px;font-size:11px;color:#557465;font-weight:900}
+.type-row{display:none;gap:8px;margin-top:10px}
+.type-row.show{display:flex}
+.type-row input{min-width:0;flex:1;border:1px solid #dbe7d9;background:#fff;border-radius:11px;padding:10px 12px;font-size:13px}
+.type-row button{border:0;border-radius:11px;background:#28744f;color:#fff;padding:0 15px;font-size:12px;font-weight:950}
+.transcript{margin-top:10px;padding:10px 12px;border-radius:11px;background:#f0f5ee;color:#5a7566;font-size:12px;line-height:1.4;min-height:38px;display:none}
+.transcript.show{display:block}
+.transcript.good{background:#e6f7e7;color:#277044}.transcript.bad{background:#fff2e2;color:#92602b}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
+.stage-description{font-size:11px;color:#82958a;line-height:1.4;margin-top:4px;max-width:580px}
+.pronunciation-note{font-size:11px;line-height:1.4;color:#426f62;background:#eff7ee;border-left:3px solid #80b58e;border-radius:0 9px 9px 0;padding:8px 10px;margin-top:10px;max-width:760px}
+.tone-guide{margin-top:14px;border:1px solid #e3ecdf;border-radius:13px;background:#fff;padding:11px 13px;color:#61796c}
+.tone-guide summary{cursor:pointer;font-size:11px;font-weight:950;color:#456d56}
+.tone-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:11px}
+.tone-grid>div{background:#f5f9f2;border-radius:9px;padding:9px;display:grid;gap:3px}
+.tone-grid b{font-size:10px;color:#315f45}
+.tone-grid span,.tone-guide p{font-size:10px;line-height:1.45;color:#71877a;margin:0}
+.tone-guide p{margin-top:10px}
+@media(max-width:540px){.tone-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stage-description{font-size:10px}}
 
-        .game-wrapper {
-            max-width: 900px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #FF6B6B, #FFA07A);
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 1.6em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .stat-box {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            backdrop-filter: blur(10px);
-        }
-
-        .chrome-notice {
-            background: #FFF3E0;
-            border-left: 4px solid #FF9800;
-            padding: 12px 20px;
-            font-size: 0.9em;
-            color: #E65100;
-        }
-
-        .chrome-notice strong {
-            color: #BF360C;
-        }
-
-        .level-panel {
-            padding: 25px 30px;
-            background: #F5F5F5;
-            border-bottom: 2px solid #E0E0E0;
-        }
-
-        .level-panel h2 {
-            color: #1565C0;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .level-controls {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .level-controls input {
-            padding: 12px 18px;
-            font-size: 1.1em;
-            border: 3px solid #4CAF50;
-            border-radius: 12px;
-            width: 100px;
-            text-align: center;
-            font-weight: bold;
-            color: #2E7D32;
-        }
-
-        .level-controls input:focus {
-            outline: none;
-            border-color: #2196F3;
-            box-shadow: 0 0 10px rgba(33,150,243,0.3);
-        }
-
-        .btn {
-            padding: 12px 24px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-start {
-            background: linear-gradient(135deg, #4CAF50, #66BB6A);
-            color: white;
-        }
-
-        .btn-retry {
-            background: linear-gradient(135deg, #FF9800, #FFB74D);
-            color: white;
-        }
-
-        .btn-next {
-            background: linear-gradient(135deg, #2196F3, #64B5F6);
-            color: white;
-        }
-
-        .difficulty-legend {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            font-size: 0.85em;
-        }
-
-        .diff-tag {
-            padding: 4px 12px;
-            border-radius: 15px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .diff-1 { background: #4CAF50; }
-        .diff-2 { background: #8BC34A; }
-        .diff-3 { background: #FFC107; color: #333; }
-        .diff-4 { background: #FF9800; }
-        .diff-5 { background: #F44336; }
-
-        .game-screen {
-            padding: 20px 30px 30px;
-        }
-
-        .mode-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            margin-bottom: 15px;
-        }
-
-        .mode-btn {
-            padding: 10px 24px;
-            border: 2px solid #4CAF50;
-            background: white;
-            color: #4CAF50;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1em;
-            transition: all 0.2s;
-        }
-
-        .mode-btn:first-child {
-            border-radius: 10px 0 0 10px;
-        }
-
-        .mode-btn:last-child {
-            border-radius: 0 10px 10px 0;
-            border-left: none;
-        }
-
-        .mode-btn.active {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .phrase-area {
-            text-align: center;
-            margin: 20px 0;
-            min-height: 100px;
-        }
-
-        .target-phrase {
-            font-size: 2.8em;
-            color: #1B5E20;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        }
-
-        .target-phrase.correct {
-            color: #2E7D32;
-            transform: scale(1.05);
-        }
-
-        .target-phrase.incorrect {
-            color: #C62828;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .phrase-hint {
-            color: #757575;
-            font-size: 1em;
-            font-style: italic;
-        }
-
-        .retry-message {
-            font-size: 1.8em;
-            color: #FF6F00;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: none;
-        }
-
-        .retry-message.show {
-            display: block;
-            animation: bounceIn 0.5s;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            height: 320px;
-            background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 50%, #98FB98 100%);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 4px solid #4CAF50;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        #gameCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
-        .listening-indicator {
-            text-align: center;
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: bold;
-            color: #1565C0;
-        }
-
-        .listening-dot {
-            width: 12px;
-            height: 12px;
-            background: #F44336;
-            border-radius: 50%;
-            animation: blink 1s infinite;
-        }
-
-        .listening-dot.inactive {
-            background: #BDBDBD;
-            animation: none;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .feedback-area {
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
-        }
-
-        .feedback-msg {
-            font-size: 1.2em;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 10px;
-            margin-bottom: 5px;
-        }
-
-        .feedback-msg.correct {
-            background: #C8E6C9;
-            color: #2E7D32;
-        }
-
-        .feedback-msg.incorrect {
-            background: #FFCDD2;
-            color: #C62828;
-        }
-
-        .feedback-msg.listening {
-            background: #FFF9C4;
-            color: #F57F17;
-        }
-
-        .what-heard {
-            color: #757575;
-            font-size: 0.95em;
-        }
-
-        .what-heard span {
-            font-weight: bold;
-            color: #1565C0;
-            background: #E3F2FD;
-            padding: 2px 8px;
-            border-radius: 5px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn-speak {
-            background: linear-gradient(135deg, #E91E63, #F06292);
-            color: white;
-            padding: 15px 35px;
-            font-size: 1.3em;
-        }
-
-        .btn-speak.listening {
-            background: linear-gradient(135deg, #F44336, #EF5350);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 5px 15px rgba(244,67,54,0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(244,67,54,0.6); }
-        }
-
-        .stars-display {
-            text-align: center;
-            font-size: 2em;
-            margin: 10px 0;
-            min-height: 40px;
-        }
-
-        .level-info-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .level-badge {
-            background: linear-gradient(135deg, #FF6F00, #FFA000);
-            color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.95em;
-        }
-
-        .progress-bar-container {
-            background: #E0E0E0;
-            border-radius: 10px;
-            height: 12px;
-            overflow: hidden;
-            flex: 1;
-            max-width: 300px;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.5s;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 600px) {
-            .header h1 { font-size: 1.2em; }
-            .target-phrase { font-size: 2em; }
-            .canvas-container { height: 250px; }
-            .btn { padding: 10px 18px; font-size: 1em; }
-            .btn-speak { padding: 12px 25px; font-size: 1.1em; }
-        }
-    </style>
+.feedback{font-size:12px;font-weight:900;margin-top:10px;min-height:18px;color:#65816f}
+.feedback.good{color:#21824b}.feedback.bad{color:#bb6147}
+.bottom-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid #edf1e9}
+.learning-tip{font-size:11px;color:#82958a;line-height:1.45;max-width:470px}
+.next-btn{border:0;border-radius:13px;background:var(--forest);color:white;padding:12px 17px;font-weight:1000;font-size:12px;box-shadow:0 4px 0 #0a422e;display:none;white-space:nowrap}
+.next-btn.show{display:block}
+.next-btn:hover{transform:translateY(-1px)}
+.keyboard-note{font-size:10px;color:#8a9c8f;margin-top:14px;text-align:center}
+.footer{padding:18px 4px 0;color:#86988e;font-size:10px;line-height:1.6;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.footer a{color:#56816a}
+.sparkle{position:absolute;z-index:4;pointer-events:none;font-size:21px;animation:spark 1s ease-out forwards}
+@keyframes spark{0%{opacity:0;transform:translateY(10px) scale(.3)}25%{opacity:1}100%{opacity:0;transform:translateY(-55px) scale(1.1)}}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side-card{position:static}.stage-list{grid-template-columns:repeat(2,minmax(0,1fr))}.scene{height:280px}.intro{align-items:flex-start;flex-direction:column}.intro-badge{align-self:flex-start}}
+@media(max-width:540px){.topbar{padding:11px 14px}.brand-title{font-size:15px}.brand-sub{font-size:9px}.top-actions .pill:first-child{display:none}main{padding:18px 11px 26px}.side-card{padding:16px}.stage-list{grid-template-columns:1fr 1fr;gap:6px}.stage-btn{padding:8px 7px;grid-template-columns:27px 1fr auto;gap:6px}.stage-icon{width:27px;height:27px;font-size:15px}.stage-name{font-size:10px}.stage-range{font-size:9px}.lesson-head{padding:14px 14px 11px}.lesson-title{font-size:14px}.meta-chip{font-size:9px;padding:6px 8px}.scene{height:230px;background-position:center 58%}.runner{width:61px;height:61px}.obstacles{font-size:20px}.phrase-row{gap:9px}.phrase{font-size:26px}.translation{font-size:12px}.lesson-content{padding:18px 13px}.speech-area{padding:11px}.speech-top{align-items:flex-start;flex-direction:column;gap:4px}.mic-btn{padding:11px 13px}.type-toggle{padding:10px}.bottom-row{align-items:flex-start;flex-direction:column}.next-btn{width:100%}.footer{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-    <div class="game-wrapper">
-        <div class="header">
-            <h1>🎓 Nón Lá Phiêu Lưu</h1>
-            <div class="header-stats">
-                <div class="stat-box">⭐ <span id="score">0</span></div>
-                <div class="stat-box">🏆 <span id="streak">0</span></div>
-            </div>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true">👒</div>
+    <div><div class="brand-title">HÀNH TRÌNH NÓN LÁ</div><div class="brand-sub">Vietnamese speaking adventure</div></div>
+  </div>
+  <div class="top-actions"><span class="pill">🇻🇳 Hà Nội Vietnamese · 100 levels</span><span class="pill">No account needed</span></div>
+</header>
+<main>
+  <section class="intro">
+    <div><h1>Keep your family language growing!</h1><p>Speak the Vietnamese you share with family. Practise greetings, home conversations, stories and cultural traditions — then build confidence to share your own ideas.</p></div>
+    <div class="intro-badge">⭐ <span id="starCount">0</span> levels completed</div>
+  </section>
+  <div class="layout">
+    <aside class="side-card">
+      <div class="side-heading"><h2>🌱 Your journey</h2><span class="small-cap">100 levels</span></div>
+      <div class="overall-progress"><div class="overall-fill" id="overallFill"></div></div>
+      <div class="progress-caption"><span id="progressText">0 of 100 completed</span><span id="progressPct">0%</span></div>
+      <div class="small-cap" style="margin-bottom:9px">Choose a learning stage</div>
+      <div class="stage-list" id="stageList"></div>
+      <div class="jump-box">
+        <div class="jump-title">🎯 Jump to any level</div>
+        <div class="jump-row"><input id="levelInput" type="number" min="1" max="100" step="1" value="1" aria-label="Level number"><button id="goLevel">Go!</button></div>
+        <div class="jump-note">Enter a number from 1 to 100. Every level is available — no unlocking or account required.</div>
+      </div>
+      <div class="local-note">🔒 Progress stays on this device in this browser.</div>
+    </aside>
+
+    <section class="play-card" aria-label="Vietnamese speaking game">
+      <div class="lesson-head">
+        <div class="lesson-head-left"><div class="lesson-kicker" id="stageKicker">STAGE 1 · LITTLE EXPLORER</div><div class="lesson-title" id="lessonTitle">Talk with the people closest to you</div><div class="stage-description" id="stageDescription">Start with familiar family words, greetings, needs and respectful everyday replies.</div></div>
+        <div class="lesson-meta"><span class="meta-chip level" id="levelChip">LEVEL 1 / 100</span><span class="meta-chip" id="ageChip">AGES 5–7</span></div>
+      </div>
+      <div class="scene" id="scene">
+        <div class="scene-label" id="sceneLabel">🌾 Làng quê Việt Nam · Vietnamese countryside</div>
+        <div class="scene-stars"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+        <div class="runner-track"><i class="track-dot"></i><i class="track-dot"></i><i class="track-dot"></i><i class="track-dot"></i></div>
+        <div class="obstacles" id="obstacles" aria-hidden="true"><span class="obstacle">🪨</span><span class="obstacle">🎋</span><span class="obstacle">🌊</span></div>
+        <div class="runner" id="runner" aria-label="Friendly conical hat character">
+          <svg viewBox="0 0 100 100" role="img" aria-label="A smiling Vietnamese conical hat">
+            <ellipse cx="50" cy="78" rx="37" ry="8" fill="#9c6a24" opacity=".22"/>
+            <path d="M12 59 Q50 48 88 59 Q84 68 50 70 Q17 68 12 59Z" fill="#a56b24" stroke="#75471d" stroke-width="2"/>
+            <path d="M15 58 Q50 52 85 58 Q63 63 50 62 Q32 63 15 58Z" fill="#f2c45d"/>
+            <path d="M20 58 Q32 30 50 12 Q68 30 80 58 Q52 64 20 58Z" fill="#f4cf73" stroke="#9a6d2a" stroke-width="2.5"/>
+            <path d="M29 54 Q43 35 50 16 M70 54 Q57 35 50 16 M22 57 Q50 60 78 57" stroke="#d9a94d" stroke-width="1.8" fill="none" opacity=".85"/>
+            <path d="M37 49 Q41 45 45 49 M55 49 Q59 45 63 49" stroke="#5b4329" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <path d="M44 55 Q50 61 57 55" stroke="#b65d49" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <circle cx="31" cy="55" r="3.5" fill="#ef8d77" opacity=".85"/><circle cx="69" cy="55" r="3.5" fill="#ef8d77" opacity=".85"/>
+            <path d="M50 69 Q48 77 42 81 M50 69 Q53 77 60 81" stroke="#f7e6c3" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
         </div>
-
-        <div class="chrome-notice">
-            💡 <strong>Lưu ý:</strong> Trò chơi sử dụng nhận diện giọng nói. Hoạt động tốt nhất trên trình duyệt <strong>Google Chrome</strong> (desktop hoặc Android). Hãy cho phép truy cập microphone khi được hỏi.
+        <div class="goal-flag">🏁</div>
+        <div class="scene-pop" id="scenePop">Giỏi lắm! 🌟</div>
+      </div>
+      <div class="lesson-content">
+        <div class="phrase-row">
+          <div><div class="phrase-label">Say it naturally · Target variety: Northern Vietnamese (Hà Nội)</div><h2 class="phrase" id="phrase">Xin chào!</h2><div class="translation" id="translation">Hello!</div><div class="hint" id="hint">Use the family words that fit your relationship.</div><div class="pronunciation-note" id="pronunciationNote">🎧 Hà Nội sound focus: listen, then repeat in a relaxed voice.</div></div>
+          <button class="listen-btn" id="listenBtn" title="Hear the device’s Vietnamese voice model; its accent may vary" aria-label="Hear the Vietnamese phrase">🔊</button>
         </div>
-
-        <div class="level-panel">
-            <h2>🎮 Chọn Cấp Độ (1-100)</h2>
-            <div class="level-controls">
-                <input type="number" id="levelInput" min="1" max="100" value="1">
-                <button class="btn btn-start" onclick="startLevel()">🚀 Bắt Đầu</button>
-            </div>
-            <div class="difficulty-legend">
-                <span class="diff-tag diff-1">Cấp 1-20: Cơ bản</span>
-                <span class="diff-tag diff-2">Cấp 21-40: Đơn giản</span>
-                <span class="diff-tag diff-3">Cấp 41-60: Trung bình</span>
-                <span class="diff-tag diff-4">Cấp 61-80: Khó</span>
-                <span class="diff-tag diff-5">Cấp 81-100: Nâng cao</span>
-            </div>
+        <div class="speech-area">
+          <div class="speech-top"><div class="speech-instruction">🎙️ Say the phrase to help the nón lá jump!</div><div class="mic-status" id="micStatus">Speech setting · Vietnamese (vi-VN)</div></div>
+          <div class="speech-controls"><button class="mic-btn" id="micBtn"><span>🎤</span><span id="micText">TAP TO SPEAK</span></button><button class="type-toggle" id="typeToggle">⌨ Type instead</button></div>
+          <div class="type-row" id="typeRow"><input id="typedAnswer" type="text" placeholder="Type the Vietnamese phrase…" autocomplete="off" aria-label="Type Vietnamese phrase"><button id="checkTyped">Check</button></div>
+          <div class="transcript" id="transcript" aria-live="polite"></div>
+          <div class="feedback" id="feedback" aria-live="polite">Say the phrase, and watch the nón lá fly!</div>
         </div>
-
-        <div class="game-screen" id="gameScreen" style="display:none;">
-            <div class="level-info-bar">
-                <span class="level-badge">Cấp <span id="currentLevel">1</span>/100</span>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
-                </div>
-                <span class="diff-tag" id="diffBadge">Cơ bản</span>
-            </div>
-
-            <div class="mode-toggle">
-                <button class="mode-btn active" id="modePhrase" onclick="setMode('phrase')">Cụm từ</button>
-                <button class="mode-btn" id="modeWord" onclick="setMode('word')">Từng từ</button>
-            </div>
-
-            <div class="phrase-area">
-                <div class="retry-message" id="retryMsg">🔄 Thử lại?</div>
-                <div class="target-phrase" id="targetPhrase">Xin chào</div>
-                <div class="phrase-hint" id="phraseHint">Nhấn "Nói" và đọc cụm từ trên</div>
-            </div>
-
-            <div class="canvas-container">
-                <canvas id="gameCanvas"></canvas>
-            </div>
-
-            <div class="listening-indicator">
-                <div class="listening-dot inactive" id="listeningDot"></div>
-                <span id="listeningText">MÁY ĐANG CHỜ</span>
-            </div>
-
-            <div class="stars-display" id="starsDisplay"></div>
-
-            <div class="feedback-area">
-                <div class="feedback-msg" id="feedbackMsg">Sẵn sàng! Nhấn "Nói" để bắt đầu.</div>
-                <div class="what-heard" id="whatHeard"></div>
-            </div>
-
-            <div class="controls">
-                <button class="btn btn-speak" id="btnSpeak" onclick="toggleSpeech()">🎤 Nói</button>
-                <button class="btn btn-retry hidden" id="btnRetry" onclick="retryLevel()">🔄 Chơi lại</button>
-                <button class="btn btn-next hidden" id="btnNext" onclick="nextLevel()">➡️ Tiếp theo</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ===== LEVEL DATA - 100 Levels =====
-        const levels = [
-            // Levels 1-10: Basic vowels (Ages 5-6)
-            { level: 1, phrase: "a", hint: "Nguyên âm A", difficulty: 1, category: "Nguyên âm" },
-            { level: 2, phrase: "ă", hint: "Nguyên âm Ă", difficulty: 1, category: "Nguyên âm" },
-            { level: 3, phrase: "â", hint: "Nguyên âm Â", difficulty: 1, category: "Nguyên âm" },
-            { level: 4, phrase: "e", hint: "Nguyên âm E", difficulty: 1, category: "Nguyên âm" },
-            { level: 5, phrase: "ê", hint: "Nguyên âm Ê", difficulty: 1, category: "Nguyên âm" },
-            { level: 6, phrase: "i", hint: "Nguyên âm I", difficulty: 1, category: "Nguyên âm" },
-            { level: 7, phrase: "o", hint: "Nguyên âm O", difficulty: 1, category: "Nguyên âm" },
-            { level: 8, phrase: "ô", hint: "Nguyên âm Ô", difficulty: 1, category: "Nguyên âm" },
-            { level: 9, phrase: "ơ", hint: "Nguyên âm Ơ", difficulty: 1, category: "Nguyên âm" },
-            { level: 10, phrase: "u", hint: "Nguyên âm U", difficulty: 1, category: "Nguyên âm" },
-
-            // Levels 11-20: Simple words (Ages 5-7)
-            { level: 11, phrase: "ba", hint: "Bố/Ba", difficulty: 1, category: "Gia đình" },
-            { level: 12, phrase: "má", hint: "Mẹ/Má", difficulty: 1, category: "Gia đình" },
-            { level: 13, phrase: "cá", hint: "Con cá", difficulty: 1, category: "Động vật" },
-            { level: 14, phrase: "gà", hint: "Con gà", difficulty: 1, category: "Động vật" },
-            { level: 15, phrase: "nhà", hint: "Ngôi nhà", difficulty: 1, category: "Đồ vật" },
-            { level: 16, phrase: "cây", hint: "Cái cây", difficulty: 1, category: "Thiên nhiên" },
-            { level: 17, phrase: "hoa", hint: "Bông hoa", difficulty: 1, category: "Thiên nhiên" },
-            { level: 18, phrase: "quà", hint: "Món quà", difficulty: 1, category: "Đồ vật" },
-            { level: 19, phrase: "sữa", hint: "Ly sữa", difficulty: 1, category: "Đồ uống" },
-            { level: 20, phrase: "bánh", hint: "Cái bánh", difficulty: 1, category: "Đồ ăn" },
-
-            // Levels 21-30: Animals (Ages 6-8)
-            { level: 21, phrase: "con mèo", hint: "Con mèo", difficulty: 2, category: "Động vật" },
-            { level: 22, phrase: "con chó", hint: "Con chó", difficulty: 2, category: "Động vật" },
-            { level: 23, phrase: "con chim", hint: "Con chim", difficulty: 2, category: "Động vật" },
-            { level: 24, phrase: "con cá", hint: "Con cá", difficulty: 2, category: "Động vật" },
-            { level: 25, phrase: "con gà", hint: "Con gà", difficulty: 2, category: "Động vật" },
-            { level: 26, phrase: "con vịt", hint: "Con vịt", difficulty: 2, category: "Động vật" },
-            { level: 27, phrase: "con bò", hint: "Con bò", difficulty: 2, category: "Động vật" },
-            { level: 28, phrase: "con heo", hint: "Con heo", difficulty: 2, category: "Động vật" },
-            { level: 29, phrase: "con trâu", hint: "Con trâu", difficulty: 2, category: "Động vật" },
-            { level: 30, phrase: "con ngựa", hint: "Con ngựa", difficulty: 2, category: "Động vật" },
-
-            // Levels 31-40: Family & Body (Ages 7-9)
-            { level: 31, phrase: "ông bà", hint: "Ông và bà", difficulty: 2, category: "Gia đình" },
-            { level: 32, phrase: "cha mẹ", hint: "Cha và mẹ", difficulty: 2, category: "Gia đình" },
-            { level: 33, phrase: "anh chị", hint: "Anh và chị", difficulty: 2, category: "Gia đình" },
-            { level: 34, phrase: "em bé", hint: "Em bé", difficulty: 2, category: "Gia đình" },
-            { level: 35, phrase: "cái tay", hint: "Bàn tay", difficulty: 2, category: "Cơ thể" },
-            { level: 36, phrase: "cái chân", hint: "Bàn chân", difficulty: 2, category: "Cơ thể" },
-            { level: 37, phrase: "cái đầu", hint: "Cái đầu", difficulty: 2, category: "Cơ thể" },
-            { level: 38, phrase: "con mắt", hint: "Con mắt", difficulty: 2, category: "Cơ thể" },
-            { level: 39, phrase: "cái mũi", hint: "Cái mũi", difficulty: 2, category: "Cơ thể" },
-            { level: 40, phrase: "cái miệng", hint: "Cái miệng", difficulty: 2, category: "Cơ thể" },
-
-            // Levels 41-50: Actions (Ages 8-10)
-            { level: 41, phrase: "đi học", hint: "Đi đến trường", difficulty: 3, category: "Hành động" },
-            { level: 42, phrase: "ăn cơm", hint: "Ăn bữa cơm", difficulty: 3, category: "Hành động" },
-            { level: 43, phrase: "uống nước", hint: "Uống nước", difficulty: 3, category: "Hành động" },
-            { level: 44, phrase: "ngủ ngon", hint: "Ngủ giấc ngon", difficulty: 3, category: "Hành động" },
-            { level: 45, phrase: "chơi vui", hint: "Chơi đùa vui vẻ", difficulty: 3, category: "Hành động" },
-            { level: 46, phrase: "đọc sách", hint: "Đọc sách", difficulty: 3, category: "Hành động" },
-            { level: 47, phrase: "viết bài", hint: "Viết bài tập", difficulty: 3, category: "Hành động" },
-            { level: 48, phrase: "hát hay", hint: "Hát bài hát hay", difficulty: 3, category: "Hành động" },
-            { level: 49, phrase: "múa đẹp", hint: "Múa điệu đẹp", difficulty: 3, category: "Hành động" },
-            { level: 50, phrase: "vẽ tranh", hint: "Vẽ bức tranh", difficulty: 3, category: "Hành động" },
-
-            // Levels 51-60: Descriptive (Ages 9-11)
-            { level: 51, phrase: "trời xanh", hint: "Bầu trời xanh", difficulty: 3, category: "Miêu tả" },
-            { level: 52, phrase: "mây trắng", hint: "Đám mây trắng", difficulty: 3, category: "Miêu tả" },
-            { level: 53, phrase: "nắng ấm", hint: "Nắng ấm áp", difficulty: 3, category: "Miêu tả" },
-            { level: 54, phrase: "mưa rơi", hint: "Mưa đang rơi", difficulty: 3, category: "Miêu tả" },
-            { level: 55, phrase: "gió thổi", hint: "Gió đang thổi", difficulty: 3, category: "Miêu tả" },
-            { level: 56, phrase: "hoa thơm", hint: "Hoa tỏa hương thơm", difficulty: 3, category: "Miêu tả" },
-            { level: 57, phrase: "quả ngọt", hint: "Quả chín ngọt", difficulty: 3, category: "Miêu tả" },
-            { level: 58, phrase: "cây cao", hint: "Cây mọc cao", difficulty: 3, category: "Miêu tả" },
-            { level: 59, phrase: "đường xa", hint: "Con đường xa", difficulty: 3, category: "Miêu tả" },
-            { level: 60, phrase: "sông dài", hint: "Dòng sông dài", difficulty: 3, category: "Miêu tả" },
-
-            // Levels 61-70: Sentences (Ages 10-12)
-            { level: 61, phrase: "Em đi học mỗi ngày", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 62, phrase: "Mẹ nấu cơm ngon lắm", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 63, phrase: "Bố đi làm về sớm", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 64, phrase: "Chim hót trên cành cây", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 65, phrase: "Cá bơi dưới nước trong", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 66, phrase: "Hoa nở đẹp trong vườn", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 67, phrase: "Trăng sáng trên bầu trời", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 68, phrase: "Sao lấp lánh đêm nay", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 69, phrase: "Mưa rơi nhẹ ngoài sân", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-            { level: 70, phrase: "Gió thổi mát rượi cả người", hint: "Câu hoàn chỉnh", difficulty: 4, category: "Câu đơn" },
-
-            // Levels 71-80: Poetry & Folk (Ages 11-13)
-            { level: 71, phrase: "Trên trời có đám mây xanh", hint: "Thơ thiếu nhi", difficulty: 4, category: "Thơ" },
-            { level: 72, phrase: "Ở giữa mây trắng xung quanh mây vàng", hint: "Thơ thiếu nhi", difficulty: 4, category: "Thơ" },
-            { level: 73, phrase: "Con cò bay lả bay la", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 74, phrase: "Bay từ cửa phủ bay ra cánh đồng", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 75, phrase: "Công cha như núi Thái Sơn", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 76, phrase: "Nghĩa mẹ như nước trong nguồn chảy ra", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 77, phrase: "Trong đầm gì đẹp bằng sen", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 78, phrase: "Lá xanh bông trắng lại chen nhụy vàng", hint: "Ca dao", difficulty: 4, category: "Ca dao" },
-            { level: 79, phrase: "Nhiễu điều phủ lấy giá gương", hint: "Tục ngữ", difficulty: 4, category: "Tục ngữ" },
-            { level: 80, phrase: "Người trong một nước phải thương nhau cùng", hint: "Tục ngữ", difficulty: 4, category: "Tục ngữ" },
-
-            // Levels 81-90: Advanced (Ages 12-14)
-            { level: 81, phrase: "Tinh thần đoàn kết dân tộc", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 82, phrase: "Bảo vệ môi trường xanh sạch đẹp", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 83, phrase: "Học tập và làm theo tấm gương", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 84, phrase: "Phát huy truyền thống tốt đẹp", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 85, phrase: "Xây dựng đất nước giàu mạnh", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 86, phrase: "Giữ gìn bản sắc văn hóa dân tộc", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 87, phrase: "Đoàn kết là sức mạnh vô địch", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 88, phrase: "Tri thức là sức mạnh của thời đại", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 89, phrase: "Sáng tạo đổi mới vì ngày mai", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-            { level: 90, phrase: "Việt Nam quê hương tôi yêu dấu", hint: "Từ vựng nâng cao", difficulty: 5, category: "Nâng cao" },
-
-            // Levels 91-100: Proverbs (Ages 13-15)
-            { level: 91, phrase: "Ăn quả nhớ kẻ trồng cây", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 92, phrase: "Uống nước nhớ nguồn tổ tiên", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 93, phrase: "Một cây làm chẳng nên non", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 94, phrase: "Ba cây chụm lại nên hòn núi cao", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 95, phrase: "Thất bại là mẹ thành công", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 96, phrase: "Có công mài sắt có ngày nên kim", hint: "Tục ngữ", difficulty: 5, category: "Tục ngữ" },
-            { level: 97, phrase: "Học học nữa học mãi không ngừng", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
-            { level: 98, phrase: "Đường đi khó không khó vì ngăn sông cách núi", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
-            { level: 99, phrase: "Khó khăn chỉ làm người yếu đuối chùn bước", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" },
-            { level: 100, phrase: "Người mạnh mẽ sẽ vượt qua mọi thử thách", hint: "Danh ngôn", difficulty: 5, category: "Danh ngôn" }
-        ];
-
-        // ===== GAME STATE =====
-        let currentLevel = 1;
-        let score = 0;
-        let streak = 0;
-        let isListening = false;
-        let recognition = null;
-        let gameMode = 'phrase';
-        let canvas, ctx;
-        let animFrame;
-        let gameState = 'idle'; // idle, running, success, fail
-        let attemptCount = 0;
-
-        // Character
-        let player = {
-            x: 120,
-            y: 0,
-            width: 60,
-            height: 70,
-            vy: 0,
-            jumping: false,
-            groundY: 0,
-            runFrame: 0,
-            runTimer: 0
-        };
-
-        // Obstacles
-        let obstacles = [];
-        let obstacleTimer = 0;
-        let obstacleInterval = 120;
-        let scrollSpeed = 3;
-        let scrollOffset = 0;
-
-        // Background elements
-        let clouds = [];
-        let bamboos = [];
-        let lotuses = [];
-        let mountains = [];
-        let buffalo = { x: 0, y: 0, visible: false };
-
-        // Particles
-        let particles = [];
-
-        // ===== SPEECH RECOGNITION =====
-        function initSpeechRecognition() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.lang = 'vi-VN';
-                recognition.continuous = false;
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 3;
-
-                recognition.onresult = function(event) {
-                    let bestMatch = null;
-                    for (let i = 0; i < event.results[0].length; i++) {
-                        const transcript = event.results[0][i].transcript;
-                        if (checkMatch(transcript)) {
-                            bestMatch = transcript;
-                            break;
-                        }
-                    }
-                    if (bestMatch) {
-                        handleSuccess(bestMatch);
-                    } else {
-                        const transcript = event.results[0][0].transcript;
-                        handleFailure(transcript);
-                    }
-                };
-
-                recognition.onerror = function(event) {
-                    console.error('Speech error:', event.error);
-                    if (event.error !== 'no-speech') {
-                        updateFeedback('⚠️ Lỗi: ' + event.error, 'incorrect');
-                    }
-                    stopListening();
-                };
-
-                recognition.onend = function() {
-                    stopListening();
-                };
-            } else {
-                alert('Trình duyệt không hỗ trợ nhận diện giọng nói. Vui lòng dùng Google Chrome!');
-            }
-        }
-
-        function toggleSpeech() {
-            if (gameState === 'success') return;
-            if (isListening) {
-                recognition.stop();
-            } else {
-                startListening();
-            }
-        }
-
-        function startListening() {
-            if (!recognition) initSpeechRecognition();
-            try {
-                isListening = true;
-                document.getElementById('btnSpeak').classList.add('listening');
-                document.getElementById('btnSpeak').textContent = '⏹️ Dừng';
-                document.getElementById('listeningDot').classList.remove('inactive');
-                document.getElementById('listeningText').textContent = 'MÁY ĐANG NGHE...';
-                updateFeedback('🎤 Đang nghe... Hãy nói đi!', 'listening');
-                recognition.start();
-            } catch(e) {
-                console.error(e);
-            }
-        }
-
-        function stopListening() {
-            isListening = false;
-            document.getElementById('btnSpeak').classList.remove('listening');
-            document.getElementById('btnSpeak').textContent = '🎤 Nói';
-            document.getElementById('listeningDot').classList.add('inactive');
-            document.getElementById('listeningText').textContent = 'MÁY ĐANG CHỜ';
-        }
-
-        function normalizeVietnamese(text) {
-            const toneMap = {
-                'á':'a','à':'a','ả':'a','ã':'a','ạ':'a',
-                'ă':'a','ắ':'a','ằ':'a','ẳ':'a','ẵ':'a','ặ':'a',
-                'â':'a','ấ':'a','ầ':'a','ẩ':'a','ẫ':'a','ậ':'a',
-                'é':'e','è':'e','ẻ':'e','ẽ':'e','ẹ':'e',
-                'ê':'e','ế':'e','ề':'e','ể':'e','ễ':'e','ệ':'e',
-                'í':'i','ì':'i','ỉ':'i','ĩ':'i','ị':'i',
-                'ó':'o','ò':'o','ỏ':'o','õ':'o','ọ':'o',
-                'ô':'o','ố':'o','ồ':'o','ổ':'o','ỗ':'o','ộ':'o',
-                'ơ':'o','ớ':'o','ờ':'o','ở':'o','ỡ':'o','ợ':'o',
-                'ú':'u','ù':'u','ủ':'u','ũ':'u','ụ':'u',
-                'ư':'u','ứ':'u','ừ':'u','ử':'u','ữ':'u','ự':'u',
-                'ý':'y','ỳ':'y','ỷ':'y','ỹ':'y','ỵ':'y',
-                'đ':'d'
-            };
-            let result = text.toLowerCase();
-            for (let [accented, base] of Object.entries(toneMap)) {
-                result = result.replace(new RegExp(accented, 'g'), base);
-            }
-            return result.replace(/\s+/g, ' ').trim();
-        }
-
-        function checkMatch(spoken) {
-            const levelData = levels[currentLevel - 1];
-            let target = levelData.phrase;
-            
-            if (gameMode === 'word') {
-                const words = target.split(' ');
-                target = words[0];
-            }
-
-            const normTarget = normalizeVietnamese(target);
-            const normSpoken = normalizeVietnamese(spoken);
-            
-            return normSpoken === normTarget || spoken.toLowerCase().trim() === target.toLowerCase().trim();
-        }
-
-        function handleSuccess(spoken) {
-            stopListening();
-            gameState = 'success';
-            attemptCount = 0;
-            
-            const points = attemptCount === 0 ? 10 : 5;
-            score += points;
-            streak++;
-            document.getElementById('score').textContent = score;
-            document.getElementById('streak').textContent = streak;
-
-            document.getElementById('targetPhrase').classList.add('correct');
-            document.getElementById('retryMsg').classList.remove('show');
-            updateFeedback('🎉 Chính xác! Giỏi lắm! +' + points + ' điểm', 'correct');
-            document.getElementById('whatHeard').innerHTML = 'Máy nghe được: <span>' + spoken + '</span>';
-            updateStars(3);
-
-            // Trigger jump
-            triggerJump();
-            spawnSuccessParticles();
-
-            // Show next button after delay
-            setTimeout(() => {
-                document.getElementById('btnNext').classList.remove('hidden');
-            }, 1500);
-        }
-
-        function handleFailure(spoken) {
-            stopListening();
-            attemptCount++;
-            streak = 0;
-            document.getElementById('streak').textContent = streak;
-
-            document.getElementById('targetPhrase').classList.add('incorrect');
-            setTimeout(() => {
-                document.getElementById('targetPhrase').classList.remove('incorrect');
-            }, 500);
-
-            document.getElementById('retryMsg').classList.add('show');
-            updateFeedback('❌ Chạm rồi. Thử lại!', 'incorrect');
-            document.getElementById('whatHeard').innerHTML = 'Máy nghe được: <span>' + spoken + '</span>';
-            updateStars(0);
-
-            // Show retry button
-            document.getElementById('btnRetry').classList.remove('hidden');
-            document.getElementById('btnNext').classList.add('hidden');
-            
-            // Character hits obstacle animation
-            playerHitObstacle();
-        }
-
-        // ===== UI FUNCTIONS =====
-        function updateFeedback(msg, type) {
-            const el = document.getElementById('feedbackMsg');
-            el.textContent = msg;
-            el.className = 'feedback-msg ' + type;
-        }
-
-        function updateStars(count) {
-            document.getElementById('starsDisplay').textContent = '⭐'.repeat(count) + '☆'.repeat(3 - count);
-        }
-
-        function setMode(mode) {
-            gameMode = mode;
-            document.getElementById('modePhrase').classList.toggle('active', mode === 'phrase');
-            document.getElementById('modeWord').classList.toggle('active', mode === 'word');
-            updatePhraseDisplay();
-        }
-
-        function updatePhraseDisplay() {
-            const levelData = levels[currentLevel - 1];
-            let display = levelData.phrase;
-            if (gameMode === 'word') {
-                display = levelData.phrase.split(' ')[0];
-            }
-            document.getElementById('targetPhrase').textContent = display;
-        }
-
-        function startLevel() {
-            const levelNum = parseInt(document.getElementById('levelInput').value);
-            if (levelNum < 1 || levelNum > 100) {
-                alert('Vui lòng nhập số từ 1 đến 100!');
-                return;
-            }
-
-            currentLevel = levelNum;
-            attemptCount = 0;
-            gameState = 'running';
-
-            document.getElementById('gameScreen').style.display = 'block';
-            document.getElementById('currentLevel').textContent = currentLevel;
-            document.getElementById('btnNext').classList.add('hidden');
-            document.getElementById('btnRetry').classList.add('hidden');
-            document.getElementById('retryMsg').classList.remove('show');
-            document.getElementById('whatHeard').textContent = '';
-            updateStars(0);
-
-            const levelData = levels[currentLevel - 1];
-            document.getElementById('phraseHint').textContent = levelData.hint + ' (' + levelData.category + ')';
-            updatePhraseDisplay();
-
-            const diffBadge = document.getElementById('diffBadge');
-            const diffNames = ['', 'Cơ bản', 'Đơn giản', 'Trung bình', 'Khó', 'Nâng cao'];
-            diffBadge.textContent = diffNames[levelData.difficulty];
-            diffBadge.className = 'diff-tag diff-' + levelData.difficulty;
-
-            const progress = ((currentLevel - 1) / 100) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-
-            updateFeedback('Sẵn sàng! Nhấn "Nói" và đọc cụm từ.', '');
-
-            initCanvas();
-        }
-
-        function retryLevel() {
-            attemptCount = 0;
-            gameState = 'running';
-            document.getElementById('btnRetry').classList.add('hidden');
-            document.getElementById('retryMsg').classList.remove('show');
-            document.getElementById('targetPhrase').classList.remove('correct', 'incorrect');
-            updateFeedback('Sẵn sàng! Thử lại nhé.', '');
-            updateStars(0);
-            resetObstacles();
-        }
-
-        function nextLevel() {
-            if (currentLevel < 100) {
-                document.getElementById('levelInput').value = currentLevel + 1;
-                startLevel();
-            } else {
-                alert('🎉🏆 Chúc mừng! Bạn đã hoàn thành tất cả 100 cấp độ! Tổng điểm: ' + score);
-            }
-        }
-
-        // ===== CANVAS GAME =====
-        function initCanvas() {
-            canvas = document.getElementById('gameCanvas');
-            ctx = canvas.getContext('2d');
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
-            player.groundY = canvas.height - 90;
-            player.y = player.groundY;
-            player.vy = 0;
-            player.jumping = false;
-
-            obstacles = [];
-            particles = [];
-            obstacleTimer = 0;
-            scrollOffset = 0;
-
-            // Init background elements
-            initBackground();
-
-            if (animFrame) cancelAnimationFrame(animFrame);
-            gameLoop();
-        }
-
-        function initBackground() {
-            clouds = [];
-            for (let i = 0; i < 5; i++) {
-                clouds.push({
-                    x: Math.random() * canvas.width,
-                    y: 30 + Math.random() * 60,
-                    size: 30 + Math.random() * 30,
-                    speed: 0.3 + Math.random() * 0.3
-                });
-            }
-
-            bamboos = [];
-            for (let i = 0; i < 8; i++) {
-                bamboos.push({
-                    x: i * 120 + Math.random() * 60,
-                    height: 80 + Math.random() * 60
-                });
-            }
-
-            lotuses = [];
-            for (let i = 0; i < 4; i++) {
-                lotuses.push({
-                    x: 100 + i * 200 + Math.random() * 100,
-                    y: canvas.height - 50,
-                    size: 15 + Math.random() * 10,
-                    phase: Math.random() * Math.PI * 2
-                });
-            }
-
-            mountains = [];
-            for (let i = 0; i < 4; i++) {
-                mountains.push({
-                    x: i * 250,
-                    height: 60 + Math.random() * 40,
-                    width: 180 + Math.random() * 80
-                });
-            }
-
-            buffalo.visible = Math.random() > 0.5;
-            buffalo.x = canvas.width + 100;
-            buffalo.y = canvas.height - 110;
-        }
-
-        function resetObstacles() {
-            obstacles = [];
-            obstacleTimer = 0;
-        }
-
-        function triggerJump() {
-            if (!player.jumping && gameState === 'success') {
-                player.jumping = true;
-                player.vy = -14;
-            }
-        }
-
-        function playerHitObstacle() {
-            // Small bounce back animation
-            player.vy = -5;
-            player.jumping = true;
-        }
-
-        function spawnSuccessParticles() {
-            for (let i = 0; i < 20; i++) {
-                particles.push({
-                    x: player.x + player.width / 2,
-                    y: player.y,
-                    vx: (Math.random() - 0.5) * 8,
-                    vy: -Math.random() * 10 - 2,
-                    life: 60,
-                    color: ['#FFD700', '#FF6B6B', '#4CAF50', '#2196F3', '#FF9800'][Math.floor(Math.random() * 5)],
-                    size: 4 + Math.random() * 4
-                });
-            }
-        }
-
-        function gameLoop() {
-            update();
-            render();
-            animFrame = requestAnimationFrame(gameLoop);
-        }
-
-        function update() {
-            // Update player
-            if (player.jumping) {
-                player.vy += 0.7;
-                player.y += player.vy;
-                if (player.y >= player.groundY) {
-                    player.y = player.groundY;
-                    player.jumping = false;
-                    player.vy = 0;
-                }
-            } else {
-                // Running animation
-                player.runTimer++;
-                if (player.runTimer > 8) {
-                    player.runFrame = (player.runFrame + 1) % 4;
-                    player.runTimer = 0;
-                }
-            }
-
-            // Scroll background
-            scrollOffset += scrollSpeed;
-            if (scrollOffset > 100) scrollOffset = 0;
-
-            // Update clouds
-            clouds.forEach(c => {
-                c.x -= c.speed;
-                if (c.x + c.size < 0) {
-                    c.x = canvas.width + c.size;
-                    c.y = 30 + Math.random() * 60;
-                }
-            });
-
-            // Update bamboos (parallax)
-            bamboos.forEach(b => {
-                b.x -= scrollSpeed * 0.5;
-                if (b.x + 20 < 0) {
-                    b.x = canvas.width + Math.random() * 100;
-                    b.height = 80 + Math.random() * 60;
-                }
-            });
-
-            // Update lotuses
-            lotuses.forEach(l => {
-                l.phase += 0.05;
-            });
-
-            // Update buffalo
-            if (buffalo.visible) {
-                buffalo.x -= scrollSpeed * 0.3;
-                if (buffalo.x < -100) {
-                    buffalo.visible = false;
-                    setTimeout(() => {
-                        buffalo.visible = true;
-                        buffalo.x = canvas.width + 100;
-                    }, 5000 + Math.random() * 5000);
-                }
-            }
-
-            // Spawn obstacles
-            if (gameState === 'running') {
-                obstacleTimer++;
-                if (obstacleTimer > obstacleInterval) {
-                    obstacles.push({
-                        x: canvas.width + 50,
-                        y: player.groundY + 10,
-                        width: 35,
-                        height: 55,
-                        passed: false
-                    });
-                    obstacleTimer = 0;
-                    obstacleInterval = 100 + Math.random() * 80;
-                }
-            }
-
-            // Update obstacles
-            for (let i = obstacles.length - 1; i >= 0; i--) {
-                obstacles[i].x -= scrollSpeed;
-                if (obstacles[i].x + obstacles[i].width < -50) {
-                    obstacles.splice(i, 1);
-                }
-            }
-
-            // Update particles
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += 0.3;
-                p.life--;
-                if (p.life <= 0) particles.splice(i, 1);
-            }
-        }
-
-        function render() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Sky gradient
-            const skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            skyGrad.addColorStop(0, '#87CEEB');
-            skyGrad.addColorStop(0.5, '#B0E0E6');
-            skyGrad.addColorStop(1, '#98FB98');
-            ctx.fillStyle = skyGrad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Sun
-            drawSun();
-
-            // Mountains (far background)
-            drawMountains();
-
-            // Clouds
-            drawClouds();
-
-            // Rice paddy background
-            drawRicePaddy();
-
-            // Bamboo groves
-            drawBamboos();
-
-            // Water buffalo
-            if (buffalo.visible) drawBuffalo();
-
-            // Lotus pond
-            drawLotusPond();
-
-            // Ground
-            drawGround();
-
-            // Obstacles (bamboo stalks as obstacles)
-            obstacles.forEach(obs => drawObstacle(obs));
-
-            // Player character
-            drawPlayer();
-
-            // Particles
-            particles.forEach(p => drawParticle(p));
-        }
-
-        function drawSun() {
-            const sunX = canvas.width - 80;
-            const sunY = 60;
-            
-            // Sun rays
-            ctx.strokeStyle = 'rgba(255, 200, 0, 0.3)';
-            ctx.lineWidth = 3;
-            for (let i = 0; i < 12; i++) {
-                const angle = (i / 12) * Math.PI * 2 + Date.now() * 0.001;
-                ctx.beginPath();
-                ctx.moveTo(sunX + Math.cos(angle) * 35, sunY + Math.sin(angle) * 35);
-                ctx.lineTo(sunX + Math.cos(angle) * 50, sunY + Math.sin(angle) * 50);
-                ctx.stroke();
-            }
-
-            // Sun body
-            ctx.fillStyle = '#FFD700';
-            ctx.beginPath();
-            ctx.arc(sunX, sunY, 30, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.fillStyle = '#FFA500';
-            ctx.beginPath();
-            ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function drawMountains() {
-            ctx.fillStyle = '#7CB342';
-            mountains.forEach(m => {
-                const x = ((m.x - scrollOffset * 0.2) % (canvas.width + 300)) - 150;
-                ctx.beginPath();
-                ctx.moveTo(x - m.width/2, player.groundY + 20);
-                ctx.lineTo(x, player.groundY + 20 - m.height);
-                ctx.lineTo(x + m.width/2, player.groundY + 20);
-                ctx.closePath();
-                ctx.fill();
-            });
-        }
-
-        function drawClouds() {
-            clouds.forEach(c => {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-                ctx.beginPath();
-                ctx.arc(c.x, c.y, c.size * 0.6, 0, Math.PI * 2);
-                ctx.arc(c.x + c.size * 0.5, c.y - c.size * 0.2, c.size * 0.7, 0, Math.PI * 2);
-                ctx.arc(c.x + c.size, c.y, c.size * 0.6, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        function drawRicePaddy() {
-            // Rice paddy rows
-            ctx.fillStyle = '#AED581';
-            for (let i = 0; i < 6; i++) {
-                const y = player.groundY - 30 + i * 12;
-                ctx.fillRect(0, y, canvas.width, 8);
-            }
-
-            // Rice plants
-            ctx.strokeStyle = '#7CB342';
-            ctx.lineWidth = 2;
-            for (let x = 0; x < canvas.width; x += 25) {
-                const offset = (x + scrollOffset) % 50;
-                ctx.beginPath();
-                ctx.moveTo(x, player.groundY - 20);
-                ctx.quadraticCurveTo(x - 5 + Math.sin(Date.now() * 0.003 + x) * 3, player.groundY - 40, x, player.groundY - 50);
-                ctx.stroke();
-            }
-        }
-
-        function drawBamboos() {
-            bamboos.forEach(b => {
-                // Bamboo stalk
-                ctx.fillStyle = '#558B2F';
-                ctx.fillRect(b.x, player.groundY - b.height, 12, b.height);
-                
-                // Bamboo segments
-                ctx.strokeStyle = '#33691E';
-                ctx.lineWidth = 1;
-                for (let i = 0; i < b.height; i += 20) {
-                    ctx.beginPath();
-                    ctx.moveTo(b.x - 2, player.groundY - b.height + i);
-                    ctx.lineTo(b.x + 14, player.groundY - b.height + i);
-                    ctx.stroke();
-                }
-
-                // Bamboo leaves
-                ctx.fillStyle = '#689F38';
-                for (let i = 0; i < 3; i++) {
-                    const ly = player.groundY - b.height + i * 25 + 10;
-                    ctx.beginPath();
-                    ctx.ellipse(b.x - 15, ly, 18, 5, -0.3, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.ellipse(b.x + 27, ly + 10, 18, 5, 0.3, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            });
-        }
-
-        function drawBuffalo() {
-            const x = buffalo.x;
-            const y = buffalo.y;
-            
-            // Body
-            ctx.fillStyle = '#4E342E';
-            ctx.beginPath();
-            ctx.ellipse(x, y, 35, 22, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Head
-            ctx.beginPath();
-            ctx.ellipse(x + 30, y - 10, 18, 15, 0.2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Horns
-            ctx.strokeStyle = '#3E2723';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(x + 35, y - 20);
-            ctx.quadraticCurveTo(x + 45, y - 30, x + 50, y - 22);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x + 28, y - 22);
-            ctx.quadraticCurveTo(x + 22, y - 32, x + 18, y - 24);
-            ctx.stroke();
-
-            // Legs
-            ctx.fillStyle = '#3E2723';
-            ctx.fillRect(x - 20, y + 15, 8, 20);
-            ctx.fillRect(x - 5, y + 15, 8, 20);
-            ctx.fillRect(x + 10, y + 15, 8, 20);
-            ctx.fillRect(x + 22, y + 15, 8, 20);
-
-            // Eye
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(x + 38, y - 12, 3, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.arc(x + 39, y - 12, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function drawLotusPond() {
-            const pondY = canvas.height - 30;
-            
-            // Water
-            ctx.fillStyle = 'rgba(100, 180, 220, 0.5)';
-            ctx.fillRect(0, pondY, canvas.width, 30);
-
-            // Water ripples
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < 5; i++) {
-                const rx = (i * 200 + Date.now() * 0.05) % canvas.width;
-                ctx.beginPath();
-                ctx.ellipse(rx, pondY + 15, 20, 3, 0, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-
-            // Lotus flowers
-            lotuses.forEach(l => {
-                const lx = ((l.x - scrollOffset * 0.7) % (canvas.width + 200)) - 100;
-                
-                // Lotus leaf
-                ctx.fillStyle = '#4CAF50';
-                ctx.beginPath();
-                ctx.ellipse(lx, l.y, l.size, l.size * 0.5, 0, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Lotus flower
-                const bobY = Math.sin(l.phase) * 3;
-                ctx.fillStyle = '#E91E63';
-                for (let i = 0; i < 5; i++) {
-                    const angle = (i / 5) * Math.PI * 2 - Math.PI / 2;
-                    const px = lx + Math.cos(angle) * 6;
-                    const py = l.y - l.size * 0.5 + bobY + Math.sin(angle) * 4;
-                    ctx.beginPath();
-                    ctx.ellipse(px, py, 5, 8, angle, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                ctx.fillStyle = '#FFEB3B';
-                ctx.beginPath();
-                ctx.arc(lx, l.y - l.size * 0.5 + bobY, 4, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        function drawGround() {
-            // Main ground
-            const groundGrad = ctx.createLinearGradient(0, player.groundY + 20, 0, canvas.height);
-            groundGrad.addColorStop(0, '#8BC34A');
-            groundGrad.addColorStop(1, '#689F38');
-            ctx.fillStyle = groundGrad;
-            ctx.fillRect(0, player.groundY + 20, canvas.width, canvas.height - player.groundY);
-
-            // Grass tufts
-            ctx.strokeStyle = '#558B2F';
-            ctx.lineWidth = 2;
-            for (let x = 0; x < canvas.width; x += 15) {
-                const gx = (x + scrollOffset) % canvas.width;
-                ctx.beginPath();
-                ctx.moveTo(gx, player.groundY + 22);
-                ctx.lineTo(gx - 3, player.groundY + 12);
-                ctx.moveTo(gx, player.groundY + 22);
-                ctx.lineTo(gx + 3, player.groundY + 10);
-                ctx.moveTo(gx, player.groundY + 22);
-                ctx.lineTo(gx, player.groundY + 8);
-                ctx.stroke();
-            }
-
-            // Path/road
-            ctx.fillStyle = '#D7CCC8';
-            ctx.fillRect(0, player.groundY + 15, canvas.width, 8);
-            ctx.fillStyle = '#BCAAA4';
-            ctx.setLineDash([10, 10]);
-            ctx.fillRect(0, player.groundY + 18, canvas.width, 2);
-            ctx.setLineDash([]);
-        }
-
-        function drawObstacle(obs) {
-            // Bamboo obstacle
-            const x = obs.x;
-            const y = obs.y;
-            const w = obs.width;
-            const h = obs.height;
-
-            // Main stalk
-            ctx.fillStyle = '#558B2F';
-            ctx.fillRect(x + 10, y - h + 20, 15, h);
-
-            // Segments
-            ctx.strokeStyle = '#33691E';
-            ctx.lineWidth = 2;
-            for (let i = 0; i < h; i += 15) {
-                ctx.beginPath();
-                ctx.moveTo(x + 8, y - h + 20 + i);
-                ctx.lineTo(x + 27, y - h + 20 + i);
-                ctx.stroke();
-            }
-
-            // Thorns/spikes
-            ctx.fillStyle = '#795548';
-            ctx.beginPath();
-            ctx.moveTo(x + 10, y - h + 30);
-            ctx.lineTo(x, y - h + 25);
-            ctx.lineTo(x + 10, y - h + 20);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.moveTo(x + 25, y - h + 50);
-            ctx.lineTo(x + 35, y - h + 45);
-            ctx.lineTo(x + 25, y - h + 40);
-            ctx.fill();
-
-            // Leaves at top
-            ctx.fillStyle = '#689F38';
-            ctx.beginPath();
-            ctx.ellipse(x - 5, y - h + 25, 15, 5, -0.5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + 40, y - h + 35, 15, 5, 0.5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(x + 25, y - h + 15, 12, 4, 0.2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function drawPlayer() {
-            const x = player.x;
-            const y = player.y;
-            const isJumping = player.jumping;
-
-            ctx.save();
-            
-            // Shadow
-            if (!isJumping) {
-                ctx.fillStyle = 'rgba(0,0,0,0.2)';
-                ctx.beginPath();
-                ctx.ellipse(x + 30, player.groundY + 25, 25, 6, 0, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // Body bob when running
-            const bobY = isJumping ? 0 : Math.sin(player.runFrame * Math.PI / 2) * 3;
-            const bodyY = y + bobY;
-
-            // Legs
-            ctx.fillStyle = '#1565C0';
-            if (isJumping) {
-                // Tucked legs when jumping
-                ctx.fillRect(x + 15, bodyY + 40, 10, 15);
-                ctx.fillRect(x + 35, bodyY + 40, 10, 15);
-            } else {
-                // Running legs
-                const legOffset = Math.sin(player.runFrame * Math.PI / 2) * 8;
-                ctx.fillRect(x + 15 + legOffset, bodyY + 40, 10, 20);
-                ctx.fillRect(x + 35 - legOffset, bodyY + 40, 10, 20);
-            }
-
-            // Shoes
-            ctx.fillStyle = '#5D4037';
-            if (isJumping) {
-                ctx.fillRect(x + 13, bodyY + 52, 14, 6);
-                ctx.fillRect(x + 33, bodyY + 52, 14, 6);
-            } else {
-                const legOffset = Math.sin(player.runFrame * Math.PI / 2) * 8;
-                ctx.fillRect(x + 13 + legOffset, bodyY + 57, 14, 6);
-                ctx.fillRect(x + 33 - legOffset, bodyY + 57, 14, 6);
-            }
-
-            // Body (áo bà ba - traditional shirt)
-            ctx.fillStyle = '#FF7043';
-            ctx.fillRect(x + 12, bodyY + 20, 36, 25);
-            
-            // Shirt details
-            ctx.fillStyle = '#F4511E';
-            ctx.fillRect(x + 28, bodyY + 20, 4, 25);
-
-            // Arms
-            ctx.fillStyle = '#FFCC80';
-            if (isJumping) {
-                // Arms up when jumping
-                ctx.fillRect(x + 5, bodyY + 10, 8, 20);
-                ctx.fillRect(x + 47, bodyY + 10, 8, 20);
-            } else {
-                // Swinging arms when running
-                const armSwing = Math.sin(player.runFrame * Math.PI / 2) * 10;
-                ctx.fillRect(x + 5, bodyY + 22 + armSwing, 8, 18);
-                ctx.fillRect(x + 47, bodyY + 22 - armSwing, 8, 18);
-            }
-
-            // Head
-            ctx.fillStyle = '#FFCC80';
-            ctx.beginPath();
-            ctx.arc(x + 30, bodyY + 12, 14, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Face
-            // Eyes
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(x + 25, bodyY + 10, 4, 0, Math.PI * 2);
-            ctx.arc(x + 35, bodyY + 10, 4, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.fillStyle = '#3E2723';
-            ctx.beginPath();
-            ctx.arc(x + 26, bodyY + 10, 2, 0, Math.PI * 2);
-            ctx.arc(x + 36, bodyY + 10, 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Smile
-            ctx.strokeStyle = '#5D4037';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            if (gameState === 'success') {
-                // Big smile
-                ctx.arc(x + 30, bodyY + 14, 5, 0, Math.PI);
-            } else if (gameState === 'fail') {
-                // Sad face
-                ctx.arc(x + 30, bodyY + 18, 4, Math.PI, 0);
-            } else {
-                // Normal smile
-                ctx.arc(x + 30, bodyY + 14, 4, 0.2, Math.PI - 0.2);
-            }
-            ctx.stroke();
-
-            // Cheeks
-            ctx.fillStyle = 'rgba(255, 150, 150, 0.4)';
-            ctx.beginPath();
-            ctx.arc(x + 20, bodyY + 14, 3, 0, Math.PI * 2);
-            ctx.arc(x + 40, bodyY + 14, 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Nón lá (conical hat)
-            // Hat brim
-            ctx.fillStyle = '#D4A574';
-            ctx.beginPath();
-            ctx.ellipse(x + 30, bodyY + 2, 28, 6, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Hat cone
-            ctx.fillStyle = '#C9A96E';
-            ctx.beginPath();
-            ctx.moveTo(x + 5, bodyY + 2);
-            ctx.lineTo(x + 30, bodyY - 22);
-            ctx.lineTo(x + 55, bodyY + 2);
-            ctx.closePath();
-            ctx.fill();
-
-            // Hat texture lines
-            ctx.strokeStyle = '#A0825A';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(x + 15, bodyY - 5);
-            ctx.lineTo(x + 30, bodyY - 20);
-            ctx.lineTo(x + 45, bodyY - 5);
-            ctx.stroke();
-
-            // Hat band
-            ctx.strokeStyle = '#8D6E63';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(x + 8, bodyY);
-            ctx.lineTo(x + 52, bodyY);
-            ctx.stroke();
-
-            // Hat tip decoration
-            ctx.fillStyle = '#8D6E63';
-            ctx.beginPath();
-            ctx.arc(x + 30, bodyY - 22, 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.restore();
-        }
-
-        function drawParticle(p) {
-            ctx.globalAlpha = p.life / 60;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-        }
-
-        // ===== INIT =====
-        window.onload = function() {
-            initSpeechRecognition();
-        };
-
-        window.onresize = function() {
-            if (canvas) {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-                player.groundY = canvas.height - 90;
-                if (!player.jumping) player.y = player.groundY;
-            }
-        };
-    </script>
+        <div class="bottom-row"><div class="learning-tip" id="learningTip">💡 Listen once, say it in chunks, then add a detail or a family expression of your own. Your family’s voice is a valuable model.</div><button class="next-btn" id="nextBtn">Next level →</button></div>
+        <details class="tone-guide"><summary>🎼 Hà Nội pronunciation guide · tones and sounds</summary><div class="tone-grid"><div><b>Ngang · no mark</b><span>Keep the voice level and steady.</span></div><div><b>Huyền · grave</b><span>Let the voice fall gently.</span></div><div><b>Sắc · acute</b><span>Let the voice rise.</span></div><div><b>Hỏi · hook</b><span>Dip, then turn upward.</span></div><div><b>Ngã · tilde</b><span>Rise with a slight voice break in careful Hà Nội speech.</span></div><div><b>Nặng · dot</b><span>Keep it short, low and firm.</span></div></div><p>In careful Hà Nội pronunciation, hỏi and ngã are distinct. In Hà Nội speech, d, gi and often r share a voiced z-like sound, while đ is a different consonant. The speaker button uses a Vietnamese voice available on the device and may not be a Hà Nội speaker. These cues are a memory aid; listen to a trusted family or teacher model for the full sound.</p></details>
+        <div class="keyboard-note">Voice recognition uses your browser’s vi-VN service, which may not reproduce or assess a Hà Nội accent precisely. It checks the words it hears — not whether you sound native. Typed practice is always available.</div>
+      </div>
+    </section>
+  </div>
+  <footer class="footer"><span>For heritage learners aged 5–15 · family language, Northern Vietnamese and cultural connection</span><span>Curriculum reference: <a href="https://congbao.chinhphu.vn/van-ban/thong-tu-so-28-2018-tt-bgddt-27771.htm" target="_blank" rel="noopener noreferrer">MOET Circular 28/2018</a> · Not an accredited assessment</span></footer>
+</main>
+<script>
+const STAGES = [{"name":"Family Greetings","icon":"🏡","age":"5–7","range":"1–15","start":1,"end":15,"topic":"Talk with the people closest to you","scene":"🏡 Nếp nhà · Home and family","description":"Start with familiar family words, greetings, needs and respectful everyday replies."},{"name":"Home & Everyday Life","icon":"🍚","age":"6–9","range":"16–30","start":16,"end":30,"topic":"Speak Vietnamese throughout the day","scene":"🍚 Bữa cơm gia đình · Family meals","description":"Talk about meals, routines, chores, favourite foods and things you do together at home."},{"name":"Friends & Community","icon":"🤝","age":"8–10","range":"31–45","start":31,"end":45,"topic":"Join in conversations at school and with friends","scene":"🏫 Trường học và cộng đồng · School and community","description":"Ask questions, share feelings, explain family traditions and keep a conversation going."},{"name":"Stories & Visits","icon":"📖","age":"9–11","range":"46–60","start":46,"end":60,"topic":"Tell stories about people and memories","scene":"🧳 Thăm quê và sum họp · Visits and reunions","description":"Recount visits and events in order, describe memories and talk about plans."},{"name":"Language & Culture","icon":"🪷","age":"11–13","range":"61–80","start":61,"end":80,"topic":"Explore the language behind family traditions","scene":"🪷 Văn hóa Việt · Vietnamese culture","description":"Explore Tết, family customs, kinship language, regional variation, spelling and Hà Nội tones."},{"name":"Heritage Storyteller","icon":"🎤","age":"13–15","range":"81–100","start":81,"end":100,"topic":"Express your own ideas with confidence","scene":"🌏 Hai quê hương · Two homes, many stories","description":"Build longer explanations, discuss identity and viewpoints, interpret proverbs and tell your family story."}];
+// A 100-level heritage Vietnamese pathway: home language → community → stories → culture → confident expression.
+const RAW = [["Con chào ông bà ạ.","Hello, Grandma and Grandpa.","Use con when speaking to grandparents; ạ makes the greeting respectful.","Family greetings","Keep the final ạ short and gentle; listen for the falling huyền tone in chào."],["Con chào bố mẹ ạ.","Hello, Mum and Dad.","A warm greeting when you come into the room or arrive home.","Family greetings","Notice the sắc tone in bố and the nặng tone in mẹ."],["Bà ơi, con đây ạ.","Grandma, I'm here.","Ơi calls someone warmly; ạ adds respect.","Calling family","Let ơi flow naturally; do not stretch every syllable equally."],["Vâng ạ, con nghe đây.","Yes, I'm listening.","Vâng ạ is a common polite reply to an older person in Northern Vietnamese.","Polite replies","Vâng carries ngang; keep it steady, then make ạ short and low."],["Con cảm ơn bà ạ.","Thank you, Grandma.","You can change bà to ông, cô, chú, bác or another suitable family title.","Gratitude","Listen to the hỏi tone in cảm and the ngang tone in ơn."],["Con xin lỗi mẹ ạ.","I'm sorry, Mum.","Say this after a mistake; the respectful ending is suitable when speaking to a parent.","Apologies","Keep lỗi with the hỏi tone; do not turn it into a rising sắc tone."],["Bố ơi, giúp con với ạ.","Dad, please help me.","Với makes the request sound natural and conversational.","Asking for help","Hear the sắc in bố and giúp, and keep the final p in giúp closed."],["Mẹ ơi, con khát nước.","Mum, I'm thirsty.","A useful phrase for everyday needs at home.","Needs and feelings","Nước has the sắc tone; finish the final c with a short, unreleased stop."],["Con đói bụng rồi ạ.","I'm hungry now.","Rồi signals that the feeling has come about; ạ makes the sentence polite.","Needs and feelings","Đói has sắc, bụng has nặng and rồi has huyền. Keep the pitch and voice quality distinct across the phrase."],["Con muốn ăn cơm.","I want to eat rice / have a meal.","In Vietnamese, ăn cơm often means having a meal, not only eating plain rice.","Meals","Notice muốn (sắc) and cơm (ngang); keep the vowel in cơm clear."],["Đây là anh con.","This is my older brother.","Anh is a relationship word; it can also be used for an older male peer.","Introducing relatives","Đây begins with đ, a firm voiced stop; it is different from the z-like d/gi sounds in Hà Nội speech."],["Đây là em gái con.","This is my younger sister.","Em gái means younger sister here; the word em changes with the relationship.","Introducing relatives","Gái has the sắc tone; let it rise cleanly rather than shouting."],["Con sống ở nước ngoài.","I live overseas.","A useful way to explain your life to relatives in Vietnam.","Family and identity","Listen for the sắc in sống and the hỏi in ở."],["Con nói tiếng Việt với ông bà.","I speak Vietnamese with my grandparents.","You can swap ông bà for another person you speak Vietnamese with.","Family language","Tiếng and Việt both carry sắc; keep each rise clear but relaxed."],["Con thích nghe chuyện ngày xưa.","I like listening to stories from the old days.","A lovely invitation to ask grandparents about their childhood.","Family stories","Ngày has huyền and xưa has ngang; keep the low falling shape and level shape distinct."],["Con tự mặc quần áo.","I get dressed by myself.","Tự means by oneself; a phrase for growing independence.","Home routines","Mặc has nặng; close the final c neatly without adding a vowel."],["Con cất giày vào tủ.","I put my shoes in the cupboard.","A practical phrase for tidying up at home.","Home routines","Giày begins with the Hà Nội gi sound, usually a voiced z-like sound."],["Con giúp mẹ dọn bàn.","I help Mum clear the table.","Dọn bàn can mean clearing or tidying the table after a meal.","Helping at home","Dọn has nặng; keep the low, constricted quality gentle, not exaggerated."],["Cả nhà mình ăn cơm thôi.","Let's all have our meal.","Thôi can make this sound like a friendly suggestion to get started.","Family meals","Cả has hỏi; cơm stays level. Listen to how the two tones differ."],["Bố cho con xin thêm canh ạ.","Dad, may I have some more soup, please?","A polite request at the dinner table; xin thêm means ask for more.","At the dinner table","Thêm has ngang; canh has ngang too. Keep both even and avoid adding a rise."],["Món này ngon quá!","This dish is so delicious!","A natural compliment when someone in the family has cooked.","Food and opinions","Ngon is ngang; quá has sắc. Let the last syllable rise."],["Con không ăn cay được.","I can't eat spicy food.","Được at the end expresses ability; this is useful when explaining food preferences.","Food preferences","Cay has ngang; được has nặng and a final c closure."],["Con thích ăn phở bò.","I like eating beef phở.","Name a dish you enjoy; phở bò is a familiar Northern favourite.","Vietnamese food","Phở has hỏi; bò has huyền. Practise the contrast slowly."],["Cuối tuần nhà mình đi chợ nhé.","Let's go to the market this weekend.","Nhé softens a suggestion and invites agreement.","Weekend plans","Cuối has sắc; tuần has ngang. Keep nhé with sắc, a clear rising tone."],["Bà dạy con cuốn nem nhé?","Grandma, will you teach me to roll nem?","A family cooking activity; families may have their own nem recipe.","Cooking together","Dạy has nặng; cuốn has sắc. Keep the final n in cuốn clear."],["Con rửa bát cùng chị.","I wash the dishes with my older sister.","Rửa bát is common in the North for washing dishes; bát means bowl/dish.","Helping at home","In Hà Nội speech, r is often z-like; rửa has hỏi, so let the pitch dip and turn."],["Con tưới cây ngoài vườn.","I water the plants in the garden.","A simple way to describe a chore you do with family.","Home and garden","Tưới has sắc; vườn has huyền. Keep the final n in vườn."],["Hôm nay con học tiếng Việt.","Today I'm learning Vietnamese.","You can say this at home or in a Vietnamese community class.","Learning Vietnamese","Hôm has ngang; nay has ngang; tiếng and Việt have sắc."],["Con đọc được tên món ăn này.","I can read the name of this dish.","A bridge between spoken Vietnamese and reading menus or labels.","Reading at home","Gọi has nặng and điện has nặng. Keep both short and low, with a clear final consonant."],["Con muốn gọi điện cho ông bà.","I want to phone Grandma and Grandpa.","Gọi điện is a natural phrase for calling relatives who live far away.","Staying connected","Gọi has hỏi; điện has nặng. Hear the different pitch and voice quality."],["Hôm nay ở trường con học về động vật.","Today at school I learned about animals.","Start with a familiar school topic, then add details in your own words.","School life","Động has nặng; vật has nặng. Keep the endings closed and concise."],["Giờ ra chơi con đá cầu với các bạn.","At break time I play shuttlecock with my friends.","Đá cầu is a popular Vietnamese game using a feathered shuttlecock.","Games and friends","Giờ begins with gi, pronounced with a voiced z-like sound in Hà Nội."],["Con có thể kể cho bạn nghe về Tết.","I can tell you about Tết.","Use this to introduce a family tradition to a friend.","Sharing traditions","Thể has hỏi; Tết has sắc and a final t stop."],["Bạn thích món ăn Việt Nam nào?","Which Vietnamese food do you like?","A question that invites more than a yes-or-no answer.","Asking questions","Nào has huyền; listen for the low falling tone at the end."],["Ông bà thường kể chuyện gì cho con nghe?","What stories do Grandma and Grandpa usually tell you?","A way to invite someone to share a family memory.","Family stories","Chuyện has nặng; gì has huyền. Keep gì low and falling."],["Con chưa biết từ này, ông giải thích giúp con nhé.","I don't know this word yet; Grandpa, please explain it.","Chưa means not yet; asking is a useful language-learning strategy.","Asking for meaning","Giải starts with the Hà Nội gi sound; thích ends in a short c stop."],["Mình cùng chơi nhé!","Let's play together!","Mình is friendly with peers; nhé makes the invitation warm.","Peer conversation","Cùng has huyền; chơi has ngang. Keep the tones distinct."],["Bạn chờ mình một chút nhé.","Wait for me a moment, please.","A natural phrase to use with a friend.","Peer conversation","Chờ has huyền; chút has sắc with a final t closure."],["Hôm nay con vui vì được gặp các bạn.","I'm happy because I got to see my friends today.","Vì introduces a reason; you can replace the reason with your own.","Feelings","Vì has huyền; gặp has nặng. Let the voice quality change gently."],["Con hơi lo khi phải nói trước lớp.","I'm a little nervous when I have to speak in front of the class.","Hơi lo is a gentle way to describe feeling a bit worried.","Feelings","Hơi has ngang; lớp has sắc. Avoid making every syllable rise."],["Con có thể nói lại chậm hơn không ạ?","Could you say that again more slowly, please?","A confidence-building phrase for asking someone to repeat themselves.","Conversation strategies","Lại has nặng; chậm has nặng. Keep both short and low."],["Ở nhà con gọi món này là bánh cuốn.","At home we call this dish bánh cuốn.","Families may use different names or recipes; share the word used in your home.","Family vocabulary","Cuốn has sắc; keep the final n audible."],["Tiếng Việt của con đang tiến bộ từng ngày.","My Vietnamese is improving every day.","Use this to notice progress, not to compare yourself with anyone else.","Confidence","Tiếng has sắc; Việt also has sắc. Practise each rise separately."],["Con muốn học thêm từ mới để trò chuyện với gia đình.","I want to learn more words so I can chat with my family.","Để introduces a purpose: learning words helps you do something.","Learning goals","Thêm has ngang; mới has sắc. Keep the final i clear."],["Con thích nói tiếng Việt vì đó là ngôn ngữ của gia đình con.","I like speaking Vietnamese because it is my family's language.","A longer sentence linking personal feeling and family connection.","Family identity","Vì has huyền; gia begins with the Hà Nội gi sound. Speak in thought groups."],["Hôm qua, cả nhà con đi thăm ông bà.","Yesterday, my whole family visited my grandparents.","Hôm qua sets the time; the rest tells what happened.","Past events","Hôm, qua and thăm have ngang; keep the pitch level and the final m in thăm."],["Đầu tiên, bà mời mọi người uống trà.","First, Grandma invited everyone to drink tea.","Đầu tiên is a useful story opener meaning first.","Sequencing a story","Mời has huyền; mọi has huyền. Keep both low and falling."],["Sau đó, ông kể chuyện hồi còn nhỏ.","After that, Grandpa told stories from when he was little.","Sau đó moves the story forward in time.","Sequencing a story","Chuyện has nặng; nhỏ has hỏi. Make the hỏi turn audible."],["Con ngồi nghe và đặt cho ông rất nhiều câu hỏi.","I sat and listened and asked Grandpa lots of questions.","This sentence combines actions and shows curiosity.","Family stories","Ngồi has huyền; hỏi has hỏi. They are a useful tone contrast."],["Bữa cơm có nem rán, canh rau và cá kho.","The meal included fried nem, vegetable soup and braised fish.","These are examples; change the dishes to match your family meal.","Food memories","Rán has sắc; cá has sắc; kho has ngang. Keep each tone intentional."],["Mọi người vừa ăn vừa trò chuyện.","Everyone chatted while eating.","Vừa… vừa… connects two actions happening together.","Family time","Vừa has huyền; chuyện has nặng. Let the voice fall then close low."],["Buổi chiều, con chơi ngoài sân với các anh chị.","In the afternoon, I played in the yard with my older cousins/siblings.","Anh chị can refer to older siblings or older cousins in a family context.","Playing with relatives","Chiều has huyền; ngoài has huyền. Keep the two low tones relaxed."],["Trước khi về, con chào ông bà và cảm ơn mọi người.","Before leaving, I said goodbye to my grandparents and thanked everyone.","Trước khi introduces what happened before another event.","Polite visits","Ngồi has huyền; đặt and hỏi have nặng and hỏi respectively. Keep the hỏi turn clear in the last words."],["Tuần trước, lớp con tổ chức ngày hội văn hóa.","Last week, my class held a cultural day.","Tuần trước places the event in the past; tổ chức means organised.","Community events","Trước has sắc; chức has sắc with a final c closure."],["Con mang một món ăn Việt Nam đến lớp.","I brought a Vietnamese dish to class.","A good sentence for sharing family food with classmates.","Sharing culture","Việt has nặng; Nam has ngang. Keep the final m in Nam."],["Con giới thiệu món ăn bằng tiếng Việt.","I introduced the dish in Vietnamese.","Giới thiệu is a useful verb for presenting a person, place or idea.","Presenting","Giới begins with the Hà Nội gi sound; thiệu has sắc."],["Các bạn hỏi con cách làm món đó.","My friends asked me how to make that dish.","Cách làm means the way to make something.","Explaining","Cách has sắc and a final c stop; đó has sắc."],["Lúc đầu con hơi ngại, nhưng sau đó con tự tin hơn.","At first I felt shy, but afterwards I felt more confident.","Lúc đầu… nhưng sau đó… shows a change over time.","Reflecting on experience","Tuần has huyền and trước has sắc; keep the falling and rising tones distinct."],["Cuối tuần này, con sẽ gọi video cho bà.","This weekend, I'll video-call Grandma.","Sẽ marks a future plan; use a family name that fits your own home.","Future plans","Cuối has sắc; sẽ has ngã. Practise the distinctive ngã quality in sẽ."],["Con muốn kể cho bà nghe về tuần học của con.","I want to tell Grandma about my school week.","This is a natural follow-up after a video call or visit.","Sharing updates","Kể has hỏi; tuần has huyền. Make the hỏi tone turn gently, then let tuần fall."],["Tết Nguyên đán là dịp gia đình sum họp.","Lunar New Year is a time for family reunions.","Sum họp describes relatives gathering together; family traditions vary.","Tết and traditions","Tết has sắc; họp has nặng. Close both final stops cleanly."],["Trước Tết, mọi người thường dọn dẹp và trang trí nhà cửa.","Before Tết, people often clean and decorate the house.","Dọn dẹp and trang trí are useful words for describing preparations.","Tết preparations","Trước has sắc; dọn has nặng; trí has sắc. Use short pauses between ideas."],["Ở nhà con, cả nhà cùng chuẩn bị mâm cơm ngày Tết.","At our home, everyone helps prepare the Tết meal.","Mâm cơm is the meal laid out for everyone; family menus differ.","Family customs","Chuẩn bị has hỏi + nặng; practise the two tones separately."],["Khi gặp người lớn, con thường chúc Tết và lễ phép chào hỏi.","When I meet elders, I usually give Tết wishes and greet them respectfully.","Lễ phép describes respectful behaviour toward elders.","Respectful language","Gặp has nặng; lễ has ngã. Do not flatten the ngã in lễ."],["Phong tục đón Tết có thể khác nhau giữa các gia đình.","Tết customs can differ from one family to another.","Different ways of celebrating are valid; compare without ranking them.","Cultural variation","Khác has sắc; giữa has hỏi. Give giữa its dipping, turning contour."],["Mỗi gia đình có cách giữ gìn tiếng Việt riêng.","Each family has its own way of keeping Vietnamese alive.","Giữ gìn means to preserve or care for something over time.","Heritage language","Giữ and gìn both begin with the Hà Nội gi sound; listen to their tone contrast."],["Có người học tiếng Việt qua trò chuyện, có người học thêm bằng cách đọc sách.","Some people learn Vietnamese through conversation, while others also learn by reading.","Qua… bằng cách… compares different ways of learning.","Learning strategies","Trò has huyền; chuyện has nặng. Keep the two tone patterns distinct."],["Con muốn hiểu ý nghĩa của những từ ông bà thường dùng.","I want to understand the meaning of words my grandparents often use.","Ý nghĩa asks about meaning; thường dùng means commonly used.","Family vocabulary","Nghĩa has ngã; dùng has huyền. Practise the ngã break in nghĩa."],["Một số từ thân thuộc gợi cho con nhớ đến gia đình.","Some familiar words remind me of my family.","Thân thuộc means familiar or close; gợi nhớ means bring to mind.","Memory and language","Thuộc has nặng; nhớ has sắc. Keep both clearly marked."],["Con học cách xưng hô phù hợp với tuổi tác và quan hệ.","I'm learning how to address people appropriately for their age and relationship.","Xưng hô is how we refer to ourselves and address other people.","Kinship language","Xưng begins with x; hô has ngang. Keep the final ng in xưng."],["Ở miền Bắc, nhiều người dùng “vâng ạ” khi đáp lời người lớn.","In Northern Vietnam, many people use “vâng ạ” when replying to elders.","This is a common Northern pattern; families and speakers vary.","Northern Vietnamese","Vâng has ngang and ạ has nặng; make the reply respectful, not robotic."],["Từ “ạ” giúp câu nói thể hiện sự lễ phép.","The particle “ạ” helps a sentence show respect.","Ạ often appears when speaking politely to someone older or respected.","Polite particles","Ạ is nặng: short and low. Avoid turning it into a long open vowel."],["Từ “nhé” khiến lời rủ rê nghe thân thiện.","The particle “nhé” makes an invitation sound friendly.","Nhé often softens invitations or suggestions among people who know one another.","Conversation particles","Nhé has sắc; let it rise lightly at the end."],["Tiếng Việt ở Hà Nội có sáu thanh điệu.","Hà Nội Vietnamese pronunciation has six tones.","The six tone names are ngang, huyền, sắc, hỏi, ngã and nặng.","Six tones","Name each tone distinctly; hỏi and ngã are separate in careful Hà Nội speech."],["Con luyện phân biệt thanh hỏi và thanh ngã.","I'm practising the difference between hỏi and ngã tones.","The two tones differ in pitch movement and voice quality; listen to a careful model.","Tone awareness","Hỏi has a falling-rising shape; ngã has a break/creaky quality in careful Hà Nội speech."],["Con chú ý âm đầu và âm cuối để nói rõ từ.","I pay attention to initial and final sounds to pronounce words clearly.","Vietnamese syllables are compact; do not add an extra vowel after final consonants.","Clear pronunciation","Finish final -p, -t and -c with a neat closure; do not release an extra vowel."],["Con nghe cách người thân nói rồi thử nhắc lại tự nhiên.","I listen to how relatives speak and then try to repeat it naturally.","Family voices are useful models; speakers may have different regional accents.","Listening practice","Copy the rhythm and tones, not just the individual sounds."],["Có những từ khác nhau theo vùng miền nhưng đều có giá trị riêng.","Some words differ by region, but each variety has its own value.","Regional variation is part of Vietnamese; avoid calling one family's words wrong.","Regional variation","Notice how a word may sound different across regions; keep this game’s model set to vi-VN."],["Con muốn tìm hiểu thêm về văn hóa của Việt Nam và nơi con đang sống.","I want to learn more about the culture of Vietnam and the place where I live.","You can replace nơi con đang sống with the name of your town or country.","Two cultures","Văn hóa has ngang + sắc; keep the two-syllable rhythm smooth."],["Hai nền văn hóa giúp con có nhiều câu chuyện để chia sẻ.","Two cultures give me many stories to share.","Nền văn hóa is a way to talk about cultures as a whole.","Cultural identity","Chia sẻ has ngang + hỏi; give sẻ its clear hỏi contour."],["Theo con, nói tiếng Việt giúp con gắn bó với gia đình như thế nào?","In your view, how does speaking Vietnamese help you stay close to your family?","A discussion question: give a reason and an example from your own life.","Reflecting on heritage","Gắn has sắc; bó has sắc. Keep both rising tones distinct."],["Con muốn ông bà kể thêm về tuổi thơ của ông bà.","I would like my grandparents to tell me more about their childhood.","Tuổi thơ is childhood; this question invites intergenerational storytelling.","Intergenerational stories","Thêm has ngang; tuổi has hỏi. Let tuổi turn gently."],["Khi nghe một câu chuyện, con chú ý đến nhân vật, sự việc và cảm xúc.","When I listen to a story, I pay attention to the characters, events and feelings.","This gives you a structure for retelling a story afterwards.","Story analysis","Chuyện has nặng; cảm has hỏi; xúc has sắc. Keep each ending concise."],["Nếu có từ nào chưa hiểu, con sẽ hỏi để biết cách dùng trong ngữ cảnh.","If there's a word I don't understand, I'll ask how to use it in context.","Ngữ cảnh means context; words make sense through the situations where they are used.","Language strategies","Ngữ has ngã; cảnh has hỏi. Practise the two different voice patterns."],["Con nghĩ việc đọc truyện tiếng Việt giúp con mở rộng vốn từ.","I think reading Vietnamese stories helps me expand my vocabulary.","Mở rộng vốn từ means expanding vocabulary; explain which story you enjoy.","Reading and vocabulary","Nghĩ has ngã; tiếng has sắc. Keep the ngã distinct from sắc."],["Dù đôi khi con phải suy nghĩ lâu, con vẫn muốn diễn đạt ý bằng tiếng Việt.","Even when I need time to think, I still want to express my ideas in Vietnamese.","Dù… vẫn… signals contrast; diễn đạt means to express an idea.","Expressing ideas","Nghĩ has ngã; diễn has ngã. Do not flatten the broken tone."],["Một kỷ niệm đáng nhớ của con là lần đầu về thăm quê.","A memorable experience for me was my first visit to my family's home region.","Kỷ niệm is a memory; quê can mean one's hometown or ancestral home.","Personal memories","Kỷ has hỏi; niệm has nặng. Keep the hỏi turn in kỷ."],["Điều làm con ấn tượng nhất là không khí sum vầy trong gia đình.","What impressed me most was the warm atmosphere of family togetherness.","Ấn tượng and sum vầy help describe a powerful memory.","Describing memories","Ấn has sắc; tượng has nặng; vầy has huyền. Use natural phrase stress."],["Con nhận ra mỗi thế hệ có thể có cách dùng từ hơi khác nhau.","I've realised that each generation may use some words a little differently.","Thế hệ means generation; use an example from your family if you can.","Language across generations","Thế has sắc; hệ has nặng. Keep them separate and clear."],["Con có thể giải thích cho bạn vì sao gia đình con dùng cách xưng hô ấy.","I can explain to my friend why my family uses those forms of address.","This is a chance to explain a family-specific way of speaking without judging others.","Explaining family language","Giải begins with Hà Nội gi; thích and cách have final c closures."],["Theo quan điểm của con, giữ gìn tiếng Việt không có nghĩa là phải nói giống hệt mọi người.","In my view, preserving Vietnamese does not mean having to speak exactly like everyone else.","A nuanced position: language is connection, not a test of one perfect accent.","Language and identity","Nghĩa has ngã; Việt has nặng. Let each tone keep its own shape."],["Điều quan trọng là con có thể giao tiếp tự tin, rõ ràng và tôn trọng người nghe.","What matters is being able to communicate confidently, clearly and respectfully.","This is a useful standard for communication: clarity, confidence and respect.","Communication skills","Trọng has nặng; rõ has hỏi. Keep rõ's pitch contour clear."],["Nếu được chọn một nét văn hóa để giới thiệu, con sẽ chọn ẩm thực gia đình.","If I could choose one cultural feature to introduce, I would choose family food.","You can replace ẩm thực gia đình with a tradition, song, story or celebration.","Presenting culture","Giới has sắc and thiệu has nặng. Keep the rise and short low finish distinct."],["Con muốn so sánh một ngày Tết ở Việt Nam với ngày Tết của gia đình con ở nước ngoài.","I want to compare a Tết day in Vietnam with how my family celebrates overseas.","So sánh introduces a comparison; look for similarities as well as differences.","Comparing traditions","Sánh has sắc; nước has sắc with final c; ngoài has huyền."],["Câu tục ngữ “Uống nước nhớ nguồn” nhắc chúng ta biết ơn những người đi trước.","The proverb “When drinking water, remember its source” reminds us to be grateful to those before us.","Explain what the proverb means to you and give a real-life example.","Vietnamese proverbs","Nhớ has sắc; nguồn has huyền. Let nhớ rise and nguồn fall."],["“Có công mài sắt, có ngày nên kim” khuyên chúng ta kiên trì.","“With effort, an iron bar can become a needle” encourages us to persevere.","Kiên trì means persistence; tell a story about something you practised over time.","Vietnamese proverbs","Sắt has sắc with final t; trì has huyền. Close the final t cleanly."],["Khi có ý kiến khác nhau, con nên lắng nghe trước khi phản hồi.","When opinions differ, I should listen before responding.","Phản hồi means to respond; listening first helps keep a discussion respectful.","Respectful discussion","Khác has sắc; lắng has sắc; hồi has huyền. Keep the final tone falling."],["Con đồng ý với ý kiến đó ở một điểm, nhưng con muốn bổ sung một góc nhìn khác.","I agree with one part of that view, but I'd like to add another perspective.","A balanced discussion phrase: acknowledge one point, then add your view.","Building an argument","Ý has sắc; kiến has sắc; bổ has hỏi. Speak in chunks, not syllable by syllable."],["Qua việc học tiếng Việt, con hiểu thêm về lịch sử và câu chuyện của gia đình mình.","Through learning Vietnamese, I understand more about my family's history and story.","Use a specific family example to make the sentence personal and meaningful.","Family history","Việc has nặng; sử has hỏi; chuyện has nặng. Keep the rhythm steady."],["Con muốn kể câu chuyện của gia đình bằng tiếng Việt để truyền lại cho thế hệ sau.","I want to tell my family's story in Vietnamese so I can pass it on to the next generation.","A final storytelling challenge: include people, places, events and why the story matters.","Passing on heritage","Kể has hỏi; chuyện has nặng; hệ has nặng. Use natural pauses to help your listener follow."]];
+const $ = id => document.getElementById(id);
+// Progress stays on this device only. Ignore malformed or unavailable browser storage.
+function readProgress(){try{const raw=JSON.parse(localStorage.getItem('nonLaCompleted')||'[]');return Array.isArray(raw)?raw.map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=100):[];}catch(e){return [];}}
+const completed = new Set(readProgress());
+let currentLevel = 1;
+let recognition = null;
+let isListening = false;
+let levelWon = false;
+const STAGE_FOR = n => STAGES.findIndex(s=>n>=s.start && n<=s.end);
+const levelData = n => {const row=RAW[n-1];const si=STAGE_FOR(n);return {number:n,vi:row[0],en:row[1],hint:row[2],topic:row[3],pronunciation:row[4],stage:si};};
+function renderStages(){
+ const holder=$('stageList');holder.innerHTML='';
+ STAGES.forEach((s,i)=>{
+  const done=[...completed].filter(n=>n>=s.start&&n<=s.end).length;
+  const pct=Math.round(done/(s.end-s.start+1)*100);
+  const b=document.createElement('button');b.className='stage-btn'+(i===STAGE_FOR(currentLevel)?' active':'');b.type='button';b.innerHTML=`<span class="stage-icon">${s.icon}</span><span><span class="stage-name">${s.name}</span><span class="stage-age">Age guide ${s.age}</span><span class="stage-mini"><span style="width:${pct}%"></span></span></span><span class="stage-range">${s.range}</span>`;
+  b.addEventListener('click',()=>loadLevel(s.start));holder.appendChild(b);
+ });
+ const count=completed.size; $('starCount').textContent=count; $('progressText').textContent=`${count} of 100 completed`; $('progressPct').textContent=`${count}%`; $('overallFill').style.width=`${count}%`;
+}
+function loadLevel(n){
+ const parsed=Number.parseInt(n,10);const num=Math.min(100,Math.max(1,Number.isFinite(parsed)?parsed:1));
+ stopListening();currentLevel=num;levelWon=false;
+ const d=levelData(num),s=STAGES[d.stage],alreadyCompleted=completed.has(num);
+ $('levelInput').value=num;$('stageKicker').textContent=`STAGE ${d.stage+1} · ${s.name.toUpperCase()}`;$('lessonTitle').textContent=s.topic;$('stageDescription').textContent=s.description;$('levelChip').textContent=`LEVEL ${num} / 100`;$('ageChip').textContent=`AGE ${s.age}`;$('sceneLabel').textContent=s.scene;
+ $('phrase').textContent=d.vi;$('translation').textContent=d.en;$('hint').textContent=d.hint;$('pronunciationNote').textContent=`🎧 Hà Nội sound focus: ${d.pronunciation}`;$('learningTip').textContent=`💡 Listen once, say it in chunks, then add a detail or a family expression of your own. Your family’s voice is a valuable model.`;
+ $('feedback').className='feedback';$('feedback').textContent=alreadyCompleted?'⭐ You have completed this level before. Practise again, or move on when you are ready.':'Say the phrase in your own natural voice. Every attempt is practice!';$('transcript').className='transcript';$('transcript').textContent='';$('typedAnswer').value='';$('typeRow').classList.remove('show');$('typeToggle').textContent='⌨ Type instead';$('nextBtn').classList.toggle('show',alreadyCompleted);$('nextBtn').textContent=num===100?'Play again ↻':'Next level →';
+ $('scene').dataset.stage=d.stage;$('obstacles').innerHTML=( [ ['🏡','👵','🌸'],['🍚','🥢','🪷'],['🏫','🪁','🤝'],['🧳','📷','🏡'],['🏮','🪷','📚'],['🎤','🌏','📖'] ][d.stage] || ['🪨','🎋','🌊'] ).map(x=>`<span class="obstacle">${x}</span>`).join('');
+ $('runner').classList.remove('jump');$('runner').style.left=alreadyCompleted?'77%':'8%';$('scenePop').classList.remove('show');
+ $('micStatus').textContent='Speech setting · Vietnamese (vi-VN)';$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';renderStages();
+}
+function normalise(s){return String(s||'').normalize('NFC').toLocaleLowerCase('vi-VN').replace(/[.,!?;:“”"'()]/g,' ').replace(/\s+/g,' ').trim();}
+function editDistance(a,b){const dp=Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));for(let i=0;i<=a.length;i++)dp[i][0]=i;for(let j=0;j<=b.length;j++)dp[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return dp[a.length][b.length];}
+function matchesVoice(spoken,target){const a=normalise(spoken),b=normalise(target);if(a===b)return true;if(!a||!b)return false;const dist=editDistance(a,b);const allowed=b.length<16?0:b.length<35?1:b.length<65?2:3;return dist<=allowed;}
+function matchesTyped(spoken,target){return normalise(spoken)===normalise(target);}
+function completeLevel(source){
+ if(levelWon)return;levelWon=true;completed.add(currentLevel);try{localStorage.setItem('nonLaCompleted',JSON.stringify([...completed].sort((a,b)=>a-b)));}catch(e){$('micStatus').textContent='Level complete · Progress may not save on this device';}
+ $('runner').classList.remove('jump');void $('runner').offsetWidth;$('runner').classList.add('jump');$('runner').style.left='77%';$('scenePop').classList.remove('show');void $('scenePop').offsetWidth;$('scenePop').classList.add('show');
+ $('feedback').className='feedback good';$('feedback').textContent=source==='voice'?'🌟 Tuyệt vời! The speech service caught the phrase — the hat made it!':'🌟 Giỏi lắm! You matched the phrase in writing — the hat made it!';
+ $('transcript').className='transcript show good';if(source==='voice')$('transcript').textContent=`I heard: “${lastTranscript}”`;
+ $('nextBtn').classList.add('show');$('nextBtn').textContent=currentLevel===100?'Play again ↻':'Next level →';
+ $('micStatus').textContent='Level complete · Well done!';$('micBtn').classList.remove('listening');$('micText').textContent='LEVEL COMPLETE';renderStages();
+ for(let i=0;i<8;i++){const sp=document.createElement('span');sp.className='sparkle';sp.textContent=['✨','⭐','🌸','💛'][i%4];sp.style.left=(15+Math.random()*70)+'%';sp.style.top=(20+Math.random()*52)+'%';$('scene').appendChild(sp);setTimeout(()=>sp.remove(),1100);}
+}
+let lastTranscript='';
+function handleTranscript(text){lastTranscript=text;const d=levelData(currentLevel);$('transcript').className='transcript show';$('transcript').textContent=`I heard: “${text}”`;
+ if(matchesVoice(text,d.vi)){completeLevel('voice');}
+ else{$('transcript').classList.add('bad');$('feedback').className='feedback';$('feedback').textContent='Good effort. Listen to the model, practise the phrase in two small parts, then try the whole sentence again.';$('micStatus').textContent='Ready for another try';}
+}
+function stopListening(){const active=recognition;recognition=null;if(active){try{active.stop()}catch(e){}}isListening=false;$('micBtn').classList.remove('listening');if(!$('micText').textContent.includes('COMPLETE'))$('micText').textContent='TAP TO SPEAK';}
+function startListening(){
+ if(levelWon)return;
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){$('micStatus').textContent='Speech recognition is not available here';$('feedback').className='feedback bad';$('feedback').textContent='This browser does not support voice recognition. Please use “Type instead”.';$('typeRow').classList.add('show');return;}
+ if(isListening){stopListening();$('micStatus').textContent='Microphone paused';return;}
+ try{
+  recognition=new SpeechRecognition();const session=recognition;recognition.lang='vi-VN';recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=3;isListening=true;
+  $('micBtn').classList.add('listening');$('micText').textContent='LISTENING…';$('micStatus').textContent='Listening — speak clearly in Vietnamese';$('feedback').className='feedback';$('feedback').textContent='I’m listening…';
+  recognition.onresult=event=>{let interim='';let final='';for(let i=event.resultIndex;i<event.results.length;i++){const r=event.results[i];if(r.isFinal){const target=levelData(currentLevel).vi;let chosen=r[0].transcript;for(let k=0;k<r.length;k++){if(matchesVoice(r[k].transcript,target)){chosen=r[k].transcript;break;}}final+=chosen;}else interim+=r[0].transcript;}if(interim){$('transcript').className='transcript show';$('transcript').textContent=`Hearing: “${interim}…”`;}if(final.trim())handleTranscript(final.trim());};
+  recognition.onerror=event=>{if(recognition!==session)return;isListening=false;$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';let msg='Microphone error. Check your browser permission and try again.';if(event.error==='not-allowed'||event.error==='service-not-allowed')msg='Microphone permission was blocked. Allow microphone access in your browser, or type the answer instead.';if(event.error==='no-speech')msg='I did not hear anything. Try speaking a little louder.';if(event.error==='network')msg='The speech service could not connect. Try again or use typed practice.';$('feedback').className='feedback bad';$('feedback').textContent=msg;$('micStatus').textContent='Ready to try again';};
+  recognition.onend=()=>{if(recognition!==session)return;recognition=null;isListening=false;$('micBtn').classList.remove('listening');if(!levelWon)$('micText').textContent='TAP TO SPEAK';};
+  recognition.start();
+ }catch(e){recognition=null;isListening=false;$('micBtn').classList.remove('listening');$('micText').textContent='TAP TO SPEAK';$('feedback').className='feedback bad';$('feedback').textContent='Could not start the microphone. Try again or type the phrase.';$('typeRow').classList.add('show');}
+}
+function speakModel(){if(!('speechSynthesis'in window)){ $('feedback').textContent='Audio playback is not available in this browser.';return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(levelData(currentLevel).vi);u.lang='vi-VN';u.rate=.82;const voices=window.speechSynthesis.getVoices();const vi=voices.find(v=>v.lang.toLowerCase().startsWith('vi'));if(vi)u.voice=vi;window.speechSynthesis.speak(u);}
+$('goLevel').addEventListener('click',()=>loadLevel($('levelInput').value));$('levelInput').addEventListener('keydown',e=>{if(e.key==='Enter')loadLevel($('levelInput').value)});
+$('micBtn').addEventListener('click',startListening);$('listenBtn').addEventListener('click',speakModel);
+$('typeToggle').addEventListener('click',()=>{$('typeRow').classList.toggle('show');$('typeToggle').textContent=$('typeRow').classList.contains('show')?'⌨ Hide typing':'⌨ Type instead';if($('typeRow').classList.contains('show'))$('typedAnswer').focus();});
+$('checkTyped').addEventListener('click',()=>{const val=$('typedAnswer').value;if(matchesTyped(val,levelData(currentLevel).vi)){lastTranscript=val;completeLevel('typed');}else{$('transcript').className='transcript show bad';$('transcript').textContent=`Your answer: “${val}”`;$('feedback').className='feedback bad';$('feedback').textContent='You are close. Check the tone marks and spaces, listen to the model, and try again. You can also ask a family member to say it with you.';}});
+$('typedAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('checkTyped').click()});
+$('nextBtn').addEventListener('click',()=>loadLevel(currentLevel===100?1:currentLevel+1));
+window.addEventListener('beforeunload',()=>{if(window.speechSynthesis)window.speechSynthesis.cancel();});
+renderStages();loadLevel(1);
+if ('serviceWorker' in navigator && location.protocol !== 'file:') { window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {})); }
+</script>
 </body>
 </html>
